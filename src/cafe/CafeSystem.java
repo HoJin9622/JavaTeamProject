@@ -80,6 +80,7 @@ public class CafeSystem extends JFrame {
 		startOrderSystem.setBounds(800, 300, 300, 100);
 		startOrderSystem.addMouseListener(new MouseAdapter() {
 			@Override
+			
 			public void mousePressed(MouseEvent e) {
 				new OrderSystem();
 			}
