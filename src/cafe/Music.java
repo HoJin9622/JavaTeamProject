@@ -29,7 +29,7 @@ public class Music extends Thread{
 			return 0;
 		return player.getPosition();
 	}
-	public void close() { //언제든지 중지할 때, 뒤로가기나 중지버튼을 클릭하면 노래 재생 중 중지 
+	public void close() { //언제든지 중지할 때, 뒤로가기나 중지버튼을 클릭하면 노래 재생 중지 
 		isLoop=false;
 		player.close();
 		this.interrupt(); //해당 스레드를 중지상태로 만듬

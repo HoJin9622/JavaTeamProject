@@ -37,8 +37,7 @@ public class CafeSystem extends JFrame {
 		setVisible(true); // 화면이 정상출력되도록 도와줌, 기본 값은 false
 		setBackground(new Color(0, 0, 0, 0)); // 배경이 회색이 아니라 전부 하얀색으로 바뀜
 
-		// startButton.setBounds(300, 500, 300, 100);
-
+		
 		Container c = getContentPane();
 		c.setLayout(null); // 레이아웃을 Default 레이아웃에서 null로 설정
 
@@ -54,7 +53,6 @@ public class CafeSystem extends JFrame {
 		});
 		c.add(exitButton);
 
-		// quitButton.setBounds(500, 500, 300, 100);
 
 		menuBar.setBounds(0, 0, 1280, 30);
 		menuBar.addMouseListener(new MouseAdapter() {
@@ -84,6 +82,7 @@ public class CafeSystem extends JFrame {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				new OrderSystem();
+				
 			}
 		});
 		c.add(startOrderSystem);
