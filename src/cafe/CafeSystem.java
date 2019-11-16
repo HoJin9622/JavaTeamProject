@@ -82,7 +82,6 @@ public class CafeSystem extends JFrame {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				new OrderSystem();
-				
 			}
 		});
 		c.add(startOrderSystem);
