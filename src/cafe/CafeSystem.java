@@ -1,8 +1,6 @@
 package cafe;
 
 import java.awt.Color;
-import java.awt.Container;
-import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
@@ -36,10 +34,8 @@ public class CafeSystem extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // 창을 종료했을 때 프로그램도 종료, 이게 없으면 종료해도 프로그램이 계속 진행
 		setVisible(true); // 화면이 정상출력되도록 도와줌, 기본 값은 false
 		setBackground(new Color(0, 0, 0, 0)); // 배경이 회색이 아니라 전부 하얀색으로 바뀜
-
 		
-		Container c = getContentPane();
-		c.setLayout(null); // 레이아웃을 Default 레이아웃에서 null로 설정
+		setLayout(null); // 레이아웃을 Default 레이아웃에서 null로 설정
 
 		exitButton.setBounds(1245, 0, 30, 30);
 		exitButton.setBorderPainted(false);
@@ -51,8 +47,7 @@ public class CafeSystem extends JFrame {
 				System.exit(0);
 			}
 		});
-		c.add(exitButton);
-
+		add(exitButton);
 
 		menuBar.setBounds(0, 0, 1280, 30);
 		menuBar.addMouseListener(new MouseAdapter() {
@@ -70,11 +65,11 @@ public class CafeSystem extends JFrame {
 				setLocation(x - mouseX, y - mouseY);
 			}
 		});
-		c.add(menuBar);
+		add(menuBar);
 
 		JLabel name = new JLabel("ID");
 		name.setBounds(400, 150, 200, 190);
-		c.add(name);
+		add(name);
 
 		JButton startOrderSystem = new JButton("주문 시스템 실행");
 		startOrderSystem.setBounds(800, 300, 300, 100);
@@ -84,7 +79,7 @@ public class CafeSystem extends JFrame {
 				new OrderSystem();
 			}
 		});
-		c.add(startOrderSystem);
+		add(startOrderSystem);
 
 		JButton startAdminSystem = new JButton("관리자 시스템 실행");
 		startAdminSystem.setBounds(800, 500, 300, 100);
@@ -94,7 +89,7 @@ public class CafeSystem extends JFrame {
 				new CustomerGUI();
 			}
 		});
-		c.add(startAdminSystem);
+		add(startAdminSystem);
 	}
 
 	public void paint(Graphics g) { // 가장 첫번쨰로 초기 화면 그려주는 함수

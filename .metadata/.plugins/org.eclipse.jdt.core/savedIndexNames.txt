@@ -1,4 +1,0 @@
-INDEX VERSION 1.131+C:\JSP\projects\Cafe Management\.metadata\.plugins\org.eclipse.jdt.core
-89319491.index
-3767931335.index
-3984184211.index

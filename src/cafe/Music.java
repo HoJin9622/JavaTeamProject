@@ -3,6 +3,7 @@ package cafe;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
 
 import javazoom.jl.player.Player;
 
@@ -12,14 +13,17 @@ public class Music extends Thread{
 	private File file;
 	private FileInputStream fis;
 	private BufferedInputStream bis;
+	ArrayList<Track> trackList=new ArrayList<Track>();
 	
-	public Music(String name,boolean isLoop) {
+	
+	public Music(String name,ArrayList<Track> trackList,boolean isLoop) {
 		try {
 			this.isLoop=isLoop;
 			file=new File(Main.class.getResource("../music/"+name).toURI());
 			fis=new FileInputStream(file);
 			bis=new BufferedInputStream(fis); //해당 파일을 버퍼에 담아서 읽어올 수 있도록
 			player=new Player(bis); //플레이어는 해당 파일을 담을 수 있도록
+			this.trackList=trackList;
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -39,6 +43,9 @@ public class Music extends Thread{
 		try {
 			do {
 				player.play();
+				int n=(int)(Math.random()*(trackList.size())+0);
+				String name=trackList.get(n).getListMusic();
+				file=new File(Main.class.getResource("../music/"+name).toURI());
 				fis=new FileInputStream(file);
 				bis=new BufferedInputStream(fis); //해당 파일을 버퍼에 담아서 읽어올 수 있도록
 				player=new Player(bis); //플레이어는 해당 파일을 담을 수 있도록

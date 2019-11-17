@@ -1,8 +1,8 @@
 package cafe;
 
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+@SuppressWarnings("serial")
 public class OrderSystem extends JFrame {
 	private Image screenImage; // 더블 버퍼링을 위해서 전체 화면에 대한
 	private Graphics screenGraphic; // 이미지를 담는 두 인스턴스
@@ -40,10 +41,15 @@ public class OrderSystem extends JFrame {
 	private ImageIcon Img_coffee5 = new ImageIcon(Main.class.getResource("../images/img_coffee5.png"));
 	private ImageIcon Img_Plus = new ImageIcon(Main.class.getResource("../images/Plus.png"));
 	private ImageIcon Img_OrderButton = new ImageIcon(Main.class.getResource("../images/OrderButton.jpg"));
+	private ImageIcon Img_bar = new ImageIcon(Main.class.getResource("../images/bar.png"));
 		
 	private Image background = new ImageIcon(Main.class.getResource("../images/introBackground(Title).jpg"))
 			.getImage();
 	private JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../images/menuBar.png")));
+	private JLabel lbl_order = new JLabel("주문금액");
+	private JLabel lbl_won = new JLabel("원");
+	private JLabel lbl_price = new JLabel("0");
+	private JLabel lbl_bar = new JLabel(Img_bar);
 	
 	private JButton exitButton = new JButton(exitButtonBasicImage);
 	private JButton startButton = new JButton(startButtonBasicImage);
@@ -77,7 +83,7 @@ public class OrderSystem extends JFrame {
 		trackList.add(new Track("boatImage.png","George - Boat.mp3"));
 		trackList.add(new Track("olderImage.png","Sasha Sloan - Older.mp3"));
 
-		introMusic=new Music(trackList.get(n).getListMusic(), true);
+		introMusic=new Music(trackList.get(n).getListMusic(), trackList,true);
 		introMusic.start();
 		introScreen();
 		
@@ -93,7 +99,7 @@ public class OrderSystem extends JFrame {
 		setVisible(true); // 창이 정상출력되도록 도와줌, 기본 값은 false
 		
 		setBackground(new Color(0, 0, 0, 0)); // 배경이 회색이 아니라 전부 하얀색을 바뀜
-		setLayout(null); // 버튼이나 jLabel 넣었을 때 위치? 그대로 넣어줌
+		setLayout(null); // 버튼이나 jLabel 넣었을 때 위치 그대로 넣어줌
 		
 		exitButton.setBounds(1245, 0, 30, 30); //화면 우측 상단
 		exitButton.setBorderPainted(false);
@@ -175,6 +181,7 @@ public class OrderSystem extends JFrame {
 					}
 				});
 				add(Btn_coffee1);
+				Btn_coffee1.setVisible(true);
 				
 				Btn_coffee2.setBounds(310, 40, 185, 190); 
 				Btn_coffee2.setBorderPainted(false);
@@ -187,6 +194,7 @@ public class OrderSystem extends JFrame {
 					}
 				});
 				add(Btn_coffee2);
+				Btn_coffee2.setVisible(true);
 				
 				Btn_coffee3.setBounds(610, 40, 185, 177); 
 				Btn_coffee3.setBorderPainted(false);
@@ -199,8 +207,9 @@ public class OrderSystem extends JFrame {
 					}
 				});
 				add(Btn_coffee3);
+				Btn_coffee3.setVisible(true);
 				
-				Btn_coffee4.setBounds(920, 40, 185, 177); 
+				Btn_coffee4.setBounds(10, 340, 185, 177); 
 				Btn_coffee4.setBorderPainted(false);
 				Btn_coffee4.setContentAreaFilled(false);
 				Btn_coffee4.setFocusPainted(false);
@@ -211,8 +220,9 @@ public class OrderSystem extends JFrame {
 					}
 				});
 				add(Btn_coffee4);
+				Btn_coffee4.setVisible(true);
 				
-				Btn_coffee5.setBounds(10, 340, 185, 190); 
+				Btn_coffee5.setBounds(310, 340, 185, 190); 
 				Btn_coffee5.setBorderPainted(false);
 				Btn_coffee5.setContentAreaFilled(false);
 				Btn_coffee5.setFocusPainted(false);
@@ -223,20 +233,24 @@ public class OrderSystem extends JFrame {
 					}
 				});
 				add(Btn_coffee5);
+				Btn_coffee5.setVisible(true);
 				
 				Btn_Plus.setBounds(0,80, 185, 177); 
 				Btn_Plus.setBorderPainted(false);
 				Btn_Plus.setContentAreaFilled(false);
 				Btn_Plus.setFocusPainted(false);
 				add(Btn_Plus);
+				Btn_Plus.setVisible(true);
 				
-				Btn_OrderButton.setBounds(800,380, 397, 127); 
+				Btn_OrderButton.setBounds(950,580, 397, 127); 
 				Btn_OrderButton.setBorderPainted(false);
 				Btn_OrderButton.setContentAreaFilled(false);
 				Btn_OrderButton.setFocusPainted(false);
 				add(Btn_OrderButton);
+				Btn_OrderButton.setVisible(true);
+				
 				backButton.setVisible(true);
-				backButton.setBounds(900, 500, 200, 80);
+				backButton.setBounds(1150, 40, 120, 80);
 				backButton.setBorderPainted(false); //버튼 테두리 설정
 				backButton.setContentAreaFilled(false); //버튼 영역 배경 표시 설정
 				backButton.setFocusPainted(false); //포커스 표시 설정
@@ -255,6 +269,25 @@ public class OrderSystem extends JFrame {
 					}
 				});
 				add(backButton);
+				
+				lbl_order.setVisible(true);
+				lbl_order.setBounds(1050, 400, 200, 200);
+				lbl_order.setFont(new Font("Gothic", Font.BOLD, 30));
+				add(lbl_order);
+				
+				lbl_won.setVisible(true);
+				lbl_won.setBounds(1200, 450, 200, 200);
+				lbl_won.setFont(new Font("Gothic", Font.BOLD, 30));
+				add(lbl_won);
+				
+				lbl_price.setVisible(true);
+				lbl_price.setBounds(1050, 450, 200, 200);
+				lbl_price.setFont(new Font("Gothic", Font.BOLD, 30));
+				add(lbl_price);
+				
+				lbl_bar.setVisible(true);
+				lbl_bar.setBounds(1000, 25, 20, 700);
+				add(lbl_bar);
 			}
 		});
 		add(orderButton);
@@ -381,6 +414,18 @@ public class OrderSystem extends JFrame {
 		rightButton.setVisible(false);
 		reserveButton.setVisible(false);
 		backButton.setVisible(false);
+		Btn_coffee1.setVisible(false);
+		Btn_coffee2.setVisible(false);
+		Btn_coffee3.setVisible(false);
+		Btn_coffee4.setVisible(false);
+		Btn_coffee5.setVisible(false);
+		Btn_OrderButton.setVisible(false);
+		backButton.setVisible(false);
+		Btn_Plus.setVisible(false);
+		lbl_order.setVisible(false);
+		lbl_won.setVisible(false);
+		lbl_price.setVisible(false);
+		lbl_bar.setVisible(false);
 		
 	}
 	public void screenDraw(Graphics g) {
@@ -401,7 +446,7 @@ public class OrderSystem extends JFrame {
 		if(selectedMusic != null) //노래가 실행되고 있다면
 			selectedMusic.close(); //실행중인 노래 중지
 		selectedImage=new ImageIcon(Main.class.getResource("../images/"+trackList.get(nowSelected).getListImage())).getImage();
-		selectedMusic=new Music(trackList.get(nowSelected).getListMusic(),true);
+		selectedMusic=new Music(trackList.get(nowSelected).getListMusic(),trackList,true);
 	}
 	public void selectLeft() {
 		if(nowSelected==0)
