@@ -74,7 +74,7 @@ public class OrderSystem extends JFrame {
 	private Music selectedMusic;
 	ArrayList<Track> trackList=new ArrayList<Track>();
 	
-	private int n=(int)(Math.random()*(trackList.size())+0);
+	private int n;
 	private Music introMusic;
 	private int nowSelected=0;
 	
@@ -83,6 +83,7 @@ public class OrderSystem extends JFrame {
 		trackList.add(new Track("boatImage.png","George - Boat.mp3"));
 		trackList.add(new Track("olderImage.png","Sasha Sloan - Older.mp3"));
 
+		n=(int)(Math.random()*(trackList.size())+0);
 		introMusic=new Music(trackList.get(n).getListMusic(), trackList,true);
 		introMusic.start();
 		introScreen();
@@ -365,7 +366,7 @@ public class OrderSystem extends JFrame {
 				reserveButton.setIcon(reserveButtonBasicImage);
 			}
 			@Override
-			public void mousePressed(MouseEvent e) {
+			public void mousePressed(MouseEvent e) { // 노래신청 버튼을 누르면
 				
 			}
 		});
