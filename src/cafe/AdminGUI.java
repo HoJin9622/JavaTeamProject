@@ -37,7 +37,6 @@ public class AdminGUI extends JFrame {
 	}
 	static void loadMenuList(HashMap<String,String> menu) {
 		
-		
 	}
 	
 	static void loadMusicList(String listMusic) {

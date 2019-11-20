@@ -13,8 +13,6 @@ public class AdminDTO {
 		this.id = id;
 		this.password = password;
 	}
-
-	
 	public AdminDTO(int idx, String name, String id, String password) {
 		this.idx = idx;
 		this.name = name;
