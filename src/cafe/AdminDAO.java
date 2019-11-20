@@ -7,14 +7,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
-public class CustomerDAO {
+public class AdminDAO {
 	// --------------------------------------------------------
 	// 싱글톤 디자인 패턴을 적용한 인스턴스 리턴
-	private static CustomerDAO instance = new CustomerDAO();
+	private static AdminDAO instance = new AdminDAO();
 	
-	private CustomerDAO() {}
+	private AdminDAO() {}
 	
-	public static CustomerDAO getInstance() {
+	public static AdminDAO getInstance() {
 		return instance;
 	}
 	// --------------------------------------------------------
@@ -49,7 +49,7 @@ public class CustomerDAO {
 	}
 
 	
-	public int login(CustomerDTO dto) {
+	public int login(AdminDTO dto) {
 		// 아이디, 패스워드 일치 여부에 따라 다른 정수값 리턴
 		connectDb();
 		
@@ -90,7 +90,7 @@ public class CustomerDAO {
 	
 	
 	// 회원 추가
-	public int insert(CustomerDTO dto) {
+	public int insert(AdminDTO dto) {
 		connectDb();
 		
 		int result = 0; // 회원 추가 성공 여부(0 : 실패, 1 : 리턴)
@@ -103,7 +103,6 @@ public class CustomerDAO {
 			pstmt.setString(1, dto.getName());
 			pstmt.setString(2, dto.getId());
 			pstmt.setString(3, dto.getPassword());
-			pstmt.setString(4, dto.getJumin());
 			
 			result = pstmt.executeUpdate();
 
@@ -161,7 +160,6 @@ public class CustomerDAO {
 				rowData.add(rs.getString("name"));
 				rowData.add(rs.getString("id"));
 				rowData.add(rs.getString("password"));
-				rowData.add(rs.getString("jumin"));
 				
 				data.add(rowData);
 			}
@@ -176,25 +174,4 @@ public class CustomerDAO {
 		
 		return null;
 	}
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
