@@ -43,6 +43,7 @@ public class AdminGUI extends JFrame {
 	
 	static void loadMusicList(String listMusic) {
 		
+		
 	}
 	public void showFrame() {
 		setTitle("Cafe Management System");
