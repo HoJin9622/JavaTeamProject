@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.HashMap;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
@@ -20,25 +21,32 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
-public class CustomerGUI extends JFrame {
-	JTextField tfDbIp, tfDbUsername, tfIdx, tfName, tfId, tfPassword, tfJumin;
+public class AdminGUI extends JFrame {
+	JTextField tfDbIp, tfDbUsername, tfIdx, tfName, tfId, tfPassword;
 	JPasswordField pfDbPassword;
 	JTable table;
 	JButton btnLogin;
-
+	JPanel pSouth;
+	JPanel pWest;
+	
 	boolean isLogin; // 로그인 여부 표시할 변수
 
-	public CustomerGUI() {
+	public AdminGUI() {
 		showFrame();
 	}
-
+	static void loadMenuList(HashMap<String,String> menu) {
+		
+	}
+	
+	static void loadMusicList(String listMusic) {
+		
+	}
 	public void showFrame() {
-		setTitle("고객관리 프로그램");
-		setBounds(500, 300, 800, 300);
+		setTitle("Cafe Management System");
+		setBounds(500, 300, 1280, 720);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		
 		// ================= 상단 DB 접속 패널 ==================
 		JPanel pNorth = new JPanel();
 		getContentPane().add(pNorth, BorderLayout.NORTH);
@@ -58,7 +66,7 @@ public class CustomerGUI extends JFrame {
 		JPanel pDbUsername = new JPanel();
 		pNorth.add(pDbUsername);
 
-		pDbUsername.add(new JLabel("Username"));
+		pDbUsername.add(new JLabel("name"));
 		tfDbUsername = new JTextField(10);
 		pDbUsername.add(tfDbUsername);
 
@@ -79,15 +87,66 @@ public class CustomerGUI extends JFrame {
 
 		// 로그인 버튼 이벤트 처리
 		btnLogin.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dbLogin();
+				// ================= 하단 버튼 패널 ==================
+				pSouth = new JPanel();
+				getContentPane().add(pSouth, BorderLayout.SOUTH);
+
+			
+				JButton btnInsert = new JButton("관리자 추가");
+				JButton btnSelect = new JButton("관리자 목록");
+				JButton btnUpdate = new JButton("관리자 수정");
+				JButton btnDelete = new JButton("관리자 삭제");
+				JButton btnTotal=new JButton("매출 관리");
+				JButton btnMenuList=new JButton("주문 신청 목록");
+				JButton btnMusicList=new JButton("노래 신청 목록");
+				
+				btnMusicList.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mousePressed(MouseEvent e) {
+						//노래 신청 목록 버튼을 눌렀을 때
+						
+					}
+				});
+				
+				pSouth.add(btnInsert);
+				pSouth.add(btnSelect);
+				pSouth.add(btnUpdate);
+				pSouth.add(btnDelete);
+				pSouth.add(btnTotal);
+				pSouth.add(btnMenuList);
+				pSouth.add(btnMusicList);
+				
+				// 버튼 세 개 구별하는 리스너
+				ActionListener btnListener = new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						if (e.getSource() == btnInsert) {
+							insert();
+						} else if (e.getSource() == btnSelect) {
+							select();
+						} else if (e.getSource() == btnDelete) {
+							delete();
+						} else if (e.getSource() == btnUpdate) {
+							update();
+						}
+					}
+				};
+
+				// 네 개 버튼 리스너 동시 연결
+				btnInsert.addActionListener(btnListener);
+				btnSelect.addActionListener(btnListener);
+				btnDelete.addActionListener(btnListener);
+				btnUpdate.addActionListener(btnListener);
+
 			}
 		});
 
 		// ================= 좌측 회원 정보 입력 패널 ==================
-		JPanel pWest = new JPanel();
+		pWest = new JPanel();
 		getContentPane().add(pWest, BorderLayout.WEST);
 		// 패널 5개 행 생성 위해 GridLayout(5, 1) 설정
 		pWest.setLayout(new GridLayout(5, 1));
@@ -103,31 +162,21 @@ public class CustomerGUI extends JFrame {
 
 		JPanel pName = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		pWest.add(pName);
-
 		pName.add(new JLabel("이   름"));
 		tfName = new JTextField(10);
 		pName.add(tfName);
 
 		JPanel pId = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		pWest.add(pId);
-
 		pId.add(new JLabel("아 이 디"));
 		tfId = new JTextField(10);
 		pId.add(tfId);
 
 		JPanel pPassword = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		pWest.add(pPassword);
-
 		pPassword.add(new JLabel("패스워드"));
 		tfPassword = new JTextField(10);
 		pPassword.add(tfPassword);
-
-		JPanel pJumin = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		pWest.add(pJumin);
-
-		pJumin.add(new JLabel("주민번호"));
-		tfJumin = new JTextField(10);
-		pJumin.add(tfJumin);
 
 		// ================= 중앙 회원 정보 출력 패널 ==================
 		// 스크롤바 기능을 위해 JScrollPane 객체를 생성하여 Center 영역에 부착
@@ -145,8 +194,7 @@ public class CustomerGUI extends JFrame {
 		columnNames.add("이름");
 		columnNames.add("아이디");
 		columnNames.add("패스워드");
-		columnNames.add("주민번호");
-
+		
 //		DefaultTableModel dtm = new DefaultTableModel(columnNames, 0);
 		DefaultTableModel dtm = new DefaultTableModel(columnNames, 0) {
 
@@ -172,59 +220,10 @@ public class CustomerGUI extends JFrame {
 				// 선택된 컬럼의 데이터 출력
 //				System.out.println(table.getValueAt(table.getSelectedRow(), table.getSelectedColumn()));
 
-				showCustomerInfo(); // 선택된 행의 모든 컬럼 데이터를 WEST 영역 텍스트필드에 표시
+				showAdminInfo(); // 선택된 행의 모든 컬럼 데이터를 WEST 영역 텍스트필드에 표시
 			}
 		});
-
-		// ================= 하단 버튼 패널 ==================
-		JPanel pSouth = new JPanel();
-		getContentPane().add(pSouth, BorderLayout.SOUTH);
-
-		JButton btnInsert = new JButton("관리자 추가");
-		JButton btnSelect = new JButton("관리자 목록");
-		JButton btnDelete = new JButton("관리자 삭제");
-		JButton btnUpdate = new JButton("관리자 수정");
-
-		JButton startAdminSystem = new JButton("주문 시스템 실행");
-		startAdminSystem.setBounds(100, 100, 50, 50);
-		startAdminSystem.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				new OrderSystem();
-			}
-		});
-
-		pSouth.add(startAdminSystem);
-		pSouth.add(btnInsert);
-		pSouth.add(btnSelect);
-		pSouth.add(btnDelete);
-		pSouth.add(btnUpdate);
-
-		// 버튼 세 개 구별하는 리스너
-		ActionListener btnListener = new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (e.getSource() == btnInsert) {
-					insert();
-				} else if (e.getSource() == btnSelect) {
-					select();
-				} else if (e.getSource() == btnDelete) {
-					delete();
-				} else if (e.getSource() == btnUpdate) {
-					update();
-				}
-			}
-		};
-
-		// 세 개 버튼 리스너 동시 연결
-		btnInsert.addActionListener(btnListener);
-		btnSelect.addActionListener(btnListener);
-		btnDelete.addActionListener(btnListener);
-		btnUpdate.addActionListener(btnListener);
-
 		setVisible(true);
-
 	}
 
 	// 로그인 기능 수행하는 dbLogin() 메서드 정의
@@ -259,9 +258,8 @@ public class CustomerGUI extends JFrame {
 				pfDbPassword.requestFocus();
 				return;
 			}
-
-			CustomerDTO dto = new CustomerDTO(username, password);
-			CustomerDAO dao = CustomerDAO.getInstance();
+			AdminDTO dto = new AdminDTO(username, password);
+			AdminDAO dao = AdminDAO.getInstance();
 			int result = dao.login(dto);
 
 			if (result == 0) { // 아이디가 없을 경우
@@ -294,7 +292,7 @@ public class CustomerGUI extends JFrame {
 
 	}
 
-	// 회원추가
+	// 관리자추가
 	public void insert() {
 		if (!isLogin) {
 			JOptionPane.showMessageDialog(rootPane, "로그인 필요", "로그인 오류", JOptionPane.ERROR_MESSAGE);
@@ -305,7 +303,6 @@ public class CustomerGUI extends JFrame {
 		String name = tfName.getText();
 		String id = tfId.getText();
 		String password = tfPassword.getText();
-		String jumin = tfJumin.getText();
 
 		// 입력 항목 체크
 		if (name.length() == 0) {
@@ -320,27 +317,22 @@ public class CustomerGUI extends JFrame {
 			JOptionPane.showMessageDialog(rootPane, "패스워드 입력 필수!", "입력 오류", JOptionPane.ERROR_MESSAGE);
 			tfPassword.requestFocus();
 			return;
-		} else if (jumin.length() == 0) {
-			JOptionPane.showMessageDialog(rootPane, "주민번호 입력 필수!", "입력 오류", JOptionPane.ERROR_MESSAGE);
-			tfJumin.requestFocus();
-			return;
 		}
 
-		CustomerDTO dto = new CustomerDTO(0, name, id, password, jumin);
-		CustomerDAO dao = CustomerDAO.getInstance();
+		AdminDTO dto = new AdminDTO(0, name, id, password);
+		AdminDAO dao = AdminDAO.getInstance();
 		int result = dao.insert(dto); // 회원추가 후 결과값 리턴
 
-		// 회원 추가 여부 판별
+		// 관리자 추가 여부 판별
 		if (result == 0) { // 실패했을 경우
-			JOptionPane.showMessageDialog(rootPane, "회원을 추가할 수 없습니다.", "실패", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(rootPane, "관리자를 추가할 수 없습니다.", "실패", JOptionPane.ERROR_MESSAGE);
 			return;
 		} else { // 성공했을 경우
-			JOptionPane.showMessageDialog(rootPane, "회원을 추가하였습니다.", "성공", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(rootPane, "관리자를 추가하였습니다.", "성공", JOptionPane.INFORMATION_MESSAGE);
 		}
-
 	}
 
-	// 회원목록
+	// 관리자 목록
 	public void select() {
 //		if(!isLogin) {
 //			JOptionPane.showMessageDialog(
@@ -349,8 +341,8 @@ public class CustomerGUI extends JFrame {
 //			return;
 //		} 
 
-		CustomerDAO dao = CustomerDAO.getInstance();
-		// 회원목록 조회 후 전체 레코드를 Vector 타입으로 저장하여 리턴
+		AdminDAO dao = AdminDAO.getInstance();
+		// 관리자 목록 조회 후 전체 레코드를 Vector 타입으로 저장하여 리턴
 		Vector<Vector> data = dao.select();
 
 		DefaultTableModel dtm = (DefaultTableModel) table.getModel(); // 다운캐스팅
@@ -368,7 +360,7 @@ public class CustomerGUI extends JFrame {
 
 	}
 
-	// 회원삭제
+	// 관리자삭제
 	public void delete() {
 		if (!isLogin) {
 			JOptionPane.showMessageDialog(rootPane, "로그인 필요", "로그인 오류", JOptionPane.ERROR_MESSAGE);
@@ -376,8 +368,8 @@ public class CustomerGUI extends JFrame {
 			return;
 		}
 
-		// InputDialog 사용하여 삭제할 회원번호 입력받기
-		String idx = JOptionPane.showInputDialog(rootPane, "삭제할 회원 번호를 입력하세요.");
+		// InputDialog 사용하여 삭제할 관리자 번호 입력받기
+		String idx = JOptionPane.showInputDialog(rootPane, "삭제할 관리자 번호를 입력하세요.");
 //		System.out.println(idx);
 
 		while (idx == null || idx.length() == 0) {
@@ -390,7 +382,7 @@ public class CustomerGUI extends JFrame {
 			JOptionPane.showMessageDialog(rootPane, "번호 입력 필수!", "입력 오류", JOptionPane.ERROR_MESSAGE);
 
 			// 다시 입력받기
-			idx = JOptionPane.showInputDialog(rootPane, "삭제할 회원 번호를 입력하세요.");
+			idx = JOptionPane.showInputDialog(rootPane, "삭제할 관리자 번호를 입력하세요.");
 		}
 
 		// 삭제할 번호를 입력할 경우
@@ -401,15 +393,15 @@ public class CustomerGUI extends JFrame {
 			return;
 		}
 
-		CustomerDAO dao = CustomerDAO.getInstance();
+		AdminDAO dao = AdminDAO.getInstance();
 
 		int result = dao.delete(Integer.parseInt(idx));
-		// 회원 삭제 여부 판별
+		// 관리자 삭제 여부 판별
 		if (result == 0) { // 실패했을 경우
-			JOptionPane.showMessageDialog(rootPane, "회원을 삭제할 수 없습니다.", "실패", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(rootPane, "관리자를 삭제할 수 없습니다.", "실패", JOptionPane.ERROR_MESSAGE);
 			return;
 		} else { // 성공했을 경우
-			JOptionPane.showMessageDialog(rootPane, "회원을 삭제하였습니다.", "성공", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(rootPane, "관리자를 삭제하였습니다.", "성공", JOptionPane.INFORMATION_MESSAGE);
 		}
 
 	}
@@ -420,7 +412,7 @@ public class CustomerGUI extends JFrame {
 		}
 
 		// 테이블 셀 선택했을 경우 창 새 프레임 생성하여 선택된 회원 정보 표시
-		JFrame editFrame = new JFrame("회원 정보 수정"); // 새 프레임 생성
+		JFrame editFrame = new JFrame("관리자 정보 수정"); // 새 프레임 생성
 		// 위치 설정 시 기존 부모 프레임의 위치 좌표 값을 받아서 사용(double타입이므로 int형 형변환)
 		editFrame.setBounds((int) this.getLocation().getX(), (int) this.getLocation().getY(), 250, 300);
 		editFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // 현재 프레임만 종료
@@ -460,13 +452,6 @@ public class CustomerGUI extends JFrame {
 		JTextField tfPassword = new JTextField(10);
 		pPassword.add(tfPassword);
 
-		JPanel pJumin = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		pWest.add(pJumin);
-
-		pJumin.add(new JLabel("주민번호"));
-		JTextField tfJumin = new JTextField(10);
-		pJumin.add(tfJumin);
-
 		JPanel pSouth = new JPanel();
 		editFrame.add(pSouth, BorderLayout.SOUTH);
 
@@ -495,7 +480,7 @@ public class CustomerGUI extends JFrame {
 		editFrame.setVisible(true);
 	}
 
-	public void showCustomerInfo() {
+	public void showAdminInfo() {
 		// 클릭한 행에 대한 모든 정보 가져와서 좌측 WEST 영역 텍스트필드에 표시
 		int row = table.getSelectedRow();
 
@@ -503,10 +488,9 @@ public class CustomerGUI extends JFrame {
 		tfName.setText(table.getValueAt(row, 1).toString()); // Object(String) -> String 타입으로 형변환
 		tfId.setText((String) table.getValueAt(row, 2)); // Object(String) -> String 타입으로 형변환
 		tfPassword.setText((String) table.getValueAt(row, 3)); // Object(String) -> String 타입으로 형변환
-		tfJumin.setText((String) table.getValueAt(row, 4)); // Object(String) -> String 타입으로 형변환
 	}
 
 	public static void main(String[] args) {
-		new CustomerGUI();
+		new AdminGUI();
 	}
 }

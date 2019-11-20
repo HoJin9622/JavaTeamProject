@@ -1,6 +1,6 @@
 package cafe;
 
-public class UserDTO extends CustomerDTO{
+public class UserDTO extends AdminDTO{
 	protected String name;
 	protected int stamp;
 	//protected String pNum;
