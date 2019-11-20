@@ -59,7 +59,6 @@ public class OrderSystem extends JFrame {
 		setVisible(false); // 창이 정상출력되도록 도와줌, 기본 값은 false
 		setBackground(new Color(0, 0, 0, 0)); // 배경이 회색이 아니라 전부 하얀색을 바뀜
 		
-		
 		n = (int) (Math.random() * (trackList.size()) + 0);
 		introMusic = new Music(trackList.get(n).getListMusic(), trackList, true);
 		introMusic.start();

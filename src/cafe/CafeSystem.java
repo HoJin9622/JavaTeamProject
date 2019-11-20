@@ -32,7 +32,6 @@ public class CafeSystem extends JFrame {
 	private ImageIcon exitButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/exitButtonEntered.png"));
 	private ImageIcon menuBarImage = new ImageIcon(Main.class.getResource("../images/menuBar.png"));
 	
-	
 
 	private JButton exitButton;
 	private int mouseX, mouseY;
