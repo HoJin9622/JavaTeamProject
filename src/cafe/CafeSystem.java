@@ -23,6 +23,7 @@ import javax.swing.JTextField;
 import cafe.OrderSystem.IntroScreenPanel;
 import cafe.OrderSystem.OrderScreenPanel;
 import cafe.OrderSystem.SongScreenPanel;
+import cafe.AdminGUI;
 
 public class CafeSystem extends JFrame {
 	private Image screenImage; // 더블 버퍼링을 위해서 전체 화면에 대한
@@ -95,8 +96,6 @@ public class CafeSystem extends JFrame {
 		}
 	}
 	
-	
-	
 	class LoginScreenPanel extends JPanel {
 		private Image background = new ImageIcon(Main.class.getResource("../images/mainBackground.jpg")).getImage();
 		
@@ -132,7 +131,7 @@ public class CafeSystem extends JFrame {
 			LoginButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
+				
 					ChangePanel("Main");
 				}
 			});

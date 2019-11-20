@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -23,12 +24,13 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 public class AdminGUI extends JFrame {
-	JTextField tfDbIp, tfDbUsername, tfIdx, tfName, tfId, tfPassword;
-	JPasswordField pfDbPassword;
-	JTable table;
-	JButton btnLogin;
-	JPanel pSouth;
-	JPanel pWest;
+	private JTextField tfDbIp, tfDbUsername, tfIdx, tfName, tfId, tfPassword;
+	private JPasswordField pfDbPassword;
+	private JTable table;
+	private JButton btnLogin;
+	private JPanel pSouth;
+	private JPanel pWest;
+	JList<String> MusicList;
 	
 	boolean isLogin; // 로그인 여부 표시할 변수
 
@@ -47,6 +49,8 @@ public class AdminGUI extends JFrame {
 		setBounds(500, 300, 1280, 720);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		MusicList=new JList<String>();
+		getContentPane().add(new JScrollPane(MusicList));
 		// ================= 상단 DB 접속 패널 ==================
 		JPanel pNorth = new JPanel();
 		getContentPane().add(pNorth, BorderLayout.NORTH);
@@ -85,6 +89,7 @@ public class AdminGUI extends JFrame {
 		btnLogin = new JButton("로그인");
 		pDbLogin.add(btnLogin);
 
+		
 		// ================= 하단 버튼 패널 ==================
 		pSouth = new JPanel();
 		getContentPane().add(pSouth, BorderLayout.SOUTH);
@@ -118,7 +123,7 @@ public class AdminGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				dbLogin();
 			
-				// 버튼 세 개 구별하는 리스너
+				// 버튼 4개 구별하는 리스너
 				ActionListener btnListener = new ActionListener() {
 
 					@Override
@@ -226,7 +231,7 @@ public class AdminGUI extends JFrame {
 	}
 
 	// 로그인 기능 수행하는 dbLogin() 메서드 정의
-	public void dbLogin() {
+	 void dbLogin() {
 		// DB 아이디와 패스워드를 가져와서 DAO 클래스의 login() 메서드 호출
 		// => 로그인 수행 결과를 리턴받아 "아이디 없음", "패스워드 틀림", "로그인 성공" 세 가지로 분류
 		// 0. 로그인 버튼 vs 로그아웃 버튼 판별
@@ -237,13 +242,13 @@ public class AdminGUI extends JFrame {
 		// 2. 로그아웃 버튼일 경우
 		// "로그아웃" 버튼 텍스트를 "로그인"으로 변경 후
 		// IP, Username, Password 텍스트필드 입력 가능 설정
-
+		
 		if (!isLogin) { // 로그인 상태가 아닐 경우
 			// ------------- 입력 체크 --------------
 			String ip = tfDbIp.getText();
 			String username = tfDbUsername.getText();
 			String password = new String(pfDbPassword.getPassword());
-
+			
 			if (ip.length() == 0) {
 				JOptionPane.showMessageDialog(rootPane, "DB 접속 주소 입력", "DB 정보 오류", JOptionPane.ERROR_MESSAGE);
 				tfDbIp.requestFocus();

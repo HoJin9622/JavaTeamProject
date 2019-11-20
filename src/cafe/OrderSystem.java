@@ -16,7 +16,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import cafe.AdminGUI;
 
 @SuppressWarnings("serial")
 public class OrderSystem extends JFrame {
@@ -126,11 +128,9 @@ public class OrderSystem extends JFrame {
 				}
 	
 				@Override
-				/// ///
 				/// "그냥 주문" 클릭 버튼 이벤트 ///
-				/// ///
 				public void mousePressed(MouseEvent e) {
-					// 주문입력 화면 메서드 ex) orderScreen();
+					// 주문입력 화면 메서드 
 					ChangePanel("Order");
 				}
 			});
@@ -142,8 +142,6 @@ public class OrderSystem extends JFrame {
 			super.paintComponent(g);
 		}
 	}
-	
-	
 	
 	class SongScreenPanel extends JPanel {			//노래 화면 판넬
 		private Image background = new ImageIcon(Main.class.getResource("../images/mainBackground.jpg")).getImage();
@@ -160,9 +158,6 @@ public class OrderSystem extends JFrame {
 		private JButton leftButton = new JButton(leftButtonBasicImage);
 		private JButton rightButton = new JButton(rightButtonBasicImage);
 		private JButton reserveButton = new JButton(reserveButtonBasicImage);
-		
-
-		
 		
 		private JLabel menuBar = new JLabel(menuBarImage);
 		private JButton exitButton = new JButton(exitButtonBasicImage);
@@ -225,15 +220,16 @@ public class OrderSystem extends JFrame {
 				public void mouseEntered(MouseEvent e) {
 					reserveButton.setIcon(reserveButtonEnteredImage);
 				}
-
 				@Override
 				public void mouseExited(MouseEvent e) {
 					reserveButton.setIcon(reserveButtonBasicImage);
 				}
-
 				@Override
 				public void mousePressed(MouseEvent e) { // 노래신청 버튼을 누르면
+					String name=trackList.get(nowSelected).getListMusic();
 					
+					JOptionPane.showMessageDialog(null,"노래 신청이 완료되었습니다.","Message",JOptionPane.INFORMATION_MESSAGE);
+					ChangePanel("Intro");
 				}
 			});
 			add(reserveButton);
@@ -271,10 +267,10 @@ public class OrderSystem extends JFrame {
 			this.repaint();
 		}
 		public void selectTrack(int nowSelected) {
-			if (selectedMusic != null) // 노래가 실행되고 있다면
-				selectedMusic.close(); // 실행중인 노래 중지
+			//if (selectedMusic != null) // 노래가 실행되고 있다면
+				//selectedMusic.close(); // 실행중인 노래 중지
 			selectedImage = new ImageIcon(Main.class.getResource("../images/" + trackList.get(nowSelected).getListImage()))
-					.getImage();
+				.getImage();
 			selectedMusic = new Music(trackList.get(nowSelected).getListMusic(), trackList, true);
 		}
 		public void selectLeft() {
@@ -293,8 +289,6 @@ public class OrderSystem extends JFrame {
 			selectTrack(nowSelected);
 		}
 	}
-	
-	
 	
 	class OrderScreenPanel extends JPanel {			//주문 화면 판넬
 		private Image background = new ImageIcon(Main.class.getResource("../images/white.png")).getImage();
@@ -331,7 +325,7 @@ public class OrderSystem extends JFrame {
 			add(exitButton);
 			add(menuBar);
 			MenuBar(menuBar, exitButton);
-			Btn_coffee1.setBounds(10, 40, 185, 177); /// setBounds(x좌표, y좌표, xy크기)
+			Btn_coffee1.setBounds(10, 40, 185, 177); /// setBounds(x좌표, y좌표, x,y크기)
 			Btn_coffee1.setBorderPainted(false);
 			Btn_coffee1.setContentAreaFilled(false);
 			Btn_coffee1.setFocusPainted(false);
