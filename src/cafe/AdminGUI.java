@@ -85,40 +85,39 @@ public class AdminGUI extends JFrame {
 		btnLogin = new JButton("로그인");
 		pDbLogin.add(btnLogin);
 
+		// ================= 하단 버튼 패널 ==================
+		pSouth = new JPanel();
+		getContentPane().add(pSouth, BorderLayout.SOUTH);
+	
+		JButton btnInsert = new JButton("관리자 추가");
+		JButton btnSelect = new JButton("관리자 목록");
+		JButton btnUpdate = new JButton("관리자 수정");
+		JButton btnDelete = new JButton("관리자 삭제");
+		JButton btnTotal=new JButton("매출 관리");
+		JButton btnMenuList=new JButton("주문 신청 목록");
+		JButton btnMusicList=new JButton("노래 신청 목록");
+		
+		pSouth.add(btnInsert);
+		pSouth.add(btnSelect);
+		pSouth.add(btnUpdate);
+		pSouth.add(btnDelete);
+		pSouth.add(btnTotal);
+		pSouth.add(btnMenuList);
+		pSouth.add(btnMusicList);
+		
+		btnMusicList.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				//노래 신청 목록 버튼을 눌렀을 때
+				
+			}
+		});
 		// 로그인 버튼 이벤트 처리
 		btnLogin.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dbLogin();
-				// ================= 하단 버튼 패널 ==================
-				pSouth = new JPanel();
-				getContentPane().add(pSouth, BorderLayout.SOUTH);
-
 			
-				JButton btnInsert = new JButton("관리자 추가");
-				JButton btnSelect = new JButton("관리자 목록");
-				JButton btnUpdate = new JButton("관리자 수정");
-				JButton btnDelete = new JButton("관리자 삭제");
-				JButton btnTotal=new JButton("매출 관리");
-				JButton btnMenuList=new JButton("주문 신청 목록");
-				JButton btnMusicList=new JButton("노래 신청 목록");
-				
-				btnMusicList.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mousePressed(MouseEvent e) {
-						//노래 신청 목록 버튼을 눌렀을 때
-						
-					}
-				});
-				
-				pSouth.add(btnInsert);
-				pSouth.add(btnSelect);
-				pSouth.add(btnUpdate);
-				pSouth.add(btnDelete);
-				pSouth.add(btnTotal);
-				pSouth.add(btnMenuList);
-				pSouth.add(btnMusicList);
-				
 				// 버튼 세 개 구별하는 리스너
 				ActionListener btnListener = new ActionListener() {
 
