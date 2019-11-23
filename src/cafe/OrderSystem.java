@@ -18,13 +18,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import cafe.AdminGUI;
 
 @SuppressWarnings("serial")
 public class OrderSystem extends JFrame {
 	private Image screenImage; // 더블 버퍼링을 위해서 전체 화면에 대한
 	private Graphics screenGraphic; // 이미지를 담는 두 인스턴스
 
+	private ImageIcon breaktime = new ImageIcon(Main.class.getResource("../images/breaktime.png"));
 	private ImageIcon exitButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/exitButtonEntered.png"));
 	private ImageIcon exitButtonBasicImage = new ImageIcon(Main.class.getResource("../images/exitButtonBasic.png"));
 	private ImageIcon menuBarImage = new ImageIcon(Main.class.getResource("../images/menuBar.png"));
@@ -38,9 +38,10 @@ public class OrderSystem extends JFrame {
 	ArrayList<Track> trackList = new ArrayList<Track>();
 	private int n;
 	private Music introMusic;
-
+	private IntroScreenPanel IntroPanel = null;
+	private SongScreenPanel SongPanel = null;
+	private OrderScreenPanel OrderPanel = null;
 	private CardLayout cards = new CardLayout();
-
 	public OrderSystem(CafeSystem CS) {
 		CafeSystem cafesystem = CS;
 		trackList.add(new Track("parisImage.png", "Lauv - Paris In The Rain.mp3"));
@@ -51,9 +52,12 @@ public class OrderSystem extends JFrame {
 		setSize(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT); // 프로그램 창 설정
 		Container c= getContentPane();
 		c.setLayout(cards);
-		c.add("Intro", new IntroScreenPanel());
-		c.add("Song", new SongScreenPanel());	
-		c.add("Order", new OrderScreenPanel());
+		IntroPanel = new IntroScreenPanel();
+		SongPanel = new SongScreenPanel();
+		OrderPanel = new OrderScreenPanel();
+		c.add("Intro", IntroPanel);
+		c.add("Song", SongPanel);	
+		c.add("Order", OrderPanel);
 		
 		setResizable(false); // 프로그램 너비,높이 사용자가 못 움직이게 고정
 		setLocationRelativeTo(null); // 프로그램이 정중앙에 뜸
@@ -80,12 +84,21 @@ public class OrderSystem extends JFrame {
 		private JLabel menuBar = new JLabel(menuBarImage);
 		private JButton exitButton = new JButton(exitButtonBasicImage);
 		
+		private JLabel breaktimeLB = null;
 		public IntroScreenPanel() {			//시작 화면 판넬
+			breaktime = new ImageIcon(breaktime.getImage().getScaledInstance(600, 600, Image.SCALE_SMOOTH));
 			setUndecorated(true);	// 기존 메뉴바를 감춰줌
 			setLayout(null);
+			
+			breaktimeLB = new JLabel(breaktime); 	//일시정지 라벨
+			breaktimeLB.setBounds(340, 60, 600, 600);
+			breaktimeLB.setVisible(false);
+			add(breaktimeLB);
+			
 			add(exitButton);
 			add(menuBar);
 			MenuBar(menuBar, exitButton);
+			
 			startButton.setBounds(100, 300, 400, 100);
 			startButton.setBorderPainted(false);
 			startButton.setContentAreaFilled(false);
@@ -291,41 +304,88 @@ public class OrderSystem extends JFrame {
 	}
 	
 	class OrderScreenPanel extends JPanel {			//주문 화면 판넬
+		///
+		/// 이미지 선언
+		///
 		private Image background = new ImageIcon(Main.class.getResource("../images/white.png")).getImage();
 		private ImageIcon backButtonImage = new ImageIcon(Main.class.getResource("../images/backButton.png"));
-		
 		private ImageIcon Img_coffee1 = new ImageIcon(Main.class.getResource("../images/img_coffee1.png"));
 		private ImageIcon Img_coffee2 = new ImageIcon(Main.class.getResource("../images/img_coffee2.png"));
 		private ImageIcon Img_coffee3 = new ImageIcon(Main.class.getResource("../images/img_coffee3.png"));
 		private ImageIcon Img_coffee4 = new ImageIcon(Main.class.getResource("../images/img_coffee4.png"));
 		private ImageIcon Img_coffee5 = new ImageIcon(Main.class.getResource("../images/img_coffee5.png"));
-		private ImageIcon Img_Plus = new ImageIcon(Main.class.getResource("../images/Plus.png"));
+		private ImageIcon Img_menu5 = new ImageIcon(Main.class.getResource("../images/img_menu5.png"));
 		private ImageIcon Img_OrderButton = new ImageIcon(Main.class.getResource("../images/OrderButton.jpg"));
 		private ImageIcon Img_bar = new ImageIcon(Main.class.getResource("../images/bar.png"));
-		
+
+		///
+		/// 버튼 선언
+		///
 		private JButton backButton = new JButton(backButtonImage);
 		private JButton Btn_coffee1 = new JButton(Img_coffee1);
 		private JButton Btn_coffee2 = new JButton(Img_coffee2);
 		private JButton Btn_coffee3 = new JButton(Img_coffee3);
 		private JButton Btn_coffee4 = new JButton(Img_coffee4);
 		private JButton Btn_coffee5 = new JButton(Img_coffee5);
-		private JButton Btn_Plus = new JButton(Img_Plus);
+		private JButton Btn_menu5 = new JButton(Img_menu5);
 		private JButton Btn_OrderButton = new JButton(Img_OrderButton);
+		private JButton exitButton = new JButton(exitButtonBasicImage);
 
+		///
+		/// 라벨 선언
+		///
 		private JLabel lbl_order = new JLabel("주문금액");
 		private JLabel lbl_won = new JLabel("원");
-		private JLabel lbl_price = new JLabel("0");
+		private JLabel lbl_price = new JLabel("0");		// 주문 금액 라벨
 		private JLabel lbl_bar = new JLabel(Img_bar);
-		
 		private JLabel menuBar = new JLabel(menuBarImage);
-		private JButton exitButton = new JButton(exitButtonBasicImage);
+		private JLabel[] lbl_priceview;		// 이미지 밑 가격 표시 라벨 집합
+		private JLabel[] lbl_view;		// 선택한 메뉴 표시 라벨
+		
+		Menu[] m;
+
 		public OrderScreenPanel() {
+			///
+			/// 메뉴 객체 배열 생성 및 가격, 이름 설정
+			///
+			m = new Menu[6];
+			for(int i = 0; i < 6; i++)
+				m[i] = new Menu();
+			
+			m[0].setPrice(1500);
+			m[1].setPrice(1500);
+			m[2].setPrice(1000);
+			m[3].setPrice(2000);
+			m[4].setPrice(2500);
+			m[5].setPrice(4000);
+			m[0].setName("Americano Hot");
+			m[1].setName("Americano Iced");
+			m[2].setName("Espresso");
+			m[3].setName("Affogato");
+			m[4].setName("Caramel Macchiato");
+			m[5].setName("Orange Cake");
+			
+			///
+			/// 메뉴 이미지 밑 가격 라벨 가격 설정
+			///
+			lbl_priceview = new JLabel[6];
+			for(int i = 0; i < 6; i++)
+				lbl_priceview[i] = new JLabel(Integer.toString(m[i].getPrice()) + "원");
+			
+			lbl_view = new JLabel[6];
+			for(int i = 0; i < 6; i++)
+				lbl_view[i] = new JLabel("");
+			
 			setUndecorated(true);	// 기존 메뉴바를 감춰줌
 			setLayout(null);
 			add(exitButton);
 			add(menuBar);
 			MenuBar(menuBar, exitButton);
-			Btn_coffee1.setBounds(10, 40, 185, 177); /// setBounds(x좌표, y좌표, x,y크기)
+			
+			///
+			/// 첫번째 메뉴 버튼 크기, 위치 및 이벤트 설정
+			///
+			Btn_coffee1.setBounds(100, 90, 185, 177); /// setBounds(x좌표, y좌표, x,y크기)
 			Btn_coffee1.setBorderPainted(false);
 			Btn_coffee1.setContentAreaFilled(false);
 			Btn_coffee1.setFocusPainted(false);
@@ -334,11 +394,41 @@ public class OrderSystem extends JFrame {
 				public void mouseEntered(MouseEvent e) {
 					Btn_coffee1.setCursor(new Cursor(Cursor.HAND_CURSOR)); // 마우스가 올라갔을 때 손모양으로 변경
 				}
+				public void mousePressed(MouseEvent e) {
+					int i = 0;
+					int price = Integer.parseInt(lbl_price.getText());
+					price += m[0].getPrice();
+					lbl_price.setText(Integer.toString(price));
+					m[0].setCount(m[0].getCount() + 1);
+					
+					String text = m[0].getName() + " x " +  Integer.toString(m[0].getCount() - 1);
+					for(i = 0; i < 6; i++) {
+						if( lbl_view[i].getText().contentEquals("") ) {
+							lbl_view[i].setText(m[0].getName() + " x " + Integer.toString(m[0].getCount()));
+							break;
+						}
+						else if ( lbl_view[i].getText().contentEquals(text)) {
+							lbl_view[i].setText(m[0].getName() + " x " + Integer.toString(m[0].getCount()));
+							break;
+						}
+					}
+				}
 			});
 			add(Btn_coffee1);
 			Btn_coffee1.setVisible(true);
+			
+			///
+			/// 첫번째 메뉴 이미지 버튼 밑 가격 라벨 크기, 위치 설정
+			///
+			lbl_priceview[0].setVisible(true);
+			lbl_priceview[0].setBounds(155, 280, 73, 36);
+			lbl_priceview[0].setFont(new Font("Gothic", Font.BOLD, 20));
+			add(lbl_priceview[0]);
 
-			Btn_coffee2.setBounds(310, 40, 185, 190);
+			///
+			/// 두번째 메뉴 버튼 크기, 위치 및 이벤트 설정
+			///
+			Btn_coffee2.setBounds(400, 90, 185, 190);
 			Btn_coffee2.setBorderPainted(false);
 			Btn_coffee2.setContentAreaFilled(false);
 			Btn_coffee2.setFocusPainted(false);
@@ -347,11 +437,41 @@ public class OrderSystem extends JFrame {
 				public void mouseEntered(MouseEvent e) {
 					Btn_coffee2.setCursor(new Cursor(Cursor.HAND_CURSOR)); // 마우스가 올라갔을 때 손모양으로 변경
 				}
+				public void mousePressed(MouseEvent e) {
+					int i = 0;
+					int price = Integer.parseInt(lbl_price.getText());
+					price += m[1].getPrice();
+					lbl_price.setText(Integer.toString(price));
+					m[1].setCount(m[1].getCount() + 1);
+					
+					String text = m[1].getName() + " x " +  Integer.toString(m[1].getCount() - 1);
+					for(i = 0; i < 6; i++) {
+						if( lbl_view[i].getText().contentEquals("") ) {
+							lbl_view[i].setText(m[1].getName() + " x " + Integer.toString(m[1].getCount()));
+							break;
+						}
+						else if ( lbl_view[i].getText().contentEquals(text)) {
+							lbl_view[i].setText(m[1].getName() + " x " + Integer.toString(m[1].getCount()));
+							break;
+						}
+					}
+				}
 			});
 			add(Btn_coffee2);
 			Btn_coffee2.setVisible(true);
+			
+			///
+			/// 두번째 메뉴 이미지 버튼 밑 가격 라벨 크기, 위치 설정
+			///
+			lbl_priceview[1].setVisible(true);
+			lbl_priceview[1].setBounds(455, 280, 73, 36);
+			lbl_priceview[1].setFont(new Font("Gothic", Font.BOLD, 20));
+			add(lbl_priceview[1]);
 
-			Btn_coffee3.setBounds(610, 40, 185, 177);
+			///
+			/// 세번째 메뉴 버튼 크기, 위치 및 이벤트 설정
+			///
+			Btn_coffee3.setBounds(700, 110, 185, 177);
 			Btn_coffee3.setBorderPainted(false);
 			Btn_coffee3.setContentAreaFilled(false);
 			Btn_coffee3.setFocusPainted(false);
@@ -360,11 +480,42 @@ public class OrderSystem extends JFrame {
 				public void mouseEntered(MouseEvent e) {
 					Btn_coffee3.setCursor(new Cursor(Cursor.HAND_CURSOR)); // 마우스가 올라갔을 때 손모양으로 변경
 				}
+				public void mousePressed(MouseEvent e) {
+					int i = 0;
+					int price = Integer.parseInt(lbl_price.getText());
+					price += m[2].getPrice();
+					lbl_price.setText(Integer.toString(price));
+					m[2].setCount(m[2].getCount() + 1);
+					
+					String text = m[2].getName() + " x " +  Integer.toString(m[2].getCount() - 1);
+					for(i = 0; i < 6; i++) {
+						if( lbl_view[i].getText().contentEquals("") ) {
+							lbl_view[i].setText(m[2].getName() + " x " + Integer.toString(m[2].getCount()));
+							break;
+						}
+						else if ( lbl_view[i].getText().contentEquals(text)) {
+							lbl_view[i].setText(m[2].getName() + " x " + Integer.toString(m[2].getCount()));
+							break;
+						}
+					}
+				}
 			});
 			add(Btn_coffee3);
 			Btn_coffee3.setVisible(true);
+			
+			///
+			/// 세번째 메뉴 이미지 버튼 밑 가격 라벨 크기, 위치 설정
+			///
+			lbl_priceview[2].setVisible(true);
+			lbl_priceview[2].setBounds(755, 280, 73, 36);
+			lbl_priceview[2].setFont(new Font("Gothic", Font.BOLD, 20));
+			add(lbl_priceview[2]);
 
-			Btn_coffee4.setBounds(10, 340, 185, 177);
+
+			///
+			/// 네번째 메뉴 버튼 크기, 위치 및 이벤트 설정
+			///
+			Btn_coffee4.setBounds(100, 420, 185, 177);
 			Btn_coffee4.setBorderPainted(false);
 			Btn_coffee4.setContentAreaFilled(false);
 			Btn_coffee4.setFocusPainted(false);
@@ -373,11 +524,41 @@ public class OrderSystem extends JFrame {
 				public void mouseEntered(MouseEvent e) {
 					Btn_coffee4.setCursor(new Cursor(Cursor.HAND_CURSOR)); // 마우스가 올라갔을 때 손모양으로 변경
 				}
+				public void mousePressed(MouseEvent e) {
+					int i = 0;
+					int price = Integer.parseInt(lbl_price.getText());
+					price += m[3].getPrice();
+					lbl_price.setText(Integer.toString(price));
+					m[3].setCount(m[3].getCount() + 1);
+					
+					String text = m[3].getName() + " x " +  Integer.toString(m[3].getCount() - 1);
+					for(i = 0; i < 6; i++) {
+						if( lbl_view[i].getText().contentEquals("") ) {
+							lbl_view[i].setText(m[3].getName() + " x " + Integer.toString(m[3].getCount()));
+							break;
+						}
+						else if ( lbl_view[i].getText().contentEquals(text)) {
+							lbl_view[i].setText(m[3].getName() + " x " + Integer.toString(m[3].getCount()));
+							break;
+						}
+					}
+				}
 			});
 			add(Btn_coffee4);
 			Btn_coffee4.setVisible(true);
+			
+			///
+			/// 네번째 메뉴 이미지 버튼 밑 가격 라벨 크기, 위치 설정
+			///
+			lbl_priceview[3].setVisible(true);
+			lbl_priceview[3].setBounds(155, 600, 73, 36);
+			lbl_priceview[3].setFont(new Font("Gothic", Font.BOLD, 20));
+			add(lbl_priceview[3]);
 
-			Btn_coffee5.setBounds(310, 340, 185, 190);
+			///
+			/// 다섯번째 메뉴 버튼 크기, 위치 및 이벤트 설정
+			///
+			Btn_coffee5.setBounds(400, 390, 185, 190);
 			Btn_coffee5.setBorderPainted(false);
 			Btn_coffee5.setContentAreaFilled(false);
 			Btn_coffee5.setFocusPainted(false);
@@ -386,24 +567,103 @@ public class OrderSystem extends JFrame {
 				public void mouseEntered(MouseEvent e) {
 					Btn_coffee5.setCursor(new Cursor(Cursor.HAND_CURSOR)); // 마우스가 올라갔을 때 손모양으로 변경
 				}
+				public void mousePressed(MouseEvent e) {
+					int i = 0;
+					int price = Integer.parseInt(lbl_price.getText());
+					price += m[4].getPrice();
+					lbl_price.setText(Integer.toString(price));
+					m[4].setCount(m[4].getCount() + 1);
+					
+					String text = m[4].getName() + " x " +  Integer.toString(m[4].getCount() - 1);
+					for(i = 0; i < 6; i++) {
+						if( lbl_view[i].getText().contentEquals("") ) {
+							lbl_view[i].setText(m[4].getName() + " x " + Integer.toString(m[4].getCount()));
+							break;
+						}
+						else if ( lbl_view[i].getText().contentEquals(text)) {
+							lbl_view[i].setText(m[4].getName() + " x " + Integer.toString(m[4].getCount()));
+							break;
+						}
+					}
+				}
 			});
 			add(Btn_coffee5);
 			Btn_coffee5.setVisible(true);
+			
+			///
+			/// 다섯번째 메뉴 이미지 버튼 밑 가격 라벨 크기, 위치 설정
+			///
+			lbl_priceview[4].setVisible(true);
+			lbl_priceview[4].setBounds(455, 600, 73, 36);
+			lbl_priceview[4].setFont(new Font("Gothic", Font.BOLD, 20));
+			add(lbl_priceview[4]);
+			
+			///
+			/// 여섯번째 메뉴 버튼 크기, 위치 및 이벤트 설정
+			///
+			Btn_menu5.setBounds(700, 420, 210, 170);
+			Btn_menu5.setBorderPainted(false);
+			Btn_menu5.setContentAreaFilled(false);
+			Btn_menu5.setFocusPainted(false);
+			Btn_menu5.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					Btn_menu5.setCursor(new Cursor(Cursor.HAND_CURSOR)); // 마우스가 올라갔을 때 손모양으로 변경
+				}
+				public void mousePressed(MouseEvent e) {
+					int i = 0;
+					int price = Integer.parseInt(lbl_price.getText());
+					price += m[5].getPrice();
+					lbl_price.setText(Integer.toString(price));
+					m[5].setCount(m[5].getCount() + 1);
+					
+					String text = m[5].getName() + " x " +  Integer.toString(m[5].getCount() - 1);
+					for(i = 0; i < 6; i++) {
+						if( lbl_view[i].getText().contentEquals("") ) {
+							lbl_view[i].setText(m[5].getName() + " x " + Integer.toString(m[5].getCount()));
+							break;
+						}
+						else if ( lbl_view[i].getText().contentEquals(text)) {
+							lbl_view[i].setText(m[5].getName() + " x " + Integer.toString(m[5].getCount()));
+							break;
+						}
+					}
+				}
+			});
+			add(Btn_menu5);
+			Btn_menu5.setVisible(true);
+			
+			///
+			/// 여섯번째 메뉴 이미지 버튼 밑 가격 라벨 크기, 위치 설정
+			///
+			lbl_priceview[5].setVisible(true);
+			lbl_priceview[5].setBounds(775, 600, 73, 36);
+			lbl_priceview[5].setFont(new Font("Gothic", Font.BOLD, 20));
+			add(lbl_priceview[5]);
 
-			Btn_Plus.setBounds(0, 80, 185, 177);
-			Btn_Plus.setBorderPainted(false);
-			Btn_Plus.setContentAreaFilled(false);
-			Btn_Plus.setFocusPainted(false);
-			add(Btn_Plus);
-			Btn_Plus.setVisible(true);
-
-			Btn_OrderButton.setBounds(950, 580, 397, 127);
+			///
+			/// OrderNow 버튼
+			///
+			Btn_OrderButton.setBounds(1030, 580, 209, 77);
 			Btn_OrderButton.setBorderPainted(false);
 			Btn_OrderButton.setContentAreaFilled(false);
 			Btn_OrderButton.setFocusPainted(false);
+			Btn_OrderButton.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					Btn_OrderButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // 마우스가 올라갔을 때 손모양으로 변경
+				}
+				public void mousePressed(MouseEvent e) {
+					if ( lbl_price.getText() == "0")		// 메뉴를 담지 않았으면 메시지 박스 Show
+						JOptionPane.showMessageDialog(null, "메뉴를 선택해주세요", "오류", JOptionPane.INFORMATION_MESSAGE);
+				}
+			});
 			add(Btn_OrderButton);
 			Btn_OrderButton.setVisible(true);
 
+			///
+			/// 뒤로가기 버튼
+			///
 			backButton.setVisible(true);
 			backButton.setBounds(1150, 40, 120, 80);
 			backButton.setBorderPainted(false); // 버튼 테두리 설정
@@ -445,7 +705,17 @@ public class OrderSystem extends JFrame {
 			lbl_bar.setVisible(true);
 			lbl_bar.setBounds(1000, 25, 20, 700);
 			add(lbl_bar);
+			
+			int y = 160;
+			for(int i = 0; i < 6; i++) {
+				lbl_view[i].setVisible(true);
+				lbl_view[i].setBounds(1030, y, 243, 47);
+				lbl_view[i].setFont(new Font("Gothic", Font.BOLD, 20));
+				add(lbl_view[i]);
+				y += 47;
+			}
 		}
+		
 		public void paintComponent(Graphics g) { // 주문 화면 배경
 			g.drawImage(background, 0, 0, null);
 			setOpaque(false);
@@ -490,6 +760,17 @@ public class OrderSystem extends JFrame {
 				setVisible(false);
 			}
 		});
+	}
+	public void OrderSystemEnable(int n) {
+		if(n==0) {
+			ChangePanel("Intro");
+			setEnabled(false);
+			IntroPanel.breaktimeLB.setVisible(true);
+		}
+		else if(n==1) {
+			setEnabled(true);
+			IntroPanel.breaktimeLB.setVisible(false);
+		}
 	}
 	public void ChangePanel(String S) {
 		cards.show(this.getContentPane(), S);
