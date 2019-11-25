@@ -358,12 +358,12 @@ public class OrderSystem extends JFrame {
 			m[3].setPrice(2000);
 			m[4].setPrice(2500);
 			m[5].setPrice(4000);
-			m[0].setName("Americano Hot");
-			m[1].setName("Americano Iced");
+			m[0].setName("Americano(Hot)");
+			m[1].setName("Americano(Iced)");
 			m[2].setName("Espresso");
 			m[3].setName("Affogato");
-			m[4].setName("Caramel Macchiato");
-			m[5].setName("Orange Cake");
+			m[4].setName("Caramel_Macchiato");
+			m[5].setName("Orange_Cake");
 			
 			///
 			/// 메뉴 이미지 밑 가격 라벨 가격 설정
@@ -714,6 +714,165 @@ public class OrderSystem extends JFrame {
 				add(lbl_view[i]);
 				y += 47;
 			}
+			
+			lbl_view[0].addMouseListener(new MouseAdapter() {
+				public void mouseEntered(MouseEvent e) {
+					lbl_view[0].setCursor(new Cursor(Cursor.HAND_CURSOR)); // 마우스가 올라갔을 때 손모양으로 변경
+				}
+				public void mousePressed(MouseEvent e) {
+					if (lbl_view[0].getText() == "")
+						return;
+					else {
+						String text = lbl_view[0].getText();
+						String[] text2 = text.split(" ");
+						for (int i = 0; i < 6; i++) {
+							if ( text2[0].equals(m[i].getName())) {
+								m[i].setCount(m[i].getCount()-1);
+								lbl_price.setText(Integer.toString(Integer.parseInt(lbl_price.getText()) - m[i].getPrice()));
+								if ( m[i].getCount() == 0) {
+									lbl_view[0].setText(lbl_view[1].getText());
+									lbl_view[1].setText(lbl_view[2].getText());
+									lbl_view[2].setText(lbl_view[3].getText());
+									lbl_view[3].setText(lbl_view[4].getText());
+									lbl_view[4].setText(lbl_view[5].getText());
+									lbl_view[5].setText("");
+								}
+								else
+									lbl_view[0].setText(m[i].getName() + " x " + m[i].getCount());
+							}
+						}
+					}
+				}
+			});
+			lbl_view[1].addMouseListener(new MouseAdapter() {
+				public void mouseEntered(MouseEvent e) {
+					lbl_view[1].setCursor(new Cursor(Cursor.HAND_CURSOR)); // 마우스가 올라갔을 때 손모양으로 변경
+				}
+				public void mousePressed(MouseEvent e) {
+					if (lbl_view[1].getText() == "")
+						return;
+					else {
+						String text = lbl_view[1].getText();
+						String[] text2 = text.split(" ");
+						for (int i = 0; i < 6; i++) {
+							if ( text2[0].equals(m[i].getName())) {
+								m[i].setCount(m[i].getCount()-1);
+								lbl_price.setText(Integer.toString(Integer.parseInt(lbl_price.getText()) - m[i].getPrice()));
+								if ( m[i].getCount() == 0) {
+									lbl_view[1].setText(lbl_view[2].getText());
+									lbl_view[2].setText(lbl_view[3].getText());
+									lbl_view[3].setText(lbl_view[4].getText());
+									lbl_view[4].setText(lbl_view[5].getText());
+									lbl_view[5].setText("");
+								}
+								else
+									lbl_view[1].setText(m[i].getName() + " x " + m[i].getCount());
+							}
+						}
+					}
+				}
+			});
+			lbl_view[2].addMouseListener(new MouseAdapter() {
+				public void mouseEntered(MouseEvent e) {
+					lbl_view[2].setCursor(new Cursor(Cursor.HAND_CURSOR)); // 마우스가 올라갔을 때 손모양으로 변경
+				}
+				public void mousePressed(MouseEvent e) {
+					if (lbl_view[2].getText() == "")
+						return;
+					else {
+						String text = lbl_view[2].getText();
+						String[] text2 = text.split(" ");
+						for (int i = 0; i < 6; i++) {
+							if ( text2[0].equals(m[i].getName())) {
+								m[i].setCount(m[i].getCount()-1);
+								lbl_price.setText(Integer.toString(Integer.parseInt(lbl_price.getText()) - m[i].getPrice()));
+								if ( m[i].getCount() == 0) {
+									lbl_view[2].setText(lbl_view[3].getText());
+									lbl_view[3].setText(lbl_view[4].getText());
+									lbl_view[4].setText(lbl_view[5].getText());
+									lbl_view[5].setText("");
+								}
+								else
+									lbl_view[2].setText(m[i].getName() + " x " + m[i].getCount());
+							}
+						}
+					}
+				}
+			});
+			lbl_view[3].addMouseListener(new MouseAdapter() {
+				public void mouseEntered(MouseEvent e) {
+					lbl_view[3].setCursor(new Cursor(Cursor.HAND_CURSOR)); // 마우스가 올라갔을 때 손모양으로 변경
+				}
+				public void mousePressed(MouseEvent e) {
+					if (lbl_view[3].getText() == "")
+						return;
+					else {
+						String text = lbl_view[3].getText();
+						String[] text2 = text.split(" ");
+						for (int i = 0; i < 6; i++) {
+							if ( text2[0].equals(m[i].getName())) {
+								m[i].setCount(m[i].getCount()-1);
+								lbl_price.setText(Integer.toString(Integer.parseInt(lbl_price.getText()) - m[i].getPrice()));
+								if ( m[i].getCount() == 0) {
+									lbl_view[3].setText(lbl_view[4].getText());
+									lbl_view[4].setText(lbl_view[5].getText());
+									lbl_view[5].setText("");
+								}
+								else
+									lbl_view[3].setText(m[i].getName() + " x " + m[i].getCount());
+							}
+						}
+					}
+				}
+			});
+			lbl_view[4].addMouseListener(new MouseAdapter() {
+				public void mouseEntered(MouseEvent e) {
+					lbl_view[4].setCursor(new Cursor(Cursor.HAND_CURSOR)); // 마우스가 올라갔을 때 손모양으로 변경
+				}
+				public void mousePressed(MouseEvent e) {
+					if (lbl_view[4].getText() == "")
+						return;
+					else {
+						String text = lbl_view[4].getText();
+						String[] text2 = text.split(" ");
+						for (int i = 0; i < 6; i++) {
+							if ( text2[0].equals(m[i].getName())) {
+								m[i].setCount(m[i].getCount()-1);
+								lbl_price.setText(Integer.toString(Integer.parseInt(lbl_price.getText()) - m[i].getPrice()));
+								if ( m[i].getCount() == 0) {
+									lbl_view[4].setText(lbl_view[5].getText());
+									lbl_view[5].setText("");
+								}
+								else
+									lbl_view[4].setText(m[i].getName() + " x " + m[i].getCount());
+							}
+						}
+					}
+				}
+			});
+			lbl_view[5].addMouseListener(new MouseAdapter() {
+				public void mouseEntered(MouseEvent e) {
+					lbl_view[5].setCursor(new Cursor(Cursor.HAND_CURSOR)); // 마우스가 올라갔을 때 손모양으로 변경
+				}
+				public void mousePressed(MouseEvent e) {
+					if (lbl_view[5].getText() == "")
+						return;
+					else {
+						String text = lbl_view[5].getText();
+						String[] text2 = text.split(" ");
+						for (int i = 0; i < 6; i++) {
+							if ( text2[0].equals(m[i].getName())) {
+								m[i].setCount(m[i].getCount()-1);
+								lbl_price.setText(Integer.toString(Integer.parseInt(lbl_price.getText()) - m[i].getPrice()));
+								if ( m[i].getCount() == 0)
+									lbl_view[5].setText("");
+								else
+									lbl_view[5].setText(m[i].getName() + " x " + m[i].getCount());
+							}
+						}
+					}
+				}
+			});
 		}
 		
 		public void paintComponent(Graphics g) { // 주문 화면 배경
