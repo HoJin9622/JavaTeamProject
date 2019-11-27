@@ -36,8 +36,6 @@ public class AdminGUI extends JFrame {
 	JButton btnUpdate;
 	JButton btnDelete;
 	JButton btnTotal;
-	JButton btnMenuList;
-	JButton btnMusicList;
 	boolean isLogin; // 로그인 여부 표시할 변수
 
 	public AdminGUI() {
@@ -105,30 +103,19 @@ public class AdminGUI extends JFrame {
 		btnUpdate = new JButton("관리자 수정");
 		btnDelete = new JButton("관리자 삭제");
 		btnTotal=new JButton("매출 관리");
-		btnMenuList=new JButton("주문 신청 목록");
-		btnMusicList=new JButton("노래 신청 목록");
 		
 		pSouth.add(btnInsert);
 		pSouth.add(btnSelect);
 		pSouth.add(btnUpdate);
 		pSouth.add(btnDelete);
 		pSouth.add(btnTotal);
-		pSouth.add(btnMenuList);
-		pSouth.add(btnMusicList);
 		
 		btnInsert.setVisible(false);
 		btnSelect.setVisible(false);
 		btnUpdate.setVisible(false);
 		btnDelete.setVisible(false);
+		btnTotal.setVisible(false);
 		
-		
-		btnMusicList.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				//노래 신청 목록 버튼을 눌렀을 때
-				
-			}
-		});
 		// 로그인 버튼 이벤트 처리
 		btnLogin.addActionListener(new ActionListener() {
 			@Override
@@ -293,10 +280,15 @@ public class AdminGUI extends JFrame {
 			tfDbUsername.setEditable(false);
 			pfDbPassword.setEditable(false);
 			btnLogin.setText("로그아웃");
-			btnInsert.setVisible(true);
-			btnSelect.setVisible(true);
-			btnUpdate.setVisible(true);
-			btnDelete.setVisible(true);
+			if(username.equals("admin")) {
+				btnInsert.setVisible(true);
+				btnSelect.setVisible(true);
+				btnUpdate.setVisible(true);
+				btnDelete.setVisible(true);
+				btnTotal.setVisible(true);
+			}else {
+				btnTotal.setVisible(true);
+			}
 			isLogin = true; // 로그인 상태로 변경
 		} else { // 로그인 상태일 경우(로그아웃 버튼을 클릭했을 경우)
 			tfDbIp.setEditable(true);
@@ -309,6 +301,7 @@ public class AdminGUI extends JFrame {
 			btnSelect.setVisible(false);
 			btnUpdate.setVisible(false);
 			btnDelete.setVisible(false);
+			btnTotal.setVisible(false);
 			isLogin = false; // 로그아웃 상태로 변경
 		}
 
