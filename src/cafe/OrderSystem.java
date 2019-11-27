@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import cafe.CafeSystem;
 
 @SuppressWarnings("serial")
 public class OrderSystem extends JFrame {
@@ -42,8 +43,9 @@ public class OrderSystem extends JFrame {
 	private SongScreenPanel SongPanel = null;
 	private OrderScreenPanel OrderPanel = null;
 	private CardLayout cards = new CardLayout();
+	CafeSystem cafesystem;
 	public OrderSystem(CafeSystem CS) {
-		CafeSystem cafesystem = CS;
+		cafesystem = CS;
 		trackList.add(new Track("parisImage.png", "Lauv - Paris In The Rain.mp3"));
 		trackList.add(new Track("boatImage.png", "George - Boat.mp3"));
 		trackList.add(new Track("olderImage.png", "Sasha Sloan - Older.mp3"));
@@ -654,8 +656,38 @@ public class OrderSystem extends JFrame {
 					Btn_OrderButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // 마우스가 올라갔을 때 손모양으로 변경
 				}
 				public void mousePressed(MouseEvent e) {
-					if ( lbl_price.getText() == "0")		// 메뉴를 담지 않았으면 메시지 박스 Show
+					if ( lbl_price.getText().equals("0"))		// 메뉴를 담지 않았으면 메시지 박스 Show
 						JOptionPane.showMessageDialog(null, "메뉴를 선택해주세요", "오류", JOptionPane.INFORMATION_MESSAGE);
+					else {
+						int result1 = JOptionPane.showConfirmDialog(null, "정말 결제하시겠습니까?", "결제", JOptionPane.YES_NO_OPTION);
+						if(result1 == JOptionPane.CLOSED_OPTION) { // 결제 취소
+							return;
+						}
+						else if(result1 == JOptionPane.YES_OPTION) {
+							int result2 = JOptionPane.showConfirmDialog(null, "포인트를 적립하시겠습니까?", "포인트 적립", JOptionPane.YES_NO_OPTION);
+							if(result2 == JOptionPane.CLOSED_OPTION) { // 포인트 적립X
+								JOptionPane.showMessageDialog(null, "결제 완료", " ", JOptionPane.INFORMATION_MESSAGE);
+								cafesystem.addorder(m);
+							}
+							else if(result2 == JOptionPane.YES_OPTION) { // 포인트 적립 O
+								String number;
+								while(true) {
+									number = JOptionPane.showInputDialog("전화번호를 입력해주세요( '-' 없이 번호만 입력)");
+									if(number.length() != 11)
+										JOptionPane.showMessageDialog(null, "11자리 번호만 입력해주세요", "오류", JOptionPane.INFORMATION_MESSAGE);
+									else
+										break;
+								}
+								
+							}
+							else { // 포인트 적립 X
+								cafesystem.addorder(m);
+							}
+						}
+						else { // 결제 취소
+							return;
+						}
+					}
 				}
 			});
 			add(Btn_OrderButton);

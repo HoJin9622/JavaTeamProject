@@ -31,6 +31,8 @@ import cafe.OrderSystem.OrderScreenPanel;
 import cafe.OrderSystem.SongScreenPanel;
 import cafe.AdminGUI;
 
+import cafe.Menu;
+
 public class CafeSystem extends JFrame {
 	private Image screenImage; // 더블 버퍼링을 위해서 전체 화면에 대한
 	private Graphics screenGraphic; // 이미지를 담는 두 인스턴스
@@ -307,6 +309,8 @@ public class CafeSystem extends JFrame {
 		OrderPanel.setBorder(new TitledBorder(new LineBorder((new Color(255,255,255,255)),3)));
 		OrderPanel.setBackground(new Color(255,255,255,122));
 		p.add(scroll);
+	}
+	public void addorder(Menu [] m) {
 	}
 	
 	public void ChangePanel(String S) {
