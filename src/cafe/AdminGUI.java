@@ -31,7 +31,13 @@ public class AdminGUI extends JFrame {
 	private JPanel pSouth;
 	private JPanel pWest;
 	JList<String> MusicList;
-	
+	JButton btnInsert;
+	JButton btnSelect;
+	JButton btnUpdate;
+	JButton btnDelete;
+	JButton btnTotal;
+	JButton btnMenuList;
+	JButton btnMusicList;
 	boolean isLogin; // 로그인 여부 표시할 변수
 
 	public AdminGUI() {
@@ -94,13 +100,13 @@ public class AdminGUI extends JFrame {
 		pSouth = new JPanel();
 		getContentPane().add(pSouth, BorderLayout.SOUTH);
 	
-		JButton btnInsert = new JButton("관리자 추가");
-		JButton btnSelect = new JButton("관리자 목록");
-		JButton btnUpdate = new JButton("관리자 수정");
-		JButton btnDelete = new JButton("관리자 삭제");
-		JButton btnTotal=new JButton("매출 관리");
-		JButton btnMenuList=new JButton("주문 신청 목록");
-		JButton btnMusicList=new JButton("노래 신청 목록");
+		btnInsert = new JButton("관리자 추가");
+		btnSelect = new JButton("관리자 목록");
+		btnUpdate = new JButton("관리자 수정");
+		btnDelete = new JButton("관리자 삭제");
+		btnTotal=new JButton("매출 관리");
+		btnMenuList=new JButton("주문 신청 목록");
+		btnMusicList=new JButton("노래 신청 목록");
 		
 		pSouth.add(btnInsert);
 		pSouth.add(btnSelect);
@@ -109,6 +115,12 @@ public class AdminGUI extends JFrame {
 		pSouth.add(btnTotal);
 		pSouth.add(btnMenuList);
 		pSouth.add(btnMusicList);
+		
+		btnInsert.setVisible(false);
+		btnSelect.setVisible(false);
+		btnUpdate.setVisible(false);
+		btnDelete.setVisible(false);
+		
 		
 		btnMusicList.addMouseListener(new MouseAdapter() {
 			@Override
@@ -281,7 +293,10 @@ public class AdminGUI extends JFrame {
 			tfDbUsername.setEditable(false);
 			pfDbPassword.setEditable(false);
 			btnLogin.setText("로그아웃");
-
+			btnInsert.setVisible(true);
+			btnSelect.setVisible(true);
+			btnUpdate.setVisible(true);
+			btnDelete.setVisible(true);
 			isLogin = true; // 로그인 상태로 변경
 		} else { // 로그인 상태일 경우(로그아웃 버튼을 클릭했을 경우)
 			tfDbIp.setEditable(true);
@@ -290,7 +305,10 @@ public class AdminGUI extends JFrame {
 			tfDbUsername.setText("");
 			pfDbPassword.setText("");
 			btnLogin.setText("로그인");
-
+			btnInsert.setVisible(false);
+			btnSelect.setVisible(false);
+			btnUpdate.setVisible(false);
+			btnDelete.setVisible(false);
 			isLogin = false; // 로그아웃 상태로 변경
 		}
 
