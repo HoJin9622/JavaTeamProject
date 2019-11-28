@@ -5,6 +5,10 @@ public class TotalDTO {
 	private String date; // 날짜
 	private double sum; // 총 매출액
 
+	public TotalDTO(double sum) {
+		this.sum=sum;
+	}
+	
 	public TotalDTO(int idx,String date,double sum) {
 		this.idx=idx;
 		this.sum = sum;

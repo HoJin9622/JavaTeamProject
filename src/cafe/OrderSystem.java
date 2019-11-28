@@ -18,7 +18,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import cafe.CafeSystem;
 
 @SuppressWarnings("serial")
 public class OrderSystem extends JFrame {
@@ -683,6 +682,8 @@ public class OrderSystem extends JFrame {
 							if (result2 == JOptionPane.CLOSED_OPTION) { // 포인트 적립X
 								JOptionPane.showMessageDialog(null, "결제 완료", " ", JOptionPane.INFORMATION_MESSAGE);
 								cafesystem.addorder(m);
+								TotalDTO dto=new TotalDTO(price);
+								
 								// new SlotMachineEx(); 
 							} else if (result2 == JOptionPane.YES_OPTION) { // 포인트 적립 O
 								String number;
