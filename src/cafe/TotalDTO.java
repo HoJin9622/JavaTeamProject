@@ -3,17 +3,18 @@ package cafe;
 public class TotalDTO {
 	private int idx;
 	private String date; // 날짜
-	private double sum; // 총 매출액
+	private int sum; // 총 매출액
 
-	public TotalDTO(double sum) {
-		this.sum=sum;
+	public TotalDTO(String date,int sum) {
+		this.date=date; this.sum=sum;
 	}
 	
-	public TotalDTO(int idx,String date,double sum) {
+	public TotalDTO(int idx,String date,int sum) {
 		this.idx=idx;
 		this.sum = sum;
 		this.date = date;
 	}
+
 
 	public int getIdx() {
 		return idx;
@@ -31,11 +32,11 @@ public class TotalDTO {
 		this.date = date;
 	}
 
-	public double getSum() {
+	public int getSum() {
 		return sum;
 	}
 
-	public void setSum(double sum) {
+	public void setSum(int sum) {
 		this.sum = sum;
 	}
 

@@ -361,10 +361,18 @@ public class OrderSystem extends JFrame {
 		private JLabel[] lbl_view; // 선택한 메뉴 표시 라벨
 		private int price;
 		
+		public int getPrice() {
+			return price;
+		}
+		public void setPrice(int price) {
+			this.price = price;
+		}
 		Menu[] m;
 
 		public OrderScreenPanel() {
 			price = Integer.parseInt(lbl_price.getText());
+			
+			
 			///
 			/// 메뉴 객체 배열 생성 및 가격, 이름 설정
 			///
@@ -682,7 +690,6 @@ public class OrderSystem extends JFrame {
 							if (result2 == JOptionPane.CLOSED_OPTION) { // 포인트 적립X
 								JOptionPane.showMessageDialog(null, "결제 완료", " ", JOptionPane.INFORMATION_MESSAGE);
 								cafesystem.addorder(m);
-								TotalDTO dto=new TotalDTO(price);
 								
 								// new SlotMachineEx(); 
 							} else if (result2 == JOptionPane.YES_OPTION) { // 포인트 적립 O
@@ -931,7 +938,6 @@ public class OrderSystem extends JFrame {
 				}
 			});
 		}
-
 		public void paintComponent(Graphics g) { // 주문 화면 배경
 			g.drawImage(background, 0, 0, null);
 			setOpaque(false);
