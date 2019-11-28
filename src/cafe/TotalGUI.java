@@ -75,7 +75,7 @@ public class TotalGUI extends JFrame {
 			}
 		});
 		
-		// ================= 좌측 회원 정보 입력 패널 ==================
+		// ================= 좌측 매출 정보 입력 패널 ==================
 		pWest = new JPanel();
 		getContentPane().add(pWest, BorderLayout.WEST);
 		// 패널 5개 행 생성 위해 GridLayout(5, 1) 설정
@@ -102,7 +102,7 @@ public class TotalGUI extends JFrame {
 		tfSum = new JTextField(10);
 		pSum.add(tfSum);
 
-		// ================= 중앙 회원 정보 출력 패널 ==================
+		// ================= 중앙 매출 정보 출력 패널 ==================
 		// 스크롤바 기능을 위해 JScrollPane 객체를 생성하여 Center 영역에 부착
 		JScrollPane scrollPane = new JScrollPane();
 		getContentPane().add(scrollPane);
@@ -165,7 +165,7 @@ public class TotalGUI extends JFrame {
 
 		TotalDTO dto = new TotalDTO(0, date,sum);
 		TotalDAO dao = TotalDAO.getInstance();
-		int result = dao.insert(dto); // 회원추가 후 결과값 리턴
+		int result = dao.insert(dto); // 매출추가 후 결과값 리턴
 
 		// 매출 추가 여부 판별
 		if (result == 0) { // 실패했을 경우
@@ -243,7 +243,7 @@ public class TotalGUI extends JFrame {
 			return;
 		}
 
-		// 테이블 셀 선택했을 경우 창 새 프레임 생성하여 선택된 회원 정보 표시
+		// 테이블 셀 선택했을 경우 창 새 프레임 생성하여 선택된 매출 정보 표시
 		JFrame editFrame = new JFrame("매출 정보 수정"); // 새 프레임 생성
 		// 위치 설정 시 기존 부모 프레임의 위치 좌표 값을 받아서 사용(double타입이므로 int형 형변환)
 		editFrame.setBounds((int) this.getLocation().getX(), (int) this.getLocation().getY(), 250, 300);
