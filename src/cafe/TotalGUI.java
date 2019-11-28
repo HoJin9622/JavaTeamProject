@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
@@ -20,7 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-
+import cafe.TotalDTO;
 public class TotalGUI extends JFrame {
 	private JTextField tfDbUsername, tfIdx, tfDate, tfSum;
 	private JPasswordField pfDbPassword;
@@ -31,50 +33,51 @@ public class TotalGUI extends JFrame {
 	JButton btnSelect;
 	JButton btnUpdate;
 	JButton btnDelete;
-	
+
 	public TotalGUI() {
 		showFrame();
 	}
+
 	public void showFrame() {
 		setTitle("Cafe Management System");
 		setBounds(500, 300, 1280, 720);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	
+
 		// ================= 하단 버튼 패널 ==================
 		pSouth = new JPanel();
 		getContentPane().add(pSouth, BorderLayout.SOUTH);
-	
-		btnInsert = new JButton("매출 추가");
+
+		btnInsert = new JButton("매출 정산");
 		btnUpdate = new JButton("매출 수정");
 		btnDelete = new JButton("매출 삭제");
 		btnSelect = new JButton("매출 목록");
-		
+
 		pSouth.add(btnInsert);
 		pSouth.add(btnUpdate);
 		pSouth.add(btnDelete);
 		pSouth.add(btnSelect);
-		
-		btnInsert.addMouseListener(new MouseAdapter(){
+
+		btnInsert.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				insert();
 			}
 		});
-		btnUpdate.addMouseListener(new MouseAdapter(){
+		btnUpdate.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				update();
 			}
 		});
-		btnDelete.addMouseListener(new MouseAdapter(){
+		btnDelete.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				delete();
 			}
 		});
-		btnSelect.addMouseListener(new MouseAdapter(){
+		btnSelect.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				select();
 			}
 		});
-		
+
 		// ================= 좌측 매출 정보 입력 패널 ==================
 		pWest = new JPanel();
 		getContentPane().add(pWest, BorderLayout.WEST);
@@ -95,7 +98,7 @@ public class TotalGUI extends JFrame {
 		pDate.add(new JLabel("날   짜"));
 		tfDate = new JTextField(10);
 		pDate.add(tfDate);
-		
+
 		JPanel pSum = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		pWest.add(pSum);
 		pSum.add(new JLabel("매   출"));
@@ -117,7 +120,7 @@ public class TotalGUI extends JFrame {
 		columnNames.add("번호");
 		columnNames.add("날짜");
 		columnNames.add("매출");
-		
+
 //		DefaultTableModel dtm = new DefaultTableModel(columnNames, 0);
 		DefaultTableModel dtm = new DefaultTableModel(columnNames, 0) {
 
@@ -149,36 +152,36 @@ public class TotalGUI extends JFrame {
 		setVisible(true);
 	}
 
+	// 매출 정산
+	public void insert(TotalDTO dto) {
 
-	// 매출추가
-	public void insert() {
-	
-		
-		String date = "";
-		double sum = 0.0;
+		String date = null;
+		SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
+		Date time = new Date();
+		date = format1.format(time);
 		
 		// 입력 항목 체크
-		if (date == "") {
-			JOptionPane.showMessageDialog(rootPane, "날짜 입력 필수!", "입력 오류", JOptionPane.ERROR_MESSAGE);
+		if (date==null) {
+			JOptionPane.showMessageDialog(rootPane, "날짜 입력 오류!", "입력 오류", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-
-		TotalDTO dto = new TotalDTO(0, date,sum);
+		
+		dto.setDate(date); 
 		TotalDAO dao = TotalDAO.getInstance();
-		int result = dao.insert(dto); // 매출추가 후 결과값 리턴
+		int result = dao.insert(dto); // 매출정산 후 결과값 리턴
 
 		// 매출 추가 여부 판별
 		if (result == 0) { // 실패했을 경우
-			JOptionPane.showMessageDialog(rootPane, "매출를 추가할 수 없습니다.", "실패", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(rootPane, "매출를 정산할 수 없습니다.", "실패", JOptionPane.ERROR_MESSAGE);
 			return;
 		} else { // 성공했을 경우
-			JOptionPane.showMessageDialog(rootPane, "매출를 추가하였습니다.", "성공", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(rootPane, "매출를 정산하였습니다.", "성공", JOptionPane.INFORMATION_MESSAGE);
+			dto=new TotalDTO(0,date,0);
 		}
 	}
 
-	// 매출 목록
+	// 매출 목록 조회
 	public void select() {
-
 		TotalDAO dao = TotalDAO.getInstance();
 		// 매출 목록 조회 후 전체 레코드를 Vector 타입으로 저장하여 리턴
 		Vector<Vector> data = dao.select();
@@ -196,9 +199,8 @@ public class TotalGUI extends JFrame {
 		invalidate(); // 프레임 갱신(새로 그리기)
 	}
 
-	// 매출삭제
+	// 매출 기록 삭제
 	public void delete() {
-	
 
 		// InputDialog 사용하여 삭제할 매출 번호 입력받기
 		String idx = JOptionPane.showInputDialog(rootPane, "삭제할 매출 번호를 입력하세요.");
@@ -294,7 +296,6 @@ public class TotalGUI extends JFrame {
 				if (e.getSource() == btnUpdate) {
 
 				} else if (e.getSource() == btnCancel) {
-
 				}
 			}
 		};

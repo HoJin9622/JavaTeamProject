@@ -360,10 +360,12 @@ public class OrderSystem extends JFrame {
 		private JLabel menuBar = new JLabel(menuBarImage);
 		private JLabel[] lbl_priceview; // 이미지 밑 가격 표시 라벨 집합
 		private JLabel[] lbl_view; // 선택한 메뉴 표시 라벨
-
+		private int price;
+		
 		Menu[] m;
 
 		public OrderScreenPanel() {
+			price = Integer.parseInt(lbl_price.getText());
 			///
 			/// 메뉴 객체 배열 생성 및 가격, 이름 설정
 			///
@@ -416,7 +418,6 @@ public class OrderSystem extends JFrame {
 
 				public void mousePressed(MouseEvent e) {
 					int i = 0;
-					int price = Integer.parseInt(lbl_price.getText());
 					price += m[0].getPrice();
 					lbl_price.setText(Integer.toString(price));
 					m[0].setCount(m[0].getCount() + 1);
@@ -459,7 +460,6 @@ public class OrderSystem extends JFrame {
 
 				public void mousePressed(MouseEvent e) {
 					int i = 0;
-					int price = Integer.parseInt(lbl_price.getText());
 					price += m[1].getPrice();
 					lbl_price.setText(Integer.toString(price));
 					m[1].setCount(m[1].getCount() + 1);
@@ -502,7 +502,6 @@ public class OrderSystem extends JFrame {
 
 				public void mousePressed(MouseEvent e) {
 					int i = 0;
-					int price = Integer.parseInt(lbl_price.getText());
 					price += m[2].getPrice();
 					lbl_price.setText(Integer.toString(price));
 					m[2].setCount(m[2].getCount() + 1);
@@ -545,7 +544,6 @@ public class OrderSystem extends JFrame {
 
 				public void mousePressed(MouseEvent e) {
 					int i = 0;
-					int price = Integer.parseInt(lbl_price.getText());
 					price += m[3].getPrice();
 					lbl_price.setText(Integer.toString(price));
 					m[3].setCount(m[3].getCount() + 1);
@@ -588,7 +586,6 @@ public class OrderSystem extends JFrame {
 
 				public void mousePressed(MouseEvent e) {
 					int i = 0;
-					int price = Integer.parseInt(lbl_price.getText());
 					price += m[4].getPrice();
 					
 					lbl_price.setText(Integer.toString(price));
@@ -632,7 +629,6 @@ public class OrderSystem extends JFrame {
 
 				public void mousePressed(MouseEvent e) {
 					int i = 0;
-					int price = Integer.parseInt(lbl_price.getText());
 					price += m[5].getPrice();
 					lbl_price.setText(Integer.toString(price));
 					m[5].setCount(m[5].getCount() + 1);
