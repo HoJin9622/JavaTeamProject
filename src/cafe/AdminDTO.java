@@ -8,7 +8,7 @@ public class AdminDTO {
 	private String password;
 	
 	public AdminDTO() {}
-
+	public AdminDTO(int idx) {this.idx=idx;}
 	public AdminDTO(String id, String password) {
 		this.id = id;
 		this.password = password;

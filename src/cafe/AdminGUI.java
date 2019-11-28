@@ -99,15 +99,15 @@ public class AdminGUI extends JFrame {
 		getContentPane().add(pSouth, BorderLayout.SOUTH);
 	
 		btnInsert = new JButton("관리자 추가");
-		btnSelect = new JButton("관리자 목록");
 		btnUpdate = new JButton("관리자 수정");
 		btnDelete = new JButton("관리자 삭제");
+		btnSelect = new JButton("관리자 목록");
 		btnTotal=new JButton("매출 관리");
 		
 		pSouth.add(btnInsert);
-		pSouth.add(btnSelect);
 		pSouth.add(btnUpdate);
 		pSouth.add(btnDelete);
+		pSouth.add(btnSelect);
 		pSouth.add(btnTotal);
 		
 		btnInsert.setVisible(false);
@@ -168,7 +168,7 @@ public class AdminGUI extends JFrame {
 		pName.add(new JLabel("이   름"));
 		tfName = new JTextField(10);
 		pName.add(tfName);
-
+		
 		JPanel pId = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		pWest.add(pId);
 		pId.add(new JLabel("아 이 디"));
@@ -281,6 +281,10 @@ public class AdminGUI extends JFrame {
 			pfDbPassword.setEditable(false);
 			btnLogin.setText("로그아웃");
 			if(username.equals("admin")) {
+				tfName.setVisible(true);
+				tfId.setVisible(true);
+				tfPassword.setVisible(true);
+				
 				btnInsert.setVisible(true);
 				btnSelect.setVisible(true);
 				btnUpdate.setVisible(true);
@@ -302,6 +306,7 @@ public class AdminGUI extends JFrame {
 			btnUpdate.setVisible(false);
 			btnDelete.setVisible(false);
 			btnTotal.setVisible(false);
+		
 			isLogin = false; // 로그아웃 상태로 변경
 		}
 
