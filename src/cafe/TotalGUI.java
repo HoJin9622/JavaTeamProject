@@ -7,14 +7,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.HashMap;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -24,7 +22,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 public class TotalGUI extends JFrame {
-	private JTextField tfDbUsername, tfIdx, tfDate, tfSum, tfPassword;
+	private JTextField tfDbUsername, tfIdx, tfDate, tfSum;
 	private JPasswordField pfDbPassword;
 	private JTable table;
 	private JPanel pSouth;
@@ -41,8 +39,7 @@ public class TotalGUI extends JFrame {
 		setTitle("Cafe Management System");
 		setBounds(500, 300, 1280, 720);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		
+	
 		// ================= 하단 버튼 패널 ==================
 		pSouth = new JPanel();
 		getContentPane().add(pSouth, BorderLayout.SOUTH);
@@ -56,7 +53,28 @@ public class TotalGUI extends JFrame {
 		pSouth.add(btnUpdate);
 		pSouth.add(btnDelete);
 		pSouth.add(btnSelect);
-	
+		
+		btnInsert.addMouseListener(new MouseAdapter(){
+			public void mousePressed(MouseEvent e) {
+				insert();
+			}
+		});
+		btnUpdate.addMouseListener(new MouseAdapter(){
+			public void mousePressed(MouseEvent e) {
+				update();
+			}
+		});
+		btnDelete.addMouseListener(new MouseAdapter(){
+			public void mousePressed(MouseEvent e) {
+				delete();
+			}
+		});
+		btnSelect.addMouseListener(new MouseAdapter(){
+			public void mousePressed(MouseEvent e) {
+				select();
+			}
+		});
+		
 		// ================= 좌측 회원 정보 입력 패널 ==================
 		pWest = new JPanel();
 		getContentPane().add(pWest, BorderLayout.WEST);
@@ -72,17 +90,18 @@ public class TotalGUI extends JFrame {
 		tfIdx.setEditable(false); // 텍스트필드 편집 불가 설정
 		pIdx.add(tfIdx);
 
-		JPanel pDate= new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		JPanel pDate = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		pWest.add(pDate);
-		pDate.add(new JLabel("날 짜"));
+		pDate.add(new JLabel("날   짜"));
 		tfDate = new JTextField(10);
 		pDate.add(tfDate);
 		
 		JPanel pSum = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		pWest.add(pSum);
-		pSum.add(new JLabel("매 출"));
+		pSum.add(new JLabel("매   출"));
 		tfSum = new JTextField(10);
 		pSum.add(tfSum);
+
 		// ================= 중앙 회원 정보 출력 패널 ==================
 		// 스크롤바 기능을 위해 JScrollPane 객체를 생성하여 Center 영역에 부착
 		JScrollPane scrollPane = new JScrollPane();
@@ -133,15 +152,17 @@ public class TotalGUI extends JFrame {
 
 	// 매출추가
 	public void insert() {
+	
 		
-		String date=null;
-		double sum=0;
-
+		String date = "";
+		double sum = 0.0;
+		
 		// 입력 항목 체크
-		if (date==null) {
+		if (date == "") {
 			JOptionPane.showMessageDialog(rootPane, "날짜 입력 필수!", "입력 오류", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
+
 		TotalDTO dto = new TotalDTO(0, date,sum);
 		TotalDAO dao = TotalDAO.getInstance();
 		int result = dao.insert(dto); // 회원추가 후 결과값 리턴
@@ -157,12 +178,6 @@ public class TotalGUI extends JFrame {
 
 	// 매출 목록
 	public void select() {
-//		if(!isLogin) {
-//			JOptionPane.showMessageDialog(
-//					rootPane, "로그인 필요", "로그인 오류", JOptionPane.ERROR_MESSAGE);
-//			tfDbUsername.requestFocus();
-//			return;
-//		} 
 
 		TotalDAO dao = TotalDAO.getInstance();
 		// 매출 목록 조회 후 전체 레코드를 Vector 타입으로 저장하여 리턴
@@ -178,14 +193,13 @@ public class TotalGUI extends JFrame {
 		for (Vector rowData : data) {
 			dtm.addRow(rowData);
 		}
-
 		invalidate(); // 프레임 갱신(새로 그리기)
-
 	}
 
 	// 매출삭제
 	public void delete() {
 	
+
 		// InputDialog 사용하여 삭제할 매출 번호 입력받기
 		String idx = JOptionPane.showInputDialog(rootPane, "삭제할 매출 번호를 입력하세요.");
 //		System.out.println(idx);
@@ -252,14 +266,14 @@ public class TotalGUI extends JFrame {
 		JPanel pDate = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		pWest.add(pDate);
 
-		pDate.add(new JLabel("날짜"));
-		JTextField tfName = new JTextField(10);
-		pDate.add(tfName);
+		pDate.add(new JLabel("날   짜"));
+		JTextField tfDate = new JTextField(10);
+		pDate.add(tfDate);
 
 		JPanel pSum = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		pWest.add(pSum);
 
-		pSum.add(new JLabel("아 이 디"));
+		pSum.add(new JLabel("매   출 "));
 		JTextField tfSum = new JTextField(10);
 		pSum.add(tfSum);
 
@@ -298,7 +312,7 @@ public class TotalGUI extends JFrame {
 		tfIdx.setText(table.getValueAt(row, 0) + ""); // Object(int) -> String 타입으로 형변환
 		tfDate.setText(table.getValueAt(row, 1).toString()); // Object(String) -> String 타입으로 형변환
 		tfSum.setText((String) table.getValueAt(row, 2)); // Object(double) -> String 타입으로 형변환
-}
+	}
 
 	public static void main(String[] args) {
 		new TotalGUI();

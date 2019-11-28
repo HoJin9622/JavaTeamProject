@@ -590,6 +590,7 @@ public class OrderSystem extends JFrame {
 					int i = 0;
 					int price = Integer.parseInt(lbl_price.getText());
 					price += m[4].getPrice();
+					
 					lbl_price.setText(Integer.toString(price));
 					m[4].setCount(m[4].getCount() + 1);
 

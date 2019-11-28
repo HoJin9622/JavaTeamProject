@@ -49,20 +49,19 @@ public class TotalDAO {
 		if(con != null) try { con.close(); } catch(Exception e) {} 
 	}
 	
-	// 회원 추가
+	// 매출 추가
 	public int insert(TotalDTO dto) {
 		connectDb();
 		
-		int result = 0; // 목록 추가 성공 여부(0 : 실패, 1 : 리턴)
+		int result = 0; // 매출 추가 성공 여부(0 : 실패, 1 : 리턴)
 		
 		try {
 			// DTO 객체에 저장된 데이터를 DB 에 INSERT
 			String sql = "INSERT INTO total VALUES (null,?,?)";
 			
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, dto.getIdx());
-			pstmt.setString(2, dto.getDate());
-			pstmt.setDouble(3, dto.getSum());
+			pstmt.setString(1, dto.getDate());
+			pstmt.setDouble(2, dto.getSum());
 			
 			result = pstmt.executeUpdate();
 
@@ -80,7 +79,7 @@ public class TotalDAO {
 	public int delete(int idx) {
 		connectDb();
 		
-		int result = 0; // 매출 기록 성공 여부(0 : 실패, 1 : 리턴)
+		int result = 0; // 매출 삭제 성공 여부(0 : 실패, 1 : 리턴)
 		
 		try {
 			// 전달받은 번호(idx)를 사용하여 레코드 삭제
@@ -118,7 +117,7 @@ public class TotalDAO {
 				
 				rowData.add(rs.getInt("idx"));
 				rowData.add(rs.getString("date"));
-				rowData.add(rs.getDouble("sum"));
+				rowData.add(rs.getString("sum"));
 				
 				data.add(rowData);
 			}
@@ -132,4 +131,5 @@ public class TotalDAO {
 		}
 		
 		return null;
-	}}
+	}
+}

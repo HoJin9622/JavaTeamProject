@@ -30,7 +30,6 @@ public class AdminGUI extends JFrame {
 	private JButton btnLogin;
 	private JPanel pSouth;
 	private JPanel pWest;
-	JList<String> MusicList;
 	JButton btnInsert;
 	JButton btnSelect;
 	JButton btnUpdate;
@@ -41,20 +40,11 @@ public class AdminGUI extends JFrame {
 	public AdminGUI() {
 		showFrame();
 	}
-	static void loadMenuList(HashMap<String,String> menu) {
-		
-	}
-	
-	static void loadMusicList(String listMusic) {
-		
-	}
 	public void showFrame() {
 		setTitle("Cafe Management System");
 		setBounds(500, 300, 1280, 720);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		MusicList=new JList<String>();
-		getContentPane().add(new JScrollPane(MusicList));
 		// ================= 상단 DB 접속 패널 ==================
 		JPanel pNorth = new JPanel();
 		getContentPane().add(pNorth, BorderLayout.NORTH);
@@ -135,6 +125,8 @@ public class AdminGUI extends JFrame {
 							delete();
 						} else if (e.getSource() == btnUpdate) {
 							update();
+						}else if(e.getSource()==btnTotal) {
+							new TotalGUI();
 						}
 					}
 				};
@@ -319,7 +311,7 @@ public class AdminGUI extends JFrame {
 			tfDbUsername.requestFocus();
 			return;
 		}
-
+		
 		String name = tfName.getText();
 		String id = tfId.getText();
 		String password = tfPassword.getText();
