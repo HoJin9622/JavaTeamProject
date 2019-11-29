@@ -674,38 +674,45 @@ public class OrderSystem extends JFrame {
 					if (lbl_price.getText().equals("0")) // 메뉴를 담지 않았으면 메시지 박스 Show
 						JOptionPane.showMessageDialog(null, "메뉴를 선택해주세요", "오류", JOptionPane.INFORMATION_MESSAGE);
 					else {
-						int result1 = JOptionPane.showConfirmDialog(null, "정말 결제하시겠습니까?", "결제",
-								JOptionPane.YES_NO_OPTION);
-						if (result1 == JOptionPane.CLOSED_OPTION) { // 결제 취소
-							return;
-						} else if (result1 == JOptionPane.YES_OPTION) {
-							int result2 = JOptionPane.showConfirmDialog(null, "포인트를 적립하시겠습니까?", "포인트 적립", JOptionPane.YES_NO_OPTION);
-							if (result2 == JOptionPane.CLOSED_OPTION) { // 포인트 적립X
-								pay();
-							} else if (result2 == JOptionPane.YES_OPTION) { // 포인트 적립 O
-								String number;
-								while (true) {
-									number = JOptionPane.showInputDialog("전화번호를 입력해주세요( '-' 없이 번호만 입력)");
-									if( number != null) {
-										if (number.length() != 11)
-											JOptionPane.showMessageDialog(null, "11자리 번호만 입력해주세요", "오류", JOptionPane.INFORMATION_MESSAGE);
-										else { // 여기에 회원 DB 불러와서 기존 데이터가 있으면 계산금액의 1%적립, 기존 데이터 없으면 기존 데이터 추가
-											pay();
-											break;
-										}
+						int result1 = JOptionPane.showConfirmDialog(null, "포인트를 사용하시겠습니까?", "포인트사용", JOptionPane.YES_NO_OPTION);
+						if( result1 == 0) {
+							while(true) {
+								String number = JOptionPane.showInputDialog("사용하시려면 전화번호를 입력해주세요('-' 없이 번호만 입력)");
+								if( number == null)
+									return;
+								else if( number.length() == 11 ) {
+									// 여기에 포인트 사용 메소드 입력
+									pay();
+									break;
+								}
+								else
+									JOptionPane.showMessageDialog(null, "11자리 번호만 입력해주세요");
+							}
+						}
+						else if( result1 == 1) {
+							int result2 = JOptionPane.showConfirmDialog(null, "포인트를 적립하시겠습니까?", "포인트사용", JOptionPane.YES_NO_OPTION);
+							if( result2 == 0 ) {
+								while(true) {
+									String number = JOptionPane.showInputDialog("전화번호를 입력해주세요('-' 없이 번호만 입력)");
+									if ( number == null) {
+										return;
 									}
-									else
-									{
+									else if ( number.length() == 11) {
+										// 여기에 포인트 적립 메소드 입력
 										pay();
 										break;
 									}
+									else
+										JOptionPane.showMessageDialog(null, "11자리 번호만 입력해주세요");
 								}
-							} else { // 포인트 적립 X
-								pay();
 							}
-						} else { // 결제 취소
-							return;
+							else if ( result2 == 1 )
+								pay();
+							else
+								return;
 						}
+						else
+							return;
 					}
 				}
 			});
