@@ -4,8 +4,8 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
-
 import javazoom.jl.player.Player;
+import cafe.Static;
 
 public class Music extends Thread{
 	private Player player;
@@ -45,6 +45,8 @@ public class Music extends Thread{
 				player.play();
 				int n=(int)(Math.random()*(trackList.size())+0);
 				String name=trackList.get(n).getListMusic();
+				Static.playingMusic=name;
+				//Static.songLabel.setText(name);
 				file=new File(Main.class.getResource("../music/"+name).toURI());
 				fis=new FileInputStream(file);
 				bis=new BufferedInputStream(fis); //해당 파일을 버퍼에 담아서 읽어올 수 있도록

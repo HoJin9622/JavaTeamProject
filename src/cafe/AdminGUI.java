@@ -26,10 +26,12 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 class Static {
 	 static int total = 0;
+	 static String playingMusic;
 	 static String reserveMusic;
 	 static String pNum;
 	 static int n;
 	 static ArrayList<Track> trackListAll;
+	 static JLabel songLabel;
 }
 
 public class AdminGUI extends JFrame{

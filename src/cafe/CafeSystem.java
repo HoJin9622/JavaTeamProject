@@ -105,11 +105,23 @@ public class CafeSystem extends JFrame {
 			ListPanel(this, 930, 220, "<주문내역>"); // 주문 내역 목록 판넬
 
 			JPanel songPanel = new JPanel(); // 노래 재생목록 판넬
-			songPanel.setBounds(820, 120, 400, 40);
+			songPanel.setBounds(820, 120, 420, 50);
 			songPanel.setBackground(new Color(255, 255, 255, 120));
 			songPanel.setLayout(null);
 			add(songPanel);
-
+			
+			Static.songLabel=new JLabel("");
+			Static.songLabel.setFont(new Font("Verdana", Font.BOLD, 30));
+			Static.songLabel.setForeground(Color.WHITE);
+			Static.songLabel.setBounds(840, 130, 330, 30);
+			add(Static.songLabel);
+			
+			JLabel TitleLabel = new JLabel("Cafe Mangerment"); // 타이틀 라벨
+			TitleLabel.setFont(new Font("Verdana", Font.BOLD, 60));
+			TitleLabel.setForeground(Color.WHITE);
+			TitleLabel.setBounds(50, 55, 600, 80);
+			add(TitleLabel);
+			
 			JButton songbutton = new JButton(playbutton); // 노래 재생버튼
 			songbutton.setBorderPainted(false);
 			songbutton.setContentAreaFilled(false);
@@ -125,19 +137,16 @@ public class CafeSystem extends JFrame {
 						Static.n=(int)(Math.random()*(Static.trackListAll.size())+0);
 						introMusic = new Music(Static.trackListAll.get(Static.n).getListMusic(), Static.trackListAll, true);
 						introMusic.start();
+						Static.playingMusic=Static.trackListAll.get(Static.n).getListMusic();
+						Static.songLabel.setText(Static.playingMusic);
 					} else if (songbutton.getIcon() == pausebutton) {
 						songbutton.setIcon(playbutton);
 						introMusic.close();
+						Static.songLabel.setText("");
 					}
 				}
 			});
 			add(songbutton);
-
-			JLabel TitleLabel = new JLabel("Cafe Mangerment"); // 타이틀 라벨
-			TitleLabel.setFont(new Font("Verdana", Font.BOLD, 60));
-			TitleLabel.setForeground(Color.WHITE);
-			TitleLabel.setBounds(50, 55, 600, 80);
-			add(TitleLabel);
 
 			JButton Orderbutton = new JButton(orderbutton); // 주문 화면 버튼
 			Orderbutton.setBorderPainted(false);
