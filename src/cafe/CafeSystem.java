@@ -241,8 +241,8 @@ public class CafeSystem extends JFrame {
 			btnLogin.addActionListener(new ActionListener() { 			// 로그인 버튼 이벤트 처리
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					dbLogin();		
-					if(result!=0 && result!=-1)
+				//	dbLogin();		
+					//if(result!=0 && result!=-1)
 						ChangePanel("Main");
 				}
 			});
