@@ -28,6 +28,11 @@ public class Music extends Thread{
 			System.out.println(e.getMessage());
 		}
 	}
+	public int getTime() { //현재 실행되는 음악이 현재 어떤 위치?에서 실행되는지 알려준다
+		if(player==null)
+			return 0;
+		return player.getPosition();
+	}
 	public void close() { //언제든지 중지할 때, 뒤로가기나 중지버튼을 클릭하면 노래 재생 중지 
 		isLoop=false;
 		player.close();
