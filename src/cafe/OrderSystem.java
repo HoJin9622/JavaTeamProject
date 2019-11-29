@@ -684,29 +684,22 @@ public class OrderSystem extends JFrame {
 						if (result1 == JOptionPane.CLOSED_OPTION) { // 결제 취소
 							return;
 						} else if (result1 == JOptionPane.YES_OPTION) {
-							int result2 = JOptionPane.showConfirmDialog(null, "포인트를 적립하시겠습니까?", "포인트 적립",
-									JOptionPane.YES_NO_OPTION);
+							int result2 = JOptionPane.showConfirmDialog(null, "포인트를 적립하시겠습니까?", "포인트 적립", JOptionPane.YES_NO_OPTION);
 							if (result2 == JOptionPane.CLOSED_OPTION) { // 포인트 적립X
-								JOptionPane.showMessageDialog(null, "결제 완료", " ", JOptionPane.INFORMATION_MESSAGE);
-								cafesystem.addorder(m);
-								Static.total+=Integer.parseInt(lbl_price.getText());
-								// new SlotMachineEx();
-								ChangePanel("Intro");
+								pay();
 							} else if (result2 == JOptionPane.YES_OPTION) { // 포인트 적립 O
 								String number;
 								while (true) {
 									number = JOptionPane.showInputDialog("전화번호를 입력해주세요( '-' 없이 번호만 입력)");
 									if (number.length() != 11)
-										JOptionPane.showMessageDialog(null, "11자리 번호만 입력해주세요", "오류",
-												JOptionPane.INFORMATION_MESSAGE);
+										JOptionPane.showMessageDialog(null, "11자리 번호만 입력해주세요", "오류", JOptionPane.INFORMATION_MESSAGE);
 									else { // 여기에 회원 DB 불러와서 기존 데이터가 있으면 계산금액의 1%적립, 기존 데이터 없으면 기존 데이터 추가
-
+										pay();
 										break;
 									}
 								}
-
 							} else { // 포인트 적립 X
-								cafesystem.addorder(m);
+								pay();
 							}
 						} else { // 결제 취소
 							return;
@@ -943,7 +936,22 @@ public class OrderSystem extends JFrame {
 			setOpaque(false);
 			super.paintComponent(g);
 		}
+		
+		public void pay() {
+			JOptionPane.showMessageDialog(null, "결제 완료", " ", JOptionPane.INFORMATION_MESSAGE);
+			cafesystem.addorder(m);
+			Static.total+=Integer.parseInt(lbl_price.getText());
+			lbl_price.setText("0");
+			for(int i = 0; i < 6; i++) {
+				lbl_view[i].setText("");
+				m[i].setCount(0);
+			}
+			// new SlotMachineEx();
+			ChangePanel("Intro");
+		}
 	}
+	
+	
 
 	public void MenuBar(JLabel menuBar, JButton exitButton) { // 메뉴바 생성
 		menuBar.setBounds(0, 0, 1280, 30);
