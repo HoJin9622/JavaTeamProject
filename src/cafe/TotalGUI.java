@@ -22,7 +22,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-import cafe.OrderSystem.OrderScreenPanel;
+
+class Sum {
+	 static int total = 0;
+}
 
 public class TotalGUI extends JFrame {
 	private JTextField tfDbUsername, tfIdx, tfDate, tfSum;
@@ -43,7 +46,7 @@ public class TotalGUI extends JFrame {
 		setTitle("Cafe Management System");
 		setBounds(500, 300, 1280, 720);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		
 		// ================= 하단 버튼 패널 ==================
 		pSouth = new JPanel();
 		getContentPane().add(pSouth, BorderLayout.SOUTH);
@@ -60,7 +63,7 @@ public class TotalGUI extends JFrame {
 
 		btnInsert.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
-				insert(OrderScreenPanel price);
+				insert();
 			}
 		});
 		btnUpdate.addMouseListener(new MouseAdapter() {
@@ -154,7 +157,7 @@ public class TotalGUI extends JFrame {
 	}
 
 	// 매출 정산
-	public void insert(OrderScreenPanel price) {
+	public void insert() {
 
 		String date = null;
 		SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
@@ -166,7 +169,7 @@ public class TotalGUI extends JFrame {
 			JOptionPane.showMessageDialog(rootPane, "날짜 입력 오류!", "입력 오류", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		TotalDTO dto=new TotalDTO(date,price.getPrice());
+		TotalDTO dto=new TotalDTO(date,Sum.total);
 		
 		TotalDAO dao = TotalDAO.getInstance();
 		int result = dao.insert(dto); // 매출정산 후 결과값 리턴

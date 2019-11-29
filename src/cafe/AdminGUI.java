@@ -182,7 +182,7 @@ public class AdminGUI extends JFrame {
 		table = new JTable();
 		table.getTableHeader().setReorderingAllowed(false); // 셀 이동 불가 설정
 		scrollPane.setViewportView(table);
-
+		
 		// 테이블 컬럼명 표시를 위해 Vector 객체에 컬럼명을 저장한 후 DefaultTableModel 객체에 추가
 		Vector<String> columnNames = new Vector<String>();
 		columnNames.add("번호");
@@ -282,6 +282,7 @@ public class AdminGUI extends JFrame {
 				btnUpdate.setVisible(true);
 				btnDelete.setVisible(true);
 				btnTotal.setVisible(true);
+				table.setVisible(true);
 			}else {
 				btnTotal.setVisible(true);
 			}
@@ -298,7 +299,7 @@ public class AdminGUI extends JFrame {
 			btnUpdate.setVisible(false);
 			btnDelete.setVisible(false);
 			btnTotal.setVisible(false);
-		
+			table.setVisible(false);
 			isLogin = false; // 로그아웃 상태로 변경
 		}
 

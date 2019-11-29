@@ -18,8 +18,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import cafe.Sum;
 
 @SuppressWarnings("serial")
+
 public class OrderSystem extends JFrame {
 	private Image screenImage; // 더블 버퍼링을 위해서 전체 화면에 대한
 	private Graphics screenGraphic; // 이미지를 담는 두 인스턴스
@@ -96,7 +98,7 @@ public class OrderSystem extends JFrame {
 			breaktime = new ImageIcon(breaktime.getImage().getScaledInstance(600, 600, Image.SCALE_SMOOTH));
 			setUndecorated(true); // 기존 메뉴바를 감춰줌
 			setLayout(null);
-
+			
 			breaktimeLB = new JLabel(breaktime); // 일시정지 라벨
 			breaktimeLB.setBounds(340, 60, 600, 600);
 			breaktimeLB.setVisible(false);
@@ -359,20 +361,11 @@ public class OrderSystem extends JFrame {
 		private JLabel menuBar = new JLabel(menuBarImage);
 		private JLabel[] lbl_priceview; // 이미지 밑 가격 표시 라벨 집합
 		private JLabel[] lbl_view; // 선택한 메뉴 표시 라벨
-		private int price;
-		
-		public int getPrice() {
-			return price;
-		}
-		public void setPrice(int price) {
-			this.price = price;
-		}
+
 		Menu[] m;
 
 		public OrderScreenPanel() {
-			price = Integer.parseInt(lbl_price.getText());
-			
-			
+
 			///
 			/// 메뉴 객체 배열 생성 및 가격, 이름 설정
 			///
@@ -425,6 +418,7 @@ public class OrderSystem extends JFrame {
 
 				public void mousePressed(MouseEvent e) {
 					int i = 0;
+					int price = Integer.parseInt(lbl_price.getText());
 					price += m[0].getPrice();
 					lbl_price.setText(Integer.toString(price));
 					m[0].setCount(m[0].getCount() + 1);
@@ -467,6 +461,7 @@ public class OrderSystem extends JFrame {
 
 				public void mousePressed(MouseEvent e) {
 					int i = 0;
+					int price = Integer.parseInt(lbl_price.getText());
 					price += m[1].getPrice();
 					lbl_price.setText(Integer.toString(price));
 					m[1].setCount(m[1].getCount() + 1);
@@ -509,7 +504,9 @@ public class OrderSystem extends JFrame {
 
 				public void mousePressed(MouseEvent e) {
 					int i = 0;
+					int price = Integer.parseInt(lbl_price.getText());
 					price += m[2].getPrice();
+					
 					lbl_price.setText(Integer.toString(price));
 					m[2].setCount(m[2].getCount() + 1);
 
@@ -551,6 +548,7 @@ public class OrderSystem extends JFrame {
 
 				public void mousePressed(MouseEvent e) {
 					int i = 0;
+					int price = Integer.parseInt(lbl_price.getText());
 					price += m[3].getPrice();
 					lbl_price.setText(Integer.toString(price));
 					m[3].setCount(m[3].getCount() + 1);
@@ -593,8 +591,8 @@ public class OrderSystem extends JFrame {
 
 				public void mousePressed(MouseEvent e) {
 					int i = 0;
+					int price = Integer.parseInt(lbl_price.getText());
 					price += m[4].getPrice();
-					
 					lbl_price.setText(Integer.toString(price));
 					m[4].setCount(m[4].getCount() + 1);
 
@@ -636,6 +634,7 @@ public class OrderSystem extends JFrame {
 
 				public void mousePressed(MouseEvent e) {
 					int i = 0;
+					int price = Integer.parseInt(lbl_price.getText());
 					price += m[5].getPrice();
 					lbl_price.setText(Integer.toString(price));
 					m[5].setCount(m[5].getCount() + 1);
@@ -691,7 +690,7 @@ public class OrderSystem extends JFrame {
 								JOptionPane.showMessageDialog(null, "결제 완료", " ", JOptionPane.INFORMATION_MESSAGE);
 								cafesystem.addorder(m);
 								
-								// new SlotMachineEx(); 
+								// new SlotMachineEx();
 							} else if (result2 == JOptionPane.YES_OPTION) { // 포인트 적립 O
 								String number;
 								while (true) {
@@ -938,6 +937,7 @@ public class OrderSystem extends JFrame {
 				}
 			});
 		}
+
 		public void paintComponent(Graphics g) { // 주문 화면 배경
 			g.drawImage(background, 0, 0, null);
 			setOpaque(false);
