@@ -941,7 +941,7 @@ public class OrderSystem extends JFrame {
 		
 		public void pay() {
 			JOptionPane.showMessageDialog(null, "결제 완료", " ", JOptionPane.INFORMATION_MESSAGE);
-			cafesystem.addorder(m);
+			cafesystem.MainPanel.addorder(m);
 			Static.total+=Integer.parseInt(lbl_price.getText());
 			lbl_price.setText("0");
 			for(int i = 0; i < 6; i++) {

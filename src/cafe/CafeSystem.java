@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.ImageIcon;
@@ -27,14 +28,6 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import cafe.OrderSystem.IntroScreenPanel;
-import cafe.OrderSystem.OrderScreenPanel;
-import cafe.OrderSystem.SongScreenPanel;
-import cafe.AdminGUI;
-
-import cafe.Menu;
-import cafe.AdminGUI;
-
 public class CafeSystem extends JFrame {
 	private Image screenImage; // 더블 버퍼링을 위해서 전체 화면에 대한
 	private Graphics screenGraphic; // 이미지를 담는 두 인스턴스
@@ -46,7 +39,8 @@ public class CafeSystem extends JFrame {
 	private int mouseX, mouseY;
 
 	private CardLayout cards = new CardLayout();
-
+	LoginScreenPanel LoginPanel;
+	MainScreenPanel MainPanel;
 	OrderSystem OS = new OrderSystem(this);
 
 	public CafeSystem() {
@@ -54,8 +48,10 @@ public class CafeSystem extends JFrame {
 		setSize(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT); // 프로그램 창 설정
 		Container c = getContentPane();
 		c.setLayout(cards);
-		c.add("Login", new LoginScreenPanel());
-		c.add("Main", new MainScreenPanel());
+		LoginPanel = new LoginScreenPanel();
+		MainPanel = new MainScreenPanel();
+		c.add("Login", LoginPanel);
+		c.add("Main", MainPanel);
 		setUndecorated(true); // 기존 메뉴바를 감춰줌
 		setResizable(false); // 프로그램 너비,높이 사용자가 못 움직이게 고정
 		setLocationRelativeTo(null); // 프로그램이 정중앙에 뜸
@@ -82,7 +78,13 @@ public class CafeSystem extends JFrame {
 		private JButton exitButton = new JButton(exitButtonBasicImage);
 		private Music introMusic;
 		
+		JPanel OrderList;
+		JScrollPane OrderScroll;
+		JPanel SongList;
+		JScrollPane SongScroll;
+		private int OrderCount;
 		public MainScreenPanel() {
+			OrderCount = 1;
 			orderbutton = new ImageIcon(orderbutton.getImage().getScaledInstance(350, 130, Image.SCALE_SMOOTH)); // 이미지
 																													// 아이콘
 																													// 크기
@@ -101,8 +103,50 @@ public class CafeSystem extends JFrame {
 			add(exitButton);
 			add(menuBar);
 			MenuBar(menuBar, exitButton);
-			ListPanel(this, 580, 220, "<노래예약>"); // 노래 예약 목록 판넬
-			ListPanel(this, 930, 220, "<주문내역>"); // 주문 내역 목록 판넬
+
+			///
+			///노래예약 목록
+			///
+			SongList = new JPanel();
+			SongScroll = new JScrollPane(SongList);
+			SongList.setLayout(new GridBagLayout());
+			GridBagConstraints gbcS = new GridBagConstraints();
+			gbcS.fill = GridBagConstraints.HORIZONTAL;
+	        gbcS.anchor = GridBagConstraints.PAGE_END;
+			gbcS.weightx = 1.0;
+			gbcS.weighty = 1.0;
+			gbcS.gridx = 0;
+			gbcS.gridy = 1000;
+			SongList.add(new JLabel("<노래예약>"),gbcS);
+			SongScroll.setBounds(580,220,300,400);
+			SongScroll.setOpaque(false);
+			SongScroll.getViewport().setBackground(new Color(255,255,255,122));
+			SongList.setBorder(new TitledBorder(new LineBorder((new Color(255,255,255,255)),3)));
+			SongList.setOpaque(false);
+			add(SongScroll);
+			
+			
+			///
+			///주문 목록
+			///
+			OrderList = new JPanel();
+			OrderScroll = new JScrollPane(OrderList);
+			OrderList.setLayout(new GridBagLayout());
+			GridBagConstraints gbcO = new GridBagConstraints();
+			gbcO.fill = GridBagConstraints.HORIZONTAL;
+	        gbcO.anchor = GridBagConstraints.PAGE_END;
+			gbcO.weightx = 1.0;
+			gbcO.weighty = 1.0;
+			gbcO.gridx = 0;
+			gbcO.gridy = 1000;
+			OrderList.add(new JLabel("<주문내역>"),gbcO);
+			OrderScroll.setBounds(930,220,300,400);
+			OrderScroll.setOpaque(false);
+			OrderScroll.getViewport().setBackground(new Color(255,255,255,122));
+			OrderList.setBorder(new TitledBorder(new LineBorder((new Color(255,255,255,255)),3)));
+			OrderList.setOpaque(false);
+			add(OrderScroll);
+			
 
 			JPanel songPanel = new JPanel(); // 노래 재생목록 판넬
 			songPanel.setBounds(820, 120, 420, 50);
@@ -200,7 +244,43 @@ public class CafeSystem extends JFrame {
 			add(OnOffbutton);
 
 		}
-
+		public void addorder(Menu [] m) {
+			GridBagConstraints gbc = new GridBagConstraints();
+			gbc.fill = GridBagConstraints.HORIZONTAL;
+			gbc.weightx = 1.0;
+			gbc.gridx = 0;
+			gbc.gridy = OrderCount;
+			gbc.weighty = 0;
+			gbc.anchor = GridBagConstraints.PAGE_START;
+			boolean flag = false;
+			StringBuffer s = new StringBuffer("주문번호" + Integer.toString(OrderCount) + ": ");
+			for(int i = 0;i<6;i++) {
+				if(m[i].getCount()>0) {
+					if(flag) {
+						s.append(", ");
+					}
+					s.append(m[i].getName()+Integer.toString(m[i].getCount()));
+					flag = true;
+				}
+			}
+			JLabel OrderLB = new JLabel(s.toString());
+			gbc.gridy = OrderCount-1;
+			OrderLB.setOpaque(false);
+			OrderLB.addMouseListener(new MouseListener() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					OrderLB.setForeground(Color.RED);
+				}
+				public void mousePressed(MouseEvent e) {}
+				public void mouseReleased(MouseEvent e) {}
+				public void mouseEntered(MouseEvent e) {}
+				public void mouseExited(MouseEvent e) {}
+			});
+			OrderList.add(OrderLB, gbc);
+			OrderCount++;
+			OrderScroll.getVerticalScrollBar().setValue(OrderScroll.getVerticalScrollBar().getMaximum());
+			validate();
+		}
 		public void paintComponent(Graphics g) { // 초기화면 배경
 			g.drawImage(background, 0, 0, Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT, null);
 			setOpaque(false);
@@ -337,29 +417,6 @@ public class CafeSystem extends JFrame {
 		});
 	}
 
-	public void ListPanel(JPanel p, int x, int y, String s) { // 리스트 판넬 - 추가할 판넬. 위치x, 위치y, 초기화버튼이름
-		JPanel OrderPanel = new JPanel();
-		JScrollPane scroll = new JScrollPane(OrderPanel);
-		OrderPanel.setLayout(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.anchor = GridBagConstraints.PAGE_END;
-		gbc.weightx = 1.0;
-		gbc.weighty = 1.0;
-		gbc.gridx = 0;
-		gbc.gridy = 1000;
-		OrderPanel.add(new JLabel(s), gbc);
-		gbc.weighty = 0;
-		gbc.anchor = GridBagConstraints.PAGE_START;
-		scroll.setBounds(x, y, 300, 400);
-		scroll.setBackground(new Color(0, 0, 0, 0));
-		OrderPanel.setBorder(new TitledBorder(new LineBorder((new Color(255, 255, 255, 255)), 3)));
-		OrderPanel.setBackground(new Color(255, 255, 255, 122));
-		p.add(scroll);
-	}
-
-	public void addorder(Menu[] m) {
-	}
 
 	public void ChangePanel(String S) {
 		cards.show(this.getContentPane(), S);
