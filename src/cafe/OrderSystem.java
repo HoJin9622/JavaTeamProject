@@ -18,7 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import cafe.Sum;
+import cafe.Static;
 
 @SuppressWarnings("serial")
 
@@ -257,7 +257,7 @@ public class OrderSystem extends JFrame {
 
 				@Override
 				public void mousePressed(MouseEvent e) { // 노래신청 버튼을 누르면
-					String name = trackList.get(nowSelected).getListMusic();
+					Static.reserveMusic = trackList.get(nowSelected).getListMusic();
 
 					JOptionPane.showMessageDialog(null, "노래 신청이 완료되었습니다.", "Message", JOptionPane.INFORMATION_MESSAGE);
 					ChangePanel("Intro");
@@ -689,7 +689,7 @@ public class OrderSystem extends JFrame {
 							if (result2 == JOptionPane.CLOSED_OPTION) { // 포인트 적립X
 								JOptionPane.showMessageDialog(null, "결제 완료", " ", JOptionPane.INFORMATION_MESSAGE);
 								cafesystem.addorder(m);
-								Sum.total+=Integer.parseInt(lbl_price.getText());
+								Static.total+=Integer.parseInt(lbl_price.getText());
 								// new SlotMachineEx();
 								ChangePanel("Intro");
 							} else if (result2 == JOptionPane.YES_OPTION) { // 포인트 적립 O

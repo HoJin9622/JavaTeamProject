@@ -22,15 +22,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import cafe.TotalGUI;
 
-class Static {
-	 static int total = 0;
-	 static String reserveMusic;
-	 static String pNum;
-}
-
-public class TotalGUI extends JFrame implements Cafe {
-	private JTextField tfIdx, tfDate, tfSum;
+public class UserGUI extends JFrame implements Cafe {
+	private JTextField tfIdx, tfpNum, tfPoint;
 	private JTable table;
 	private JPanel pSouth;
 	private JPanel pWest;
@@ -39,7 +34,7 @@ public class TotalGUI extends JFrame implements Cafe {
 	JButton btnUpdate;
 	JButton btnDelete;
 
-	public TotalGUI() {
+	public UserGUI() {
 		showFrame();
 	}
 
@@ -53,10 +48,10 @@ public class TotalGUI extends JFrame implements Cafe {
 		pSouth = new JPanel();
 		getContentPane().add(pSouth, BorderLayout.SOUTH);
 
-		btnInsert = new JButton("매출 정산");
-		btnUpdate = new JButton("매출 수정");
-		btnDelete = new JButton("매출 삭제");
-		btnSelect = new JButton("매출 목록");
+		btnInsert = new JButton("회원 추가");
+		btnUpdate = new JButton("회원 수정");
+		btnDelete = new JButton("회원 삭제");
+		btnSelect = new JButton("회원 목록");
 
 		pSouth.add(btnInsert);
 		pSouth.add(btnUpdate);
@@ -84,7 +79,7 @@ public class TotalGUI extends JFrame implements Cafe {
 			}
 		});
 
-		// ================= 좌측 매출 정보 입력 패널 ==================
+		// ================= 좌측 회원 정보 입력 패널 ==================
 		pWest = new JPanel();
 		getContentPane().add(pWest, BorderLayout.WEST);
 		// 패널 5개 행 생성 위해 GridLayout(5, 1) 설정
@@ -99,19 +94,19 @@ public class TotalGUI extends JFrame implements Cafe {
 		tfIdx.setEditable(false); // 텍스트필드 편집 불가 설정
 		pIdx.add(tfIdx);
 
-		JPanel pDate = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		pWest.add(pDate);
-		pDate.add(new JLabel("날   짜"));
-		tfDate = new JTextField(10);
-		pDate.add(tfDate);
+		JPanel ppNum = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		pWest.add(ppNum);
+		ppNum.add(new JLabel("폰 번호"));
+		tfpNum = new JTextField(10);
+		ppNum.add(tfpNum);
 
-		JPanel pSum = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		pWest.add(pSum);
-		pSum.add(new JLabel("매   출"));
-		tfSum = new JTextField(10);
-		pSum.add(tfSum);
+		JPanel pPoint = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		pWest.add(pPoint);
+		pPoint.add(new JLabel("포 인 트"));
+		tfPoint = new JTextField(10);
+		pPoint.add(tfPoint);
 
-		// ================= 중앙 매출 정보 출력 패널 ==================
+		// ================= 중앙 회원 정보 출력 패널 ==================
 		// 스크롤바 기능을 위해 JScrollPane 객체를 생성하여 Center 영역에 부착
 		JScrollPane scrollPane = new JScrollPane();
 		getContentPane().add(scrollPane);
@@ -124,8 +119,8 @@ public class TotalGUI extends JFrame implements Cafe {
 		// 테이블 컬럼명 표시를 위해 Vector 객체에 컬럼명을 저장한 후 DefaultTableModel 객체에 추가
 		Vector<String> columnNames = new Vector<String>();
 		columnNames.add("번호");
-		columnNames.add("날짜");
-		columnNames.add("매출");
+		columnNames.add("폰 번호");
+		columnNames.add("포인트");
 
 //		DefaultTableModel dtm = new DefaultTableModel(columnNames, 0);
 		DefaultTableModel dtm = new DefaultTableModel(columnNames, 0) {
@@ -152,45 +147,42 @@ public class TotalGUI extends JFrame implements Cafe {
 				// 선택된 컬럼의 데이터 출력
 //				System.out.println(table.getValueAt(table.getSelectedRow(), table.getSelectedColumn()));
 
-				showTotalInfo(); // 선택된 행의 모든 컬럼 데이터를 WEST 영역 텍스트필드에 표시
+				showUserInfo(); // 선택된 행의 모든 컬럼 데이터를 WEST 영역 텍스트필드에 표시
 			}
 		});
 		setVisible(true);
 	}
 
-	// 매출 정산
+	// 회원 및 포인트 추가
 	public void insert() {
-
-		String date = null;
-		SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
-		Date time = new Date();
-		date = format1.format(time);
 		
 		// 입력 항목 체크
-		if (date==null) {
-			JOptionPane.showMessageDialog(rootPane, "날짜 입력 오류!", "Error", JOptionPane.ERROR_MESSAGE);
+		if (Static.pNum==null) {
+			JOptionPane.showMessageDialog(rootPane, "번호 오류!", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		TotalDTO dto=new TotalDTO(date,Static.total);
 		
-		TotalDAO dao = TotalDAO.getInstance();
-		int result = dao.insert(dto); // 매출정산 후 결과값 리턴
+		UserDTO dto=new UserDTO(Static.pNum);
+		UserDAO dao = UserDAO.getInstance();
+		
+		int result = dao.insert(dto); // 회원추가 후 결과값 리턴
 
-		// 매출 추가 여부 판별
+		// 회원 추가 여부 판별
 		if (result == 0) { // 실패했을 경우
-			JOptionPane.showMessageDialog(rootPane, "매출를 정산할 수 없습니다.", "실패", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(rootPane, "회원을 추가할 수 없습니다.", "실패", JOptionPane.ERROR_MESSAGE);
 			return;
 		} else { // 성공했을 경우
-			JOptionPane.showMessageDialog(rootPane, "매출를 정산하였습니다.", "성공", JOptionPane.INFORMATION_MESSAGE);
-			dto=new TotalDTO(0,date,0);
-			Static.total=0;
+			JOptionPane.showMessageDialog(rootPane, "회원을 추가하였습니다.", "성공", JOptionPane.INFORMATION_MESSAGE);
+			Static.pNum=null;
 		}
 	}
 
-	// 매출 목록 조회
+	// 회원 목록 조회
 	public void select() {
-		TotalDAO dao = TotalDAO.getInstance();
-		// 매출 목록 조회 후 전체 레코드를 Vector 타입으로 저장하여 리턴
+		UserDAO dao = UserDAO.getInstance();
+		
+			
+		// 회원 목록 조회 후 전체 레코드를 Vector 타입으로 저장하여 리턴
 		Vector<Vector> data = dao.select();
 
 		DefaultTableModel dtm = (DefaultTableModel) table.getModel(); // 다운캐스팅
@@ -206,11 +198,11 @@ public class TotalGUI extends JFrame implements Cafe {
 		invalidate(); // 프레임 갱신(새로 그리기)
 	}
 
-	// 매출 기록 삭제
+	// 회원 기록 삭제
 	public void delete() {
 
-		// InputDialog 사용하여 삭제할 매출 번호 입력받기
-		String idx = JOptionPane.showInputDialog(rootPane, "삭제할 매출 번호를 입력하세요.");
+		// InputDialog 사용하여 삭제할 회원 번호 입력받기
+		String idx = JOptionPane.showInputDialog(rootPane, "삭제할 회원 번호를 입력하세요.");
 //		System.out.println(idx);
 
 		while (idx == null || idx.length() == 0) {
@@ -223,7 +215,7 @@ public class TotalGUI extends JFrame implements Cafe {
 			JOptionPane.showMessageDialog(rootPane, "번호 입력 필수!", "입력 오류", JOptionPane.ERROR_MESSAGE);
 
 			// 다시 입력받기
-			idx = JOptionPane.showInputDialog(rootPane, "삭제할 매출 번호를 입력하세요.");
+			idx = JOptionPane.showInputDialog(rootPane, "삭제할 회원 번호를 입력하세요.");
 		}
 
 		// 삭제할 번호를 입력할 경우
@@ -234,15 +226,15 @@ public class TotalGUI extends JFrame implements Cafe {
 			return;
 		}
 
-		TotalDAO dao = TotalDAO.getInstance();
+		UserDAO dao = UserDAO.getInstance();
 
 		int result = dao.delete(Integer.parseInt(idx));
-		// 매출 삭제 여부 판별
+		// 회원 삭제 여부 판별
 		if (result == 0) { // 실패했을 경우
-			JOptionPane.showMessageDialog(rootPane, "매출를 삭제할 수 없습니다.", "실패", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(rootPane, "회원를 삭제할 수 없습니다.", "실패", JOptionPane.ERROR_MESSAGE);
 			return;
 		} else { // 성공했을 경우
-			JOptionPane.showMessageDialog(rootPane, "매출를 삭제하였습니다.", "성공", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(rootPane, "회원를 삭제하였습니다.", "성공", JOptionPane.INFORMATION_MESSAGE);
 		}
 
 	}
@@ -252,8 +244,8 @@ public class TotalGUI extends JFrame implements Cafe {
 			return;
 		}
 
-		// 테이블 셀 선택했을 경우 창 새 프레임 생성하여 선택된 매출 정보 표시
-		JFrame editFrame = new JFrame("매출 정보 수정"); // 새 프레임 생성
+		// 테이블 셀 선택했을 경우 창 새 프레임 생성하여 선택된 회원 정보 표시
+		JFrame editFrame = new JFrame("회원 정보 수정"); // 새 프레임 생성
 		// 위치 설정 시 기존 부모 프레임의 위치 좌표 값을 받아서 사용(double타입이므로 int형 형변환)
 		editFrame.setBounds((int) this.getLocation().getX(), (int) this.getLocation().getY(), 250, 300);
 		editFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // 현재 프레임만 종료
@@ -272,19 +264,12 @@ public class TotalGUI extends JFrame implements Cafe {
 		tfIdx.setEditable(false); // 텍스트필드 편집 불가 설정
 		pIdx.add(tfIdx);
 
-		JPanel pDate = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		pWest.add(pDate);
+		JPanel ppNum = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		pWest.add(ppNum);
 
-		pDate.add(new JLabel("날   짜"));
-		JTextField tfDate = new JTextField(10);
-		pDate.add(tfDate);
-
-		JPanel pSum = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		pWest.add(pSum);
-
-		pSum.add(new JLabel("매   출 "));
-		JTextField tfSum = new JTextField(10);
-		pSum.add(tfSum);
+		ppNum.add(new JLabel("폰 번 호"));
+		JTextField tfpNum = new JTextField(10);
+		ppNum.add(tfpNum);
 
 		JPanel pSouth = new JPanel();
 		editFrame.add(pSouth, BorderLayout.SOUTH);
@@ -301,7 +286,7 @@ public class TotalGUI extends JFrame implements Cafe {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == btnUpdate) {
-
+					
 				} else if (e.getSource() == btnCancel) {
 				}
 			}
@@ -313,16 +298,16 @@ public class TotalGUI extends JFrame implements Cafe {
 		editFrame.setVisible(true);
 	}
 
-	public void showTotalInfo() {
+	public void showUserInfo() {
 		// 클릭한 행에 대한 모든 정보 가져와서 좌측 WEST 영역 텍스트필드에 표시
 		int row = table.getSelectedRow();
 
 		tfIdx.setText(table.getValueAt(row, 0) + ""); // Object(int) -> String 타입으로 형변환
-		tfDate.setText(table.getValueAt(row, 1).toString()); // Object(String) -> String 타입으로 형변환
-		tfSum.setText((String) table.getValueAt(row, 2)); // Object(double) -> String 타입으로 형변환
+		tfpNum.setText(table.getValueAt(row, 1).toString()); // Object(String) -> String 타입으로 형변환
+		tfPoint.setText((String) table.getValueAt(row, 2)); // Object(double) -> String 타입으로 형변환
 	}
 
 	public static void main(String[] args) {
-		new TotalGUI();
+		new UserGUI();
 	}
 }

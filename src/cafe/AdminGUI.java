@@ -24,7 +24,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-public class AdminGUI extends JFrame {
+public class AdminGUI extends JFrame implements Cafe{
 	private JTextField tfDbIp, tfDbUsername, tfIdx, tfName, tfId, tfPassword;
 	private JPasswordField pfDbPassword;
 	private JTable table;
@@ -44,6 +44,7 @@ public class AdminGUI extends JFrame {
 	public void showFrame() {
 		setTitle("Cafe Management System");
 		setBounds(500, 300, 1280, 720);
+		setLocationRelativeTo(null); // 프로그램이 정중앙에 뜸
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		// ================= 상단 DB 접속 패널 ==================
