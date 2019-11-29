@@ -27,6 +27,7 @@ public class SlotMachineEx extends JFrame {
 
 	public void showFrame() {
 		setTitle("½½·Ô¸Ó½Å");
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(600, 400, 300, 150);
 
 		GridLayout gl_pCenter = new GridLayout(1, 3);

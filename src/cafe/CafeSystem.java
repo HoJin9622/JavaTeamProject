@@ -280,6 +280,7 @@ public class CafeSystem extends JFrame {
 			OrderCount++;
 			OrderScroll.getVerticalScrollBar().setValue(OrderScroll.getVerticalScrollBar().getMaximum());
 			validate();
+			repaint();
 		}
 		public void paintComponent(Graphics g) { // 초기화면 배경
 			g.drawImage(background, 0, 0, Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT, null);

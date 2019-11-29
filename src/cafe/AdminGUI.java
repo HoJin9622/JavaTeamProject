@@ -43,7 +43,7 @@ public class AdminGUI extends JFrame{
 		setTitle("Cafe Management System");
 		setBounds(500, 300, 1280, 720);
 		setLocationRelativeTo(null); // 프로그램이 정중앙에 뜸
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(cards);
 		AdminFrame = new showFrame();
 		TotalFrame = new TotalGUI();
