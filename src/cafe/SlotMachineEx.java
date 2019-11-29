@@ -1,6 +1,8 @@
 package cafe;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,9 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import java.awt.Font;
+import javax.swing.WindowConstants;
 import javax.swing.border.EtchedBorder;
-import java.awt.FlowLayout;
 
 public class SlotMachineEx extends JFrame {
 	private JLabel lblNum1, lblNum2, lblNum3;
@@ -87,7 +88,7 @@ public class SlotMachineEx extends JFrame {
 					spin1.start();
 					spin2.start();
 					spin3.start();
-
+					
 					spin1.stopSignal = false;
 					spin2.stopSignal = false;
 					spin3.stopSignal = false;
@@ -114,17 +115,17 @@ public class SlotMachineEx extends JFrame {
 					String num3 = lblNum3.getText();
 
 					if (num1.equals("7") && num2.equals("7") && num3.equals("7")) {
-						JOptionPane.showMessageDialog(rootPane, "잭팟!!!! 케이크 1개 무료입니다 ~.~\n 카운터로 문의해주세요.");
+						JOptionPane.showMessageDialog(rootPane, "잭팟!!!! 케이크 1개 무료입니다 ~.~\n 알림을 끄지말고 카운터로 문의해주세요.");
 					} else if (num1.equals(num2) && num1.equals(num3)) {
-						JOptionPane.showMessageDialog(rootPane, "1등 당첨! 음료 1개 무료입니다\n 카운터로 문의해주세요. ");
+						JOptionPane.showMessageDialog(rootPane, "1등 당첨! 음료 1개 무료입니다\n 알림을 끄지말고 카운터로 문의해주세요. ");
 					} else
 						JOptionPane.showMessageDialog(rootPane, "꽝입니다.");
 					try {
-						Thread.sleep(3000);
+						Thread.sleep(2000);
 					} catch (InterruptedException e1) {
 						e1.printStackTrace();
 					}
-					System.exit(0);
+					setVisible(false);
 				}
 			}
 		});
@@ -171,6 +172,7 @@ public class SlotMachineEx extends JFrame {
 					spinNum.setText(rNum + "");
 				}
 			}
+			
 		}
 
 	}
