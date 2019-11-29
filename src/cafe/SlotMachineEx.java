@@ -114,10 +114,17 @@ public class SlotMachineEx extends JFrame {
 					String num3 = lblNum3.getText();
 
 					if (num1.equals("7") && num2.equals("7") && num3.equals("7")) {
-						JOptionPane.showMessageDialog(rootPane, "잭팟!!!! 케이크 1개 무료입니다 ~.~");
+						JOptionPane.showMessageDialog(rootPane, "잭팟!!!! 케이크 1개 무료입니다 ~.~\n 카운터로 문의해주세요.");
 					} else if (num1.equals(num2) && num1.equals(num3)) {
-						JOptionPane.showMessageDialog(rootPane, "1등 당첨! 음료 1개 무료입니다 ");
+						JOptionPane.showMessageDialog(rootPane, "1등 당첨! 음료 1개 무료입니다\n 카운터로 문의해주세요. ");
+					} else
+						JOptionPane.showMessageDialog(rootPane, "꽝입니다.");
+					try {
+						Thread.sleep(3000);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
 					}
+					System.exit(0);
 				}
 			}
 		});
@@ -147,6 +154,8 @@ public class SlotMachineEx extends JFrame {
 			// => 단, 생성된 난수가 기존 JLabel 객체의 숫자와 동일할 경우 새로운 난수 발생
 			Random r = new Random();
 
+		
+					
 			while (btn.getText().equals("Stop")) { // 버튼의 텍스트가 "Stop" 일 동안 반복
 				try {
 					Thread.sleep(100);

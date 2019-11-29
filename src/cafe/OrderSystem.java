@@ -691,9 +691,16 @@ public class OrderSystem extends JFrame {
 								String number;
 								while (true) {
 									number = JOptionPane.showInputDialog("전화번호를 입력해주세요( '-' 없이 번호만 입력)");
-									if (number.length() != 11)
-										JOptionPane.showMessageDialog(null, "11자리 번호만 입력해주세요", "오류", JOptionPane.INFORMATION_MESSAGE);
-									else { // 여기에 회원 DB 불러와서 기존 데이터가 있으면 계산금액의 1%적립, 기존 데이터 없으면 기존 데이터 추가
+									if( number != null) {
+										if (number.length() != 11)
+											JOptionPane.showMessageDialog(null, "11자리 번호만 입력해주세요", "오류", JOptionPane.INFORMATION_MESSAGE);
+										else { // 여기에 회원 DB 불러와서 기존 데이터가 있으면 계산금액의 1%적립, 기존 데이터 없으면 기존 데이터 추가
+											pay();
+											break;
+										}
+									}
+									else
+									{
 										pay();
 										break;
 									}
@@ -946,7 +953,7 @@ public class OrderSystem extends JFrame {
 				lbl_view[i].setText("");
 				m[i].setCount(0);
 			}
-			// new SlotMachineEx();
+			new SlotMachineEx();
 			ChangePanel("Intro");
 		}
 	}
