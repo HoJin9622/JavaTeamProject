@@ -131,13 +131,13 @@ public class AdminGUI extends JFrame {
 					}
 				};
 
-				// 네 개 버튼 리스너 동시 연결
+				// 다섯 개 버튼 리스너 동시 연결
 				btnInsert.addActionListener(btnListener);
 				btnSelect.addActionListener(btnListener);
 				btnDelete.addActionListener(btnListener);
 				btnUpdate.addActionListener(btnListener);
-
-			}
+				btnTotal.addActionListener(btnListener);
+				}
 		});
 
 		// ================= 좌측 회원 정보 입력 패널 ==================
@@ -302,7 +302,6 @@ public class AdminGUI extends JFrame {
 			table.setVisible(false);
 			isLogin = false; // 로그아웃 상태로 변경
 		}
-
 	}
 
 	// 관리자추가

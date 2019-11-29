@@ -181,6 +181,7 @@ public class TotalGUI extends JFrame {
 		} else { // 성공했을 경우
 			JOptionPane.showMessageDialog(rootPane, "매출를 정산하였습니다.", "성공", JOptionPane.INFORMATION_MESSAGE);
 			dto=new TotalDTO(0,date,0);
+			Sum.total=0;
 		}
 	}
 

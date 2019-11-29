@@ -689,8 +689,9 @@ public class OrderSystem extends JFrame {
 							if (result2 == JOptionPane.CLOSED_OPTION) { // 포인트 적립X
 								JOptionPane.showMessageDialog(null, "결제 완료", " ", JOptionPane.INFORMATION_MESSAGE);
 								cafesystem.addorder(m);
-								
+								Sum.total+=Integer.parseInt(lbl_price.getText());
 								// new SlotMachineEx();
+								ChangePanel("Intro");
 							} else if (result2 == JOptionPane.YES_OPTION) { // 포인트 적립 O
 								String number;
 								while (true) {
