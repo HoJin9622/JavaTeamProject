@@ -1,6 +1,7 @@
 ﻿package cafe;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -125,8 +126,6 @@ public class AdminGUI extends JFrame {
 							delete();
 						} else if (e.getSource() == btnUpdate) {
 							update();
-						}else if(e.getSource()==btnTotal) {
-							new TotalGUI();
 						}
 					}
 				};
@@ -136,10 +135,14 @@ public class AdminGUI extends JFrame {
 				btnSelect.addActionListener(btnListener);
 				btnDelete.addActionListener(btnListener);
 				btnUpdate.addActionListener(btnListener);
-				btnTotal.addActionListener(btnListener);
 				}
 		});
-
+		btnTotal.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				new TotalGUI();
+			}
+		});
 		// ================= 좌측 회원 정보 입력 패널 ==================
 		pWest = new JPanel();
 		getContentPane().add(pWest, BorderLayout.WEST);

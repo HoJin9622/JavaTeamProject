@@ -695,7 +695,6 @@ public class OrderSystem extends JFrame {
 							} else if (result2 == JOptionPane.YES_OPTION) { // 포인트 적립 O
 								String number;
 								while (true) {
-
 									number = JOptionPane.showInputDialog("전화번호를 입력해주세요( '-' 없이 번호만 입력)");
 									if (number.length() != 11)
 										JOptionPane.showMessageDialog(null, "11자리 번호만 입력해주세요", "오류",
