@@ -80,7 +80,8 @@ public class CafeSystem extends JFrame {
 
 		private JLabel menuBar = new JLabel(menuBarImage);
 		private JButton exitButton = new JButton(exitButtonBasicImage);
-
+		private Music introMusic;
+		
 		public MainScreenPanel() {
 			orderbutton = new ImageIcon(orderbutton.getImage().getScaledInstance(350, 130, Image.SCALE_SMOOTH)); // 이미지
 																													// 아이콘
@@ -121,9 +122,13 @@ public class CafeSystem extends JFrame {
 					// TODO Auto-generated method stub
 					if (songbutton.getIcon() == playbutton) { // > 모양의 노래 재생 버튼을 눌렀을 때
 						songbutton.setIcon(pausebutton);
-
-					} else if (songbutton.getIcon() == pausebutton)
+						Static.n=(int)(Math.random()*(Static.trackListAll.size())+0);
+						introMusic = new Music(Static.trackListAll.get(Static.n).getListMusic(), Static.trackListAll, true);
+						introMusic.start();
+					} else if (songbutton.getIcon() == pausebutton) {
 						songbutton.setIcon(playbutton);
+						introMusic.close();
+					}
 				}
 			});
 			add(songbutton);

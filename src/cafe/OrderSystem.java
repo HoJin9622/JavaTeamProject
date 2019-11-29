@@ -38,8 +38,6 @@ public class OrderSystem extends JFrame {
 	private int mouseX, mouseY;
 //	private boolean isSelectScreen = false; // 노래 신청 버튼을 눌렀을 때 true로
 	ArrayList<Track> trackList = new ArrayList<Track>();
-	private int n;
-	private Music introMusic;
 	private IntroScreenPanel IntroPanel = null;
 	private SongScreenPanel SongPanel = null;
 	private OrderScreenPanel OrderPanel = null;
@@ -51,7 +49,7 @@ public class OrderSystem extends JFrame {
 		trackList.add(new Track("parisImage.png", "Lauv - Paris In The Rain.mp3"));
 		trackList.add(new Track("boatImage.png", "George - Boat.mp3"));
 		trackList.add(new Track("olderImage.png", "Sasha Sloan - Older.mp3"));
-
+		Static.trackListAll=trackList;
 		setTitle("Cafe Management System"); // 프로그램 이름
 		setSize(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT); // 프로그램 창 설정
 		Container c = getContentPane();
@@ -69,9 +67,6 @@ public class OrderSystem extends JFrame {
 		setVisible(false); // 창이 정상출력되도록 도와줌, 기본 값은 false
 		setBackground(new Color(0, 0, 0, 0)); // 배경이 회색이 아니라 전부 하얀색을 바뀜
 
-		n = (int) (Math.random() * (trackList.size()) + 0);
-		introMusic = new Music(trackList.get(n).getListMusic(), trackList, true);
-		introMusic.start();
 	}
 
 	class IntroScreenPanel extends JPanel {
@@ -287,7 +282,7 @@ public class OrderSystem extends JFrame {
 				}
 			});
 			add(backButton);
-			selectTrack(n);
+			selectTrack(Static.n);
 		}
 
 		public void paintComponent(Graphics g) { // 노래 배경

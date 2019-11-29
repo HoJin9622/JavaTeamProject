@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
@@ -27,6 +28,8 @@ class Static {
 	 static int total = 0;
 	 static String reserveMusic;
 	 static String pNum;
+	 static int n;
+	 static ArrayList<Track> trackListAll;
 }
 
 public class AdminGUI extends JFrame{
