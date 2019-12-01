@@ -43,9 +43,10 @@ public class OrderSystem extends JFrame {
 	private OrderScreenPanel OrderPanel = null;
 	private CardLayout cards = new CardLayout();
 	CafeSystem cafesystem;
-
+	OrderSystem OS;
 	public OrderSystem(CafeSystem CS) {
 		cafesystem = CS;
+		OS = this;
 		trackList=new ArrayList<Track>();
 		trackList.add(new Track("parisImage.png", "Lauv - Paris In The Rain.mp3"));
 		trackList.add(new Track("boatImage.png", "George - Boat.mp3"));
@@ -53,7 +54,6 @@ public class OrderSystem extends JFrame {
 		Static.trackListAll=trackList;
 		Static.trackList = trackList;
 		reserveList= new Vector<String>();
-		
 		setTitle("Cafe Management System"); // 프로그램 이름
 		setSize(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT); // 프로그램 창 설정
 		Container c = getContentPane();
@@ -258,7 +258,7 @@ public class OrderSystem extends JFrame {
 				public void mousePressed(MouseEvent e) { // 노래신청 버튼을 누르면
 					reserveList.add(trackList.get(nowSelected).getListMusic());
 					cafesystem.MainPanel.addReserveMusic(reserveList);
-					JOptionPane.showMessageDialog(null, "노래 신청이 완료되었습니다.", "Message", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(OS, "노래 신청이 완료되었습니다.", "Message", JOptionPane.INFORMATION_MESSAGE);
 					ChangePanel("Intro");
 				}
 			});
@@ -676,7 +676,7 @@ public class OrderSystem extends JFrame {
 					if (lbl_price.getText().equals("0")) // 메뉴를 담지 않았으면 메시지 박스 Show
 						JOptionPane.showMessageDialog(null, "메뉴를 선택해주세요", "오류", JOptionPane.INFORMATION_MESSAGE);
 					else {
-						int result1 = JOptionPane.showConfirmDialog(null, "포인트를 사용하시겠습니까?", "포인트사용", JOptionPane.YES_NO_OPTION);
+						int result1 = JOptionPane.showConfirmDialog(OS, "포인트를 사용하시겠습니까?", "포인트사용", JOptionPane.YES_NO_OPTION);
 						if( result1 == 0) {
 							while(true) {
 								String number = JOptionPane.showInputDialog("사용하시려면 전화번호를 입력해주세요('-' 없이 번호만 입력)");
@@ -688,11 +688,11 @@ public class OrderSystem extends JFrame {
 									break;
 								}
 								else
-									JOptionPane.showMessageDialog(null, "11자리 번호만 입력해주세요");
+									JOptionPane.showMessageDialog(OS, "11자리 번호만 입력해주세요");
 							}
 						}
 						else if( result1 == 1) {
-							int result2 = JOptionPane.showConfirmDialog(null, "포인트를 적립하시겠습니까?", "포인트사용", JOptionPane.YES_NO_OPTION);
+							int result2 = JOptionPane.showConfirmDialog(OS, "포인트를 적립하시겠습니까?", "포인트사용", JOptionPane.YES_NO_OPTION);
 							if( result2 == 0 ) {
 								while(true) {
 									String number = JOptionPane.showInputDialog("전화번호를 입력해주세요('-' 없이 번호만 입력)");
@@ -705,7 +705,7 @@ public class OrderSystem extends JFrame {
 										break;
 									}
 									else
-										JOptionPane.showMessageDialog(null, "11자리 번호만 입력해주세요");
+										JOptionPane.showMessageDialog(OS, "11자리 번호만 입력해주세요");
 								}
 							}
 							else if ( result2 == 1 )
@@ -949,7 +949,7 @@ public class OrderSystem extends JFrame {
 		}
 		
 		public void pay() {
-			JOptionPane.showMessageDialog(null, "결제 완료", " ", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(OS, "결제 완료", " ", JOptionPane.INFORMATION_MESSAGE);
 			cafesystem.MainPanel.addorder(m);
 			Static.total+=Integer.parseInt(lbl_price.getText());
 			lbl_price.setText("0");
@@ -957,8 +957,7 @@ public class OrderSystem extends JFrame {
 				lbl_view[i].setText("");
 				m[i].setCount(0);
 			}
-			new SlotMachineEx();
-			ChangePanel("Intro");
+			new SlotMachineEx(OS);
 		}
 	}
 	

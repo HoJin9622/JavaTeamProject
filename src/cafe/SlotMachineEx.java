@@ -4,8 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Random;
 
 import javax.swing.JButton;
@@ -20,16 +23,24 @@ import javax.swing.border.EtchedBorder;
 public class SlotMachineEx extends JFrame {
 	private JLabel lblNum1, lblNum2, lblNum3;
 	private JButton btn;
-
-	public SlotMachineEx() {
+	OrderSystem OS;
+	public SlotMachineEx(OrderSystem OS) {
+		this.OS = OS;
 		showFrame();
 	}
 
 	public void showFrame() {
 		setTitle("슬롯머신");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(600, 400, 300, 150);
-
+		Point p = OS.getLocation();
+		setBounds(p.x+490, p.y+285, 300, 150);
+		
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				JFrame frame = (JFrame)e.getWindow();
+				frame.dispose();
+				OS.ChangePanel("Intro");
+			}
+		});
 		GridLayout gl_pCenter = new GridLayout(1, 3);
 		JPanel pCenter = new JPanel(gl_pCenter);
 		pCenter.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
@@ -125,17 +136,15 @@ public class SlotMachineEx extends JFrame {
 					} catch (InterruptedException e1) {
 						e1.printStackTrace();
 					}
-					setVisible(false);
+					dispose();
+					OS.ChangePanel("Intro");
 				}
 			}
 		});
 
 		setVisible(true);
 	}
-
-	public static void main(String[] args) {
-		new SlotMachineEx();
-	}
+	
 
 	// 1개의 슬롯머신의 1개 슬롯을 구현하는 SlotSpin 클래스 정의 - Thread 클래스 상속
 	// => JLabel 이나 정지신호 변수 등에 접근하기 위해 내부클래스 형태로 정의

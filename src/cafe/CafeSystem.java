@@ -78,7 +78,9 @@ public class CafeSystem extends JFrame {
 		private ImageIcon managerbutton2 = new ImageIcon(Main.class.getResource("../images/manager3.png"));
 		private ImageIcon Onbutton = new ImageIcon(Main.class.getResource("../images/on.png"));
 		private ImageIcon Offbutton = new ImageIcon(Main.class.getResource("../images/off.png"));
-
+		private ImageIcon Resetbutton1 = new ImageIcon(Main.class.getResource("../images/reset1.png"));
+		private ImageIcon Resetbutton2 = new ImageIcon(Main.class.getResource("../images/reset2.png"));
+		private ImageIcon Resetbutton3 = new ImageIcon(Main.class.getResource("../images/reset3.png"));
 		private JLabel menuBar = new JLabel(menuBarImage);
 		private JButton exitButton = new JButton(exitButtonBasicImage);
 		JLabel songLabel = null;
@@ -105,6 +107,9 @@ public class CafeSystem extends JFrame {
 			pausebutton = new ImageIcon(pausebutton.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
 			Onbutton = new ImageIcon(Onbutton.getImage().getScaledInstance(96, 40, Image.SCALE_SMOOTH));
 			Offbutton = new ImageIcon(Offbutton.getImage().getScaledInstance(96, 40, Image.SCALE_SMOOTH));
+			Resetbutton1 = new ImageIcon(Resetbutton1.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+			Resetbutton2 = new ImageIcon(Resetbutton2.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+			Resetbutton3 = new ImageIcon(Resetbutton3.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
 			setUndecorated(true); // 기존 메뉴바를 감춰줌
 			setLayout(null);
 			add(exitButton);
@@ -257,6 +262,34 @@ public class CafeSystem extends JFrame {
 				}
 			});
 			add(OnOffbutton);
+			
+			JButton Resetbutton = new JButton(Resetbutton1); // 주문 목록 리셋 버튼
+			Resetbutton.setBorderPainted(false);
+			Resetbutton.setContentAreaFilled(false);
+			Resetbutton.setFocusPainted(false);
+			Resetbutton.setRolloverIcon(Resetbutton2);
+			Resetbutton.setPressedIcon(Resetbutton3);
+			Resetbutton.setBounds(980, 630, 50, 50);
+			Resetbutton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					int result = JOptionPane.showConfirmDialog(CS, "주문 내역을 삭제하시겠습니까?", "알림창", JOptionPane.YES_NO_OPTION);
+					if (result == 0) {
+						OrderList.removeAll();
+						GridBagConstraints gbcO = new GridBagConstraints();
+						gbcO.fill = GridBagConstraints.HORIZONTAL;
+				        gbcO.anchor = GridBagConstraints.PAGE_END;
+						gbcO.weightx = 1.0;
+						gbcO.weighty = 1.0;
+						gbcO.gridx = 0;
+						gbcO.gridy = 1000;
+						OrderList.add(new JLabel("<주문내역>"),gbcO);
+						validate();
+						repaint();
+					}
+				}
+			});
+			add(Resetbutton);
 
 		}
 		public void addorder(Menu [] m) {
