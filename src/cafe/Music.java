@@ -3,9 +3,24 @@ package cafe;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
+
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.AudioDevice;
 import javazoom.jl.player.Player;
 import cafe.Static;
+
+
+
+
+
+
+
+
+
+
+
 
 public class Music extends Thread{
 	private Player player;

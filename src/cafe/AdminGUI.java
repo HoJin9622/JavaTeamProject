@@ -8,9 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Date;
+import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
@@ -30,13 +33,14 @@ class Static {
 	 static String pNum;
 	 static int n;
 	 static ArrayList<Track> trackListAll;
-	 static JLabel songLabel;
+	 static ArrayList<Track> trackList;
 }
 
 public class AdminGUI extends JFrame{
 	private JPanel AdminFrame = null;
 	private JPanel UserFrame = null;
 	private JPanel TotalFrame = null;
+	private JPanel SongFrame = null;
 	private CardLayout cards = new CardLayout();
 	public AdminGUI() {
 		setTitle("Cafe Management System");
@@ -47,9 +51,11 @@ public class AdminGUI extends JFrame{
 		AdminFrame = new showFrame();
 		TotalFrame = new TotalGUI();
 		UserFrame = new UserGUI();
+		SongFrame = new SongGUI();
 		add("Admin", AdminFrame);
 		add("Total", TotalFrame);
 		add("User", UserFrame);
+		add("Song", SongFrame);
 		setVisible(true);
 	}
 	class showFrame extends JPanel  implements Cafe {
@@ -65,6 +71,7 @@ public class AdminGUI extends JFrame{
 		JButton btnDelete;
 		JButton btnTotal;
 		JButton btnUser;
+		JButton btnSong;
 		boolean isLogin; // 로그인 여부 표시할 변수
 		public showFrame() {
 			setLayout(new BorderLayout());
@@ -117,6 +124,7 @@ public class AdminGUI extends JFrame{
 		btnSelect = new JButton("관리자 목록");
 		btnTotal=new JButton("매출 관리");
 		btnUser=new JButton("회원 관리");
+		btnSong=new JButton("노래 관리");
 		
 		pSouth.add(btnInsert);
 		pSouth.add(btnUpdate);
@@ -124,6 +132,7 @@ public class AdminGUI extends JFrame{
 		pSouth.add(btnSelect);
 		pSouth.add(btnTotal);
 		pSouth.add(btnUser);
+		pSouth.add(btnSong);
 		
 		btnInsert.setVisible(false);
 		btnSelect.setVisible(false);
@@ -131,6 +140,7 @@ public class AdminGUI extends JFrame{
 		btnDelete.setVisible(false);
 		btnTotal.setVisible(false);
 		btnUser.setVisible(false);
+		btnSong.setVisible(false);
 		
 		// 로그인 버튼 이벤트 처리
 		btnLogin.addActionListener(new ActionListener() {
@@ -172,6 +182,12 @@ public class AdminGUI extends JFrame{
 			@Override
 			public void mousePressed(MouseEvent e) {
 				ChangePanel("User");
+			}
+		});
+		btnSong.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				ChangePanel("Song");
 			}
 		});
 		// ================= 좌측 회원 정보 입력 패널 ==================
@@ -316,9 +332,11 @@ public class AdminGUI extends JFrame{
 					btnTotal.setVisible(true);
 					table.setVisible(true);
 					btnUser.setVisible(true);
+					btnSong.setVisible(true);
 				}else {
 					btnTotal.setVisible(true);
 					btnUser.setVisible(true);
+					btnSong.setVisible(true);
 				}
 				isLogin = true; // 로그인 상태로 변경
 			} else { // 로그인 상태일 경우(로그아웃 버튼을 클릭했을 경우)
@@ -335,6 +353,7 @@ public class AdminGUI extends JFrame{
 				btnTotal.setVisible(false);
 				table.setVisible(false);
 				btnUser.setVisible(false);
+				btnSong.setVisible(false);
 				isLogin = false; // 로그아웃 상태로 변경
 			}
 		}
@@ -1132,6 +1151,173 @@ public class AdminGUI extends JFrame{
 			tfpNum.setText(table.getValueAt(row, 1).toString()); // Object(String) -> String 타입으로 형변환
 			tfPoint.setText((String) table.getValueAt(row, 2)); // Object(double) -> String 타입으로 형변환
 		}
+	}
+	
+	
+	///
+	/// 노래 관리 화면
+	///
+	
+	public class SongGUI extends JPanel {
+		private JTextField tfIdx, tfDate, tfSum;
+		private JTable table;
+		private JPanel pSouth;
+		private JPanel pWest;
+		JButton btnSelect;
+		JButton btnUp;
+		JButton btnDown;
+		JButton btnBack;
+
+		public SongGUI() {
+			showFrame();
+		}
+
+		public void showFrame() {
+			setLayout(new BorderLayout());
+			
+			// ================= 하단 버튼 패널 ==================
+			pSouth = new JPanel();
+			add(pSouth, BorderLayout.PAGE_END);
+
+			btnSelect = new JButton("노래 목록");
+			btnUp = new JButton("↑");
+			btnDown = new JButton("↓");
+			btnBack = new JButton("뒤로 가기");
+
+			
+			pSouth.add(btnSelect);
+			pSouth.add(btnUp);
+			pSouth.add(btnDown);
+			pSouth.add(btnBack);
+
+			
+			btnSelect.addMouseListener(new MouseAdapter() {
+				public void mousePressed(MouseEvent e) {
+					select();
+				}
+			});
+			btnUp.addMouseListener(new MouseAdapter() {
+				public void mousePressed(MouseEvent e) {
+					up();
+				}
+			});
+			btnDown.addMouseListener(new MouseAdapter() {
+				public void mousePressed(MouseEvent e) {
+					down();
+				}
+			});
+			btnBack.addMouseListener(new MouseAdapter() {
+				public void mousePressed(MouseEvent e) {
+					ChangePanel("Admin");
+				}
+			});
+
+			// ================= 좌측 매출 정보 입력 패널 ==================
+//			pWest = new JPanel();
+//			add(pWest, BorderLayout.LINE_START);
+//			// 패널 5개 행 생성 위해 GridLayout(5, 1) 설정
+//			pWest.setLayout(new GridLayout(5, 1));
+//
+//			// 각 행별로 입력 항목에 대한 JLabel + JTextField 로 패널 구성
+//			JPanel pIdx = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+//			pWest.add(pIdx);
+//
+//			pIdx.add(new JLabel("번   호"));
+//			tfIdx = new JTextField(10);
+//			tfIdx.setEditable(false); // 텍스트필드 편집 불가 설정
+//			pIdx.add(tfIdx);
+//
+//			JPanel pDate = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+//			pWest.add(pDate);
+//			pDate.add(new JLabel("날   짜"));
+//			tfDate = new JTextField(10);
+//			pDate.add(tfDate);
+//
+//			JPanel pSum = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+//			pWest.add(pSum);
+//			pSum.add(new JLabel("매   출"));
+//			tfSum = new JTextField(10);
+//			pSum.add(tfSum);
+
+			// ================= 중앙 매출 정보 출력 패널 ==================
+			// 스크롤바 기능을 위해 JScrollPane 객체를 생성하여 Center 영역에 부착
+			JScrollPane scrollPane = new JScrollPane();
+			add(scrollPane, BorderLayout.CENTER);
+
+			// JTable 객체를 생성하여 JScrollPane 의 ViewPort 영역에 부착
+			table = new JTable();
+			table.getTableHeader().setReorderingAllowed(false); // 셀 이동 불가 설정
+			scrollPane.setViewportView(table);
+
+			// 테이블 컬럼명 표시를 위해 Vector 객체에 컬럼명을 저장한 후 DefaultTableModel 객체에 추가
+			String [] columnNames = {"순서","가수","노래"};
+
+//			DefaultTableModel dtm = new DefaultTableModel(columnNames, 0);
+			DefaultTableModel dtm = new DefaultTableModel(columnNames, 0) {
+
+				@Override
+				public boolean isCellEditable(int row, int column) {
+					return false; // 셀 편집 불가능하도록 설정
+				}
+
+			};
+
+			// JTable 에 DefaultTableModel 객체 추가
+			table.setModel(dtm);
+
+			setVisible(true);
+		}
+
+		// 매출 목록 조회
+		public void select() {
+
+			DefaultTableModel dtm = (DefaultTableModel) table.getModel(); // 다운캐스팅
+//			 TableModel tm = table.getModel() 형태로도 사용 가능(다운캐스팅 하지 않을 경우)
+			// => 단, addRow() 등의 메서드가 없음
+
+			dtm.setRowCount(0); // 첫번째 행부터 레코드를 추가해야하므로 커서를 0번 행으로 옮김
+
+			// Vector 객체에 저장된 레코드 수 만큼 반복하면서 레코드 데이터를 모델 객체에 추가(addRow())
+			for (int i = 0; i < Static.trackList.size(); i++) {
+				StringTokenizer st = new StringTokenizer(Static.trackList.get(i).getListMusic(), "-");
+				String num = "" + (i+1);
+				String Singer = st.nextToken().trim();
+				String Song = st.nextToken().trim();
+				dtm.addRow(new String[] {num, Singer, Song});
+			}
+			invalidate(); // 프레임 갱신(새로 그리기)
+		}
+		public void up() {
+			DefaultTableModel dtm = (DefaultTableModel) table.getModel();
+			int row = table.getSelectedRow();
+			String temp = new String();
+			if(row<Static.trackList.size() && row >0) {
+				for(int i =1; i<3;i++) {
+					temp = (String) table.getValueAt(row, i);
+					table.setValueAt(table.getValueAt(row-1, i), row, i);
+					table.setValueAt(temp, row-1, i);
+				}
+				table.setRowSelectionInterval(row-1, row-1);
+				Collections.swap(Static.trackList, row-1, row);
+			}
+			invalidate(); // 프레임 갱신(새로 그리기)
+		}
+		public void down() {
+			DefaultTableModel dtm = (DefaultTableModel) table.getModel();
+			int row = table.getSelectedRow();
+			String temp = new String();
+			if(row<Static.trackList.size()-1 && row >=0) {
+				for(int i =1; i<3;i++) {
+					temp = (String) table.getValueAt(row, i);
+					table.setValueAt(table.getValueAt(row+1, i), row, i);
+					table.setValueAt(temp, row+1, i);
+				}
+				table.setRowSelectionInterval(row+1, row+1);
+				Collections.swap(Static.trackList, row+1, row);
+			}
+			invalidate(); // 프레임 갱신(새로 그리기)
+		}
+
 	}
 	public void ChangePanel(String S) {
 		cards.show(this.getContentPane(), S);

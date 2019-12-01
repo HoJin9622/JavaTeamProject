@@ -29,6 +29,8 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import javazoom.jl.decoder.JavaLayerException;
+
 public class CafeSystem extends JFrame {
 	private Image screenImage; // 더블 버퍼링을 위해서 전체 화면에 대한
 	private Graphics screenGraphic; // 이미지를 담는 두 인스턴스
@@ -42,8 +44,10 @@ public class CafeSystem extends JFrame {
 	private CardLayout cards = new CardLayout();
 	LoginScreenPanel LoginPanel;
 	MainScreenPanel MainPanel;
-	OrderSystem OS = new OrderSystem(this);
+	CafeSystem CS = this; 
+	OrderSystem OS = new OrderSystem(CS);
 
+	Color Dark_charcoal = new Color(51,51,51);
 	public CafeSystem() {
 		setTitle("Cafe Management System"); // 프로그램 이름
 		setSize(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT); // 프로그램 창 설정
@@ -77,15 +81,17 @@ public class CafeSystem extends JFrame {
 
 		private JLabel menuBar = new JLabel(menuBarImage);
 		private JButton exitButton = new JButton(exitButtonBasicImage);
-		private Music introMusic;
+		JLabel songLabel = null;
 		
+		PMusic player;
 		JPanel OrderList;
 		JScrollPane OrderScroll;
 		JPanel SongList;
 		JScrollPane SongScroll;
-		private int OrderCount;
+		private int OrderCount, SongCount;
 		public MainScreenPanel() {
 			OrderCount = 1;
+			SongCount = 1;
 			orderbutton = new ImageIcon(orderbutton.getImage().getScaledInstance(350, 130, Image.SCALE_SMOOTH)); // 이미지
 																													// 아이콘
 																													// 크기
@@ -155,11 +161,11 @@ public class CafeSystem extends JFrame {
 			songPanel.setLayout(null);
 			add(songPanel);
 			
-			Static.songLabel=new JLabel("");
-			Static.songLabel.setFont(new Font("Verdana", Font.BOLD, 30));
-			Static.songLabel.setForeground(Color.WHITE);
-			Static.songLabel.setBounds(840, 130, 330, 30);
-			add(Static.songLabel);
+			songLabel = new JLabel("");
+			songLabel.setFont(new Font("Verdana", Font.BOLD, 20));
+			songLabel.setForeground(Color.WHITE);
+			songLabel.setBounds(5, 6, 330, 35);
+			songPanel.add(songLabel);
 			
 			JLabel TitleLabel = new JLabel("Cafe Mangerment"); // 타이틀 라벨
 			TitleLabel.setFont(new Font("Verdana", Font.BOLD, 60));
@@ -172,22 +178,30 @@ public class CafeSystem extends JFrame {
 			songbutton.setContentAreaFilled(false);
 			songbutton.setFocusPainted(false);
 			songbutton.setBounds(750, 115, 50, 50);
+			Static.n=(int)(Math.random()*(Static.trackListAll.size())+0);
+			try {
+	            player = new PMusic(CS);
+	        } catch (final Exception e) {
+	            throw new RuntimeException(e);
+	        }
 			songbutton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-
 					// TODO Auto-generated method stub
 					if (songbutton.getIcon() == playbutton) { // > 모양의 노래 재생 버튼을 눌렀을 때
 						songbutton.setIcon(pausebutton);
-						Static.n=(int)(Math.random()*(Static.trackListAll.size())+0);
-						introMusic = new Music(Static.trackListAll.get(Static.n).getListMusic(), Static.trackListAll, true);
-						introMusic.start();
-						Static.playingMusic=Static.trackListAll.get(Static.n).getListMusic();
-						Static.songLabel.setText(Static.playingMusic);
+						try {
+							player.play();
+				        } catch (final Exception a) {
+				            throw new RuntimeException(a);
+				        }
 					} else if (songbutton.getIcon() == pausebutton) {
 						songbutton.setIcon(playbutton);
-						introMusic.close();
-						Static.songLabel.setText("");	
+						try {
+				            player.pause();
+				        } catch (final Exception a) {
+				            throw new RuntimeException(a);
+				        }	
 					}
 				}
 			});
@@ -267,10 +281,24 @@ public class CafeSystem extends JFrame {
 			JLabel OrderLB = new JLabel(s.toString());
 			gbc.gridy = OrderCount-1;
 			OrderLB.setOpaque(false);
+			OrderLB.setForeground(Dark_charcoal);
 			OrderLB.addMouseListener(new MouseListener() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					OrderLB.setForeground(Color.RED);
+					if(e.getClickCount()>1) {
+						if(OrderLB.getForeground() == Color.CYAN) {
+							OrderLB.setForeground(Dark_charcoal);
+						}else {
+							OrderLB.setForeground(Color.CYAN);
+						}
+					}else {
+						if(OrderLB.getForeground() == Dark_charcoal) {
+							OrderLB.setForeground(Color.RED);
+						}else if (OrderLB.getForeground() == Color.RED) {
+							OrderLB.setForeground(Dark_charcoal);
+						}
+					}
+					repaint();
 				}
 				public void mousePressed(MouseEvent e) {}
 				public void mouseReleased(MouseEvent e) {}
@@ -288,11 +316,11 @@ public class CafeSystem extends JFrame {
 			gbc.fill = GridBagConstraints.HORIZONTAL;
 			gbc.weightx = 1.0;
 			gbc.gridx = 0;
-			gbc.gridy = OrderCount;
+			gbc.gridy = SongCount;
 			gbc.weighty = 0;
 			gbc.anchor = GridBagConstraints.PAGE_START;
 			boolean flag = false;
-			StringBuffer s = new StringBuffer("주문번호" + Integer.toString(OrderCount) + ": ");
+			StringBuffer s = new StringBuffer("노래예약" + Integer.toString(SongCount) + ": ");
 				if(reserveList.size()>0) {
 					if(flag) {
 						s.append(", ");
@@ -302,20 +330,10 @@ public class CafeSystem extends JFrame {
 				}
 		
 			JLabel OrderLB = new JLabel(s.toString());
-			gbc.gridy = OrderCount-1;
+			gbc.gridy = SongCount-1;
 			OrderLB.setOpaque(false);
-			OrderLB.addMouseListener(new MouseListener() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					OrderLB.setForeground(Color.RED);
-				}
-				public void mousePressed(MouseEvent e) {}
-				public void mouseReleased(MouseEvent e) {}
-				public void mouseEntered(MouseEvent e) {}
-				public void mouseExited(MouseEvent e) {}
-			});
 			SongList.add(OrderLB, gbc);
-			OrderCount++;
+			SongCount++;
 			SongScroll.getVerticalScrollBar().setValue(SongScroll.getVerticalScrollBar().getMaximum());
 			validate();
 			repaint();
