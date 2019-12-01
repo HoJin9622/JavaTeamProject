@@ -27,7 +27,6 @@ import javax.swing.table.DefaultTableModel;
 class Static {
 	 static int total = 0;
 	 static String playingMusic;
-	 static String reserveMusic;
 	 static String pNum;
 	 static int n;
 	 static ArrayList<Track> trackListAll;

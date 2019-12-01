@@ -15,6 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -186,7 +187,7 @@ public class CafeSystem extends JFrame {
 					} else if (songbutton.getIcon() == pausebutton) {
 						songbutton.setIcon(playbutton);
 						introMusic.close();
-						Static.songLabel.setText("");
+						Static.songLabel.setText("");	
 					}
 				}
 			});
@@ -279,6 +280,43 @@ public class CafeSystem extends JFrame {
 			OrderList.add(OrderLB, gbc);
 			OrderCount++;
 			OrderScroll.getVerticalScrollBar().setValue(OrderScroll.getVerticalScrollBar().getMaximum());
+			validate();
+			repaint();
+		}
+		public void addReserveMusic(Vector<String> reserveList) {
+			GridBagConstraints gbc = new GridBagConstraints();
+			gbc.fill = GridBagConstraints.HORIZONTAL;
+			gbc.weightx = 1.0;
+			gbc.gridx = 0;
+			gbc.gridy = OrderCount;
+			gbc.weighty = 0;
+			gbc.anchor = GridBagConstraints.PAGE_START;
+			boolean flag = false;
+			StringBuffer s = new StringBuffer("주문번호" + Integer.toString(OrderCount) + ": ");
+				if(reserveList.size()>0) {
+					if(flag) {
+						s.append(", ");
+					}
+					s.append(reserveList.lastElement());
+					flag = true;
+				}
+		
+			JLabel OrderLB = new JLabel(s.toString());
+			gbc.gridy = OrderCount-1;
+			OrderLB.setOpaque(false);
+			OrderLB.addMouseListener(new MouseListener() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					OrderLB.setForeground(Color.RED);
+				}
+				public void mousePressed(MouseEvent e) {}
+				public void mouseReleased(MouseEvent e) {}
+				public void mouseEntered(MouseEvent e) {}
+				public void mouseExited(MouseEvent e) {}
+			});
+			SongList.add(OrderLB, gbc);
+			OrderCount++;
+			SongScroll.getVerticalScrollBar().setValue(SongScroll.getVerticalScrollBar().getMaximum());
 			validate();
 			repaint();
 		}

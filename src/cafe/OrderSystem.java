@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -18,7 +19,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import cafe.Static;
 
 @SuppressWarnings("serial")
 
@@ -36,8 +36,8 @@ public class OrderSystem extends JFrame {
 	private int nowSelected = 0;
 
 	private int mouseX, mouseY;
-//	private boolean isSelectScreen = false; // 노래 신청 버튼을 눌렀을 때 true로
-	ArrayList<Track> trackList = new ArrayList<Track>();
+	ArrayList<Track> trackList;
+	Vector<String> reserveList;
 	private IntroScreenPanel IntroPanel = null;
 	private SongScreenPanel SongPanel = null;
 	private OrderScreenPanel OrderPanel = null;
@@ -46,10 +46,13 @@ public class OrderSystem extends JFrame {
 
 	public OrderSystem(CafeSystem CS) {
 		cafesystem = CS;
+		trackList=new ArrayList<Track>();
 		trackList.add(new Track("parisImage.png", "Lauv - Paris In The Rain.mp3"));
 		trackList.add(new Track("boatImage.png", "George - Boat.mp3"));
 		trackList.add(new Track("olderImage.png", "Sasha Sloan - Older.mp3"));
 		Static.trackListAll=trackList;
+		reserveList= new Vector<String>();
+		
 		setTitle("Cafe Management System"); // 프로그램 이름
 		setSize(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT); // 프로그램 창 설정
 		Container c = getContentPane();
@@ -121,7 +124,7 @@ public class OrderSystem extends JFrame {
 				}
 
 				@Override
-				public void mousePressed(MouseEvent e) { // 노래신청 버튼을 누른 후의 이벤트 부분
+				public void mousePressed(MouseEvent e) { // 주문시스템 첫 화면의 노래신청 버튼을 누른 후 이벤트 부분
 					ChangePanel("Song");
 				}
 			});
@@ -252,8 +255,8 @@ public class OrderSystem extends JFrame {
 
 				@Override
 				public void mousePressed(MouseEvent e) { // 노래신청 버튼을 누르면
-					Static.reserveMusic = trackList.get(nowSelected).getListMusic();
-
+					reserveList.add(trackList.get(nowSelected).getListMusic());
+					cafesystem.MainPanel.addReserveMusic(reserveList);
 					JOptionPane.showMessageDialog(null, "노래 신청이 완료되었습니다.", "Message", JOptionPane.INFORMATION_MESSAGE);
 					ChangePanel("Intro");
 				}
@@ -294,8 +297,6 @@ public class OrderSystem extends JFrame {
 		}
 
 		public void selectTrack(int nowSelected) {
-			// if (selectedMusic != null) // 노래가 실행되고 있다면
-			// selectedMusic.close(); // 실행중인 노래 중지
 			selectedImage = new ImageIcon(
 					Main.class.getResource("../images/" + trackList.get(nowSelected).getListImage())).getImage();
 			selectedMusic = new Music(trackList.get(nowSelected).getListMusic(), trackList, true);
