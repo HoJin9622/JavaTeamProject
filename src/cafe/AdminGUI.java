@@ -398,6 +398,80 @@ public class AdminGUI extends JFrame{
 			}
 		}
 
+		// 관리자 수정
+		public void update() {
+			if (table.getSelectedRow() == -1) { // 테이블 셀 선택 안됐을 경우 -1 리턴됨
+				return;
+			}
+
+			// 테이블 셀 선택했을 경우 창 새 프레임 생성하여 선택된 회원 정보 표시
+			JFrame editFrame = new JFrame("관리자 정보 수정"); // 새 프레임 생성
+			// 위치 설정 시 기존 부모 프레임의 위치 좌표 값을 받아서 사용(double타입이므로 int형 형변환)
+			editFrame.setBounds((int) this.getLocation().getX(), (int) this.getLocation().getY(), 250, 300);
+			editFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // 현재 프레임만 종료
+
+			JPanel pWest = new JPanel();
+			editFrame.add(pWest, BorderLayout.CENTER);
+			// 패널 5개 행 생성 위해 GridLayout(5, 1) 설정
+			pWest.setLayout(new GridLayout(5, 1));
+
+			// 각 행별로 입력 항목에 대한 JLabel + JTextField 로 패널 구성
+			JPanel pIdx = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			pWest.add(pIdx);
+
+			pIdx.add(new JLabel("번   호"));
+			JTextField tfIdx = new JTextField(10);
+			tfIdx.setEditable(false); // 텍스트필드 편집 불가 설정
+			pIdx.add(tfIdx);
+
+			JPanel pName = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			pWest.add(pName);
+
+			pName.add(new JLabel("이   름"));
+			JTextField tfName = new JTextField(10);
+			pName.add(tfName);
+
+			JPanel pId = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			pWest.add(pId);
+
+			pId.add(new JLabel("아 이 디"));
+			JTextField tfId = new JTextField(10);
+			pId.add(tfId);
+
+			JPanel pPassword = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			pWest.add(pPassword);
+
+			pPassword.add(new JLabel("패스워드"));
+			JTextField tfPassword = new JTextField(10);
+			pPassword.add(tfPassword);
+
+			JPanel pSouth = new JPanel();
+			editFrame.add(pSouth, BorderLayout.SOUTH);
+
+			JButton btnUpdate = new JButton("수정");
+			JButton btnCancel = new JButton("취소");
+
+			pSouth.add(btnUpdate);
+			pSouth.add(btnCancel);
+
+			// 버튼 두 개 구별하는 리스너
+			ActionListener btnListener = new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (e.getSource() == btnUpdate) {
+						
+					} else if (e.getSource() == btnCancel) {
+
+					}
+				}
+			};
+			// 버튼 리스너 동시 연결
+			btnUpdate.addActionListener(btnListener);
+			btnCancel.addActionListener(btnListener);
+
+			editFrame.setVisible(true);
+		}
 		// 관리자 목록
 		public void select() {
 //			if(!isLogin) {
@@ -471,80 +545,7 @@ public class AdminGUI extends JFrame{
 			}
 
 		}
-
-		public void update() {
-			if (table.getSelectedRow() == -1) { // 테이블 셀 선택 안됐을 경우 -1 리턴됨
-				return;
-			}
-
-			// 테이블 셀 선택했을 경우 창 새 프레임 생성하여 선택된 회원 정보 표시
-			JFrame editFrame = new JFrame("관리자 정보 수정"); // 새 프레임 생성
-			// 위치 설정 시 기존 부모 프레임의 위치 좌표 값을 받아서 사용(double타입이므로 int형 형변환)
-			editFrame.setBounds((int) this.getLocation().getX(), (int) this.getLocation().getY(), 250, 300);
-			editFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // 현재 프레임만 종료
-
-			JPanel pWest = new JPanel();
-			editFrame.add(pWest, BorderLayout.CENTER);
-			// 패널 5개 행 생성 위해 GridLayout(5, 1) 설정
-			pWest.setLayout(new GridLayout(5, 1));
-
-			// 각 행별로 입력 항목에 대한 JLabel + JTextField 로 패널 구성
-			JPanel pIdx = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-			pWest.add(pIdx);
-
-			pIdx.add(new JLabel("번   호"));
-			JTextField tfIdx = new JTextField(10);
-			tfIdx.setEditable(false); // 텍스트필드 편집 불가 설정
-			pIdx.add(tfIdx);
-
-			JPanel pName = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-			pWest.add(pName);
-
-			pName.add(new JLabel("이   름"));
-			JTextField tfName = new JTextField(10);
-			pName.add(tfName);
-
-			JPanel pId = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-			pWest.add(pId);
-
-			pId.add(new JLabel("아 이 디"));
-			JTextField tfId = new JTextField(10);
-			pId.add(tfId);
-
-			JPanel pPassword = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-			pWest.add(pPassword);
-
-			pPassword.add(new JLabel("패스워드"));
-			JTextField tfPassword = new JTextField(10);
-			pPassword.add(tfPassword);
-
-			JPanel pSouth = new JPanel();
-			editFrame.add(pSouth, BorderLayout.SOUTH);
-
-			JButton btnUpdate = new JButton("수정");
-			JButton btnCancel = new JButton("취소");
-
-			pSouth.add(btnUpdate);
-			pSouth.add(btnCancel);
-
-			// 버튼 세 개 구별하는 리스너
-			ActionListener btnListener = new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					if (e.getSource() == btnUpdate) {
-
-					} else if (e.getSource() == btnCancel) {
-
-					}
-				}
-			};
-			// 버튼 리스너 동시 연결
-			btnUpdate.addActionListener(btnListener);
-			btnCancel.addActionListener(btnListener);
-
-			editFrame.setVisible(true);
-		}
+		
 		public void showAdminInfo() {
 			// 클릭한 행에 대한 모든 정보 가져와서 좌측 WEST 영역 텍스트필드에 표시
 			int row = table.getSelectedRow();

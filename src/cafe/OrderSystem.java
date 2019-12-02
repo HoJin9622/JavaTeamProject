@@ -51,6 +51,8 @@ public class OrderSystem extends JFrame {
 		trackList.add(new Track("parisImage.png", "Lauv - Paris In The Rain.mp3"));
 		trackList.add(new Track("boatImage.png", "George - Boat.mp3"));
 		trackList.add(new Track("olderImage.png", "Sasha Sloan - Older.mp3"));
+		trackList.add(new Track("nadroImage.png", "Nadro - Tropical Love.mp3"));
+		
 		Static.trackListAll=trackList;
 		Static.trackList = trackList;
 		reserveList= new Vector<String>();
