@@ -27,21 +27,23 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+
 class Static {
-	 static int total = 0; 
-	 static String playingMusic;
-	 static String pNum;
-	 static int n; // 노래 인덱스
-	 static ArrayList<Track> trackListAll;
-	 static ArrayList<Track> trackList;
+	static int total = 0;
+	static String playingMusic;
+	static String pNum;
+	static int n; // 노래 인덱스
+	static ArrayList<Track> trackListAll;
+	static ArrayList<Track> trackList;
 }
 
-public class AdminGUI extends JFrame{
+public class AdminGUI extends JFrame {
 	private JPanel AdminFrame = null;
 	private JPanel UserFrame = null;
 	private JPanel TotalFrame = null;
 	private JPanel SongFrame = null;
 	private CardLayout cards = new CardLayout();
+
 	public AdminGUI() {
 		setTitle("Cafe Management System");
 		setBounds(500, 300, 1280, 720);
@@ -58,7 +60,8 @@ public class AdminGUI extends JFrame{
 		add("Song", SongFrame);
 		setVisible(true);
 	}
-	class showFrame extends JPanel  implements Cafe {
+
+	class showFrame extends JPanel implements Cafe {
 		private JTextField tfDbIp, tfDbUsername, tfIdx, tfName, tfId, tfPassword;
 		private JTextField tfName2, tfId2, tfPassword2;
 		private JPasswordField pfDbPassword;
@@ -78,206 +81,206 @@ public class AdminGUI extends JFrame{
 		JButton btnCancel2;
 
 		boolean isLogin; // 로그인 여부 표시할 변수
-		private String name2,password2,id2;
-		
+		private String name2, password2, id2;
+
 		public showFrame() {
 			setLayout(new BorderLayout());
-		// ================= 상단 DB 접속 패널 ==================
-		JPanel pNorth = new JPanel();
-		add(pNorth, BorderLayout.PAGE_START);
-		// GridLayout 으로 변경(4개의 칸 생성)
-		pNorth.setLayout(new GridLayout(1, 4));
+			// ================= 상단 DB 접속 패널 ==================
+			JPanel pNorth = new JPanel();
+			add(pNorth, BorderLayout.PAGE_START);
+			// GridLayout 으로 변경(4개의 칸 생성)
+			pNorth.setLayout(new GridLayout(1, 4));
 
-		// DB IP주소 입력 패널
-		JPanel pDbIp = new JPanel();
-		pNorth.add(pDbIp);
+			// DB IP주소 입력 패널
+			JPanel pDbIp = new JPanel();
+			pNorth.add(pDbIp);
 
-		pDbIp.add(new JLabel("IP"));
-		tfDbIp = new JTextField(10);
-		tfDbIp.setText("192.168.56.1"); // 임시로 IP 주소를 미리 입력
-		pDbIp.add(tfDbIp);
+			pDbIp.add(new JLabel("IP"));
+			tfDbIp = new JTextField(10);
+			tfDbIp.setText("192.168.56.1"); // 임시로 IP 주소를 미리 입력
+			pDbIp.add(tfDbIp);
 
-		// DB Username 입력 패널
-		JPanel pDbUsername = new JPanel();
-		pNorth.add(pDbUsername);
+			// DB Username 입력 패널
+			JPanel pDbUsername = new JPanel();
+			pNorth.add(pDbUsername);
 
-		pDbUsername.add(new JLabel("name"));
-		tfDbUsername = new JTextField(10);
-		pDbUsername.add(tfDbUsername);
+			pDbUsername.add(new JLabel("name"));
+			tfDbUsername = new JTextField(10);
+			pDbUsername.add(tfDbUsername);
 
-		// DB Password 입력 패널
-		JPanel pDbPassword = new JPanel();
-		pNorth.add(pDbPassword);
+			// DB Password 입력 패널
+			JPanel pDbPassword = new JPanel();
+			pNorth.add(pDbPassword);
 
-		pDbPassword.add(new JLabel("Password"));
-		pfDbPassword = new JPasswordField(10);
-		pDbPassword.add(pfDbPassword);
+			pDbPassword.add(new JLabel("Password"));
+			pfDbPassword = new JPasswordField(10);
+			pDbPassword.add(pfDbPassword);
 
-		// DB Login 버튼 패널
-		JPanel pDbLogin = new JPanel();
-		pNorth.add(pDbLogin);
+			// DB Login 버튼 패널
+			JPanel pDbLogin = new JPanel();
+			pNorth.add(pDbLogin);
 
-		btnLogin = new JButton("로그인");
-		pDbLogin.add(btnLogin);
+			btnLogin = new JButton("로그인");
+			pDbLogin.add(btnLogin);
 
-		
-		// ================= 하단 버튼 패널 ==================
-		pSouth = new JPanel();
-		add(pSouth, BorderLayout.PAGE_END);
-	
-		btnInsert = new JButton("관리자 추가");
-		btnUpdate = new JButton("관리자 수정");
-		btnDelete = new JButton("관리자 삭제");
-		btnSelect = new JButton("관리자 목록");
-		btnTotal=new JButton("매출 관리");
-		btnUser=new JButton("회원 관리");
-		btnSong=new JButton("노래 관리");
-		
-		pSouth.add(btnInsert);
-		pSouth.add(btnUpdate);
-		pSouth.add(btnDelete);
-		pSouth.add(btnSelect);
-		pSouth.add(btnTotal);
-		pSouth.add(btnUser);
-		pSouth.add(btnSong);
-		
-		btnInsert.setVisible(false);
-		btnSelect.setVisible(false);
-		btnUpdate.setVisible(false);
-		btnDelete.setVisible(false);
-		btnTotal.setVisible(false);
-		btnUser.setVisible(false);
-		btnSong.setVisible(false);
-		
-		// 로그인 버튼 이벤트 처리
-		btnLogin.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				dbLogin();
-			
-				// 버튼 4개 구별하는 리스너
-				ActionListener btnListener = new ActionListener() {
+			// ================= 하단 버튼 패널 ==================
+			pSouth = new JPanel();
+			add(pSouth, BorderLayout.PAGE_END);
 
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						if (e.getSource() == btnInsert) {
-							insert();
-						} else if (e.getSource() == btnSelect) {
-							select();
-						} else if (e.getSource() == btnDelete) {
-							delete();
-						} else if (e.getSource() == btnUpdate) {
-							update();
+			btnInsert = new JButton("관리자 추가");
+			btnUpdate = new JButton("관리자 수정");
+			btnDelete = new JButton("관리자 삭제");
+			btnSelect = new JButton("관리자 목록");
+			btnTotal = new JButton("매출 관리");
+			btnUser = new JButton("회원 관리");
+			btnSong = new JButton("노래 관리");
+
+			pSouth.add(btnInsert);
+			pSouth.add(btnUpdate);
+			pSouth.add(btnDelete);
+			pSouth.add(btnSelect);
+			pSouth.add(btnTotal);
+			pSouth.add(btnUser);
+			pSouth.add(btnSong);
+
+			btnInsert.setVisible(false);
+			btnSelect.setVisible(false);
+			btnUpdate.setVisible(false);
+			btnDelete.setVisible(false);
+			btnTotal.setVisible(false);
+			btnUser.setVisible(false);
+			btnSong.setVisible(false);
+
+			// 로그인 버튼 이벤트 처리
+			btnLogin.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					dbLogin();
+
+					// 버튼 4개 구별하는 리스너
+					ActionListener btnListener = new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							if (e.getSource() == btnInsert) {
+								insert();
+							} else if (e.getSource() == btnSelect) {
+								select();
+							} else if (e.getSource() == btnDelete) {
+								delete();
+							} else if (e.getSource() == btnUpdate) {
+								update();
+							}
 						}
-					}
-				};
+					};
 
-				// 다섯 개 버튼 리스너 동시 연결
-				btnInsert.addActionListener(btnListener);
-				btnSelect.addActionListener(btnListener);
-				btnDelete.addActionListener(btnListener);
-				btnUpdate.addActionListener(btnListener);
+					// 다섯 개 버튼 리스너 동시 연결
+					btnInsert.addActionListener(btnListener);
+					btnSelect.addActionListener(btnListener);
+					btnDelete.addActionListener(btnListener);
+					btnUpdate.addActionListener(btnListener);
 				}
-		});
-		btnTotal.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				ChangePanel("Total");
-			}
-		});
-		btnUser.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				ChangePanel("User");
-			}
-		});
-		btnSong.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				ChangePanel("Song");
-			}
-		});
-		// ================= 좌측 회원 정보 입력 패널 ==================
-		pWest = new JPanel();
-		add(pWest, BorderLayout.LINE_START);
-		// 패널 5개 행 생성 위해 GridLayout(5, 1) 설정
-		pWest.setLayout(new GridLayout(5, 1));
+			});
+			btnTotal.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e) {
+					ChangePanel("Total");
+				}
+			});
+			btnUser.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e) {
+					ChangePanel("User");
+				}
+			});
+			btnSong.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e) {
+					ChangePanel("Song");
+				}
+			});
+			// ================= 좌측 회원 정보 입력 패널 ==================
+			pWest = new JPanel();
+			add(pWest, BorderLayout.LINE_START);
+			// 패널 5개 행 생성 위해 GridLayout(5, 1) 설정
+			pWest.setLayout(new GridLayout(5, 1));
 
-		// 각 행별로 입력 항목에 대한 JLabel + JTextField 로 패널 구성
-		JPanel pIdx = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		pWest.add(pIdx);
+			// 각 행별로 입력 항목에 대한 JLabel + JTextField 로 패널 구성
+			JPanel pIdx = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			pWest.add(pIdx);
 
-		pIdx.add(new JLabel("번   호"));
-		tfIdx = new JTextField(10);
-		tfIdx.setEditable(false); // 텍스트필드 편집 불가 설정
-		pIdx.add(tfIdx);
+			pIdx.add(new JLabel("번   호"));
+			tfIdx = new JTextField(10);
+			tfIdx.setEditable(false); // 텍스트필드 편집 불가 설정
+			pIdx.add(tfIdx);
 
-		JPanel pName = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		pWest.add(pName);
-		pName.add(new JLabel("이   름"));
-		tfName = new JTextField(10);
-		pName.add(tfName);
-		
-		JPanel pId = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		pWest.add(pId);
-		pId.add(new JLabel("아 이 디"));
-		tfId = new JTextField(10);
-		pId.add(tfId);
+			JPanel pName = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			pWest.add(pName);
+			pName.add(new JLabel("이   름"));
+			tfName = new JTextField(10);
+			pName.add(tfName);
 
-		JPanel pPassword = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		pWest.add(pPassword);
-		pPassword.add(new JLabel("패스워드"));
-		tfPassword = new JTextField(10);
-		pPassword.add(tfPassword);
+			JPanel pId = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			pWest.add(pId);
+			pId.add(new JLabel("아 이 디"));
+			tfId = new JTextField(10);
+			pId.add(tfId);
 
-		// ================= 중앙 회원 정보 출력 패널 ==================
-		// 스크롤바 기능을 위해 JScrollPane 객체를 생성하여 Center 영역에 부착
-		JScrollPane scrollPane = new JScrollPane();
-		add(scrollPane, BorderLayout.CENTER);
+			JPanel pPassword = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			pWest.add(pPassword);
+			pPassword.add(new JLabel("패스워드"));
+			tfPassword = new JTextField(10);
+			pPassword.add(tfPassword);
 
-		// JTable 객체를 생성하여 JScrollPane 의 ViewPort 영역에 부착
-		table = new JTable();
-		table.getTableHeader().setReorderingAllowed(false); // 셀 이동 불가 설정
-		scrollPane.setViewportView(table);
-		
-		// 테이블 컬럼명 표시를 위해 Vector 객체에 컬럼명을 저장한 후 DefaultTableModel 객체에 추가
-		Vector<String> columnNames = new Vector<String>();
-		columnNames.add("번호");
-		columnNames.add("이름");
-		columnNames.add("아이디");
-		columnNames.add("패스워드");
-		
+			// ================= 중앙 회원 정보 출력 패널 ==================
+			// 스크롤바 기능을 위해 JScrollPane 객체를 생성하여 Center 영역에 부착
+			JScrollPane scrollPane = new JScrollPane();
+			add(scrollPane, BorderLayout.CENTER);
+
+			// JTable 객체를 생성하여 JScrollPane 의 ViewPort 영역에 부착
+			table = new JTable();
+			table.getTableHeader().setReorderingAllowed(false); // 셀 이동 불가 설정
+			scrollPane.setViewportView(table);
+
+			// 테이블 컬럼명 표시를 위해 Vector 객체에 컬럼명을 저장한 후 DefaultTableModel 객체에 추가
+			Vector<String> columnNames = new Vector<String>();
+			columnNames.add("번호");
+			columnNames.add("이름");
+			columnNames.add("아이디");
+			columnNames.add("패스워드");
+
 //		DefaultTableModel dtm = new DefaultTableModel(columnNames, 0);
-		DefaultTableModel dtm = new DefaultTableModel(columnNames, 0) {
+			DefaultTableModel dtm = new DefaultTableModel(columnNames, 0) {
 
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false; // 셀 편집 불가능하도록 설정
-			}
+				@Override
+				public boolean isCellEditable(int row, int column) {
+					return false; // 셀 편집 불가능하도록 설정
+				}
 
-		};
+			};
 
-		// JTable 에 DefaultTableModel 객체 추가
-		table.setModel(dtm);
+			// JTable 에 DefaultTableModel 객체 추가
+			table.setModel(dtm);
 
-		// 테이블 내의 레코드 또는 컬럼 클릭 시 이벤트 처리
-		table.addMouseListener(new MouseAdapter() {
+			// 테이블 내의 레코드 또는 컬럼 클릭 시 이벤트 처리
+			table.addMouseListener(new MouseAdapter() {
 
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// 테이블을 마우스로 클릭할 경우 호출되는 메서드
-				// 선택된 컬럼의 행, 열 번호 출력
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					// 테이블을 마우스로 클릭할 경우 호출되는 메서드
+					// 선택된 컬럼의 행, 열 번호 출력
 //				System.out.println(table.getSelectedRow() + ", " + table.getSelectedColumn());
 
-				// 선택된 컬럼의 데이터 출력
+					// 선택된 컬럼의 데이터 출력
 //				System.out.println(table.getValueAt(table.getSelectedRow(), table.getSelectedColumn()));
 
-				showAdminInfo(); // 선택된 행의 모든 컬럼 데이터를 WEST 영역 텍스트필드에 표시
-			}
-		});
+					showAdminInfo(); // 선택된 행의 모든 컬럼 데이터를 WEST 영역 텍스트필드에 표시
+				}
+			});
 		}
+
 		// 로그인 기능 수행하는 dbLogin() 메서드 정의
-		 void dbLogin() {
+		void dbLogin() {
 			// DB 아이디와 패스워드를 가져와서 DAO 클래스의 login() 메서드 호출
 			// => 로그인 수행 결과를 리턴받아 "아이디 없음", "패스워드 틀림", "로그인 성공" 세 가지로 분류
 			// 0. 로그인 버튼 vs 로그아웃 버튼 판별
@@ -288,13 +291,13 @@ public class AdminGUI extends JFrame{
 			// 2. 로그아웃 버튼일 경우
 			// "로그아웃" 버튼 텍스트를 "로그인"으로 변경 후
 			// IP, Username, Password 텍스트필드 입력 가능 설정
-			
+
 			if (!isLogin) { // 로그인 상태가 아닐 경우
 				// ------------- 입력 체크 --------------
 				String ip = tfDbIp.getText();
 				String username = tfDbUsername.getText();
 				String password = new String(pfDbPassword.getPassword());
-				
+
 				if (ip.length() == 0) {
 					JOptionPane.showMessageDialog(rootPane, "DB 접속 주소 입력", "DB 정보 오류", JOptionPane.ERROR_MESSAGE);
 					tfDbIp.requestFocus();
@@ -327,11 +330,11 @@ public class AdminGUI extends JFrame{
 				tfDbUsername.setEditable(false);
 				pfDbPassword.setEditable(false);
 				btnLogin.setText("로그아웃");
-				if(username.equals("admin")) {
+				if (username.equals("admin")) {
 					tfName.setVisible(true);
 					tfId.setVisible(true);
 					tfPassword.setVisible(true);
-					
+
 					btnInsert.setVisible(true);
 					btnSelect.setVisible(true);
 					btnUpdate.setVisible(true);
@@ -340,7 +343,7 @@ public class AdminGUI extends JFrame{
 					table.setVisible(true);
 					btnUser.setVisible(true);
 					btnSong.setVisible(true);
-				}else {
+				} else {
 					btnTotal.setVisible(true);
 					btnUser.setVisible(true);
 					btnSong.setVisible(true);
@@ -372,7 +375,7 @@ public class AdminGUI extends JFrame{
 				tfDbUsername.requestFocus();
 				return;
 			}
-			
+
 			String name = tfName.getText();
 			String id = tfId.getText();
 			String password = tfPassword.getText();
@@ -414,7 +417,7 @@ public class AdminGUI extends JFrame{
 			// 테이블 셀 선택했을 경우 창 새 프레임 생성하여 선택된 회원 정보 표시
 			JFrame editFrame = new JFrame("Update"); // 새 프레임 생성
 			// 위치 설정 시 기존 부모 프레임의 위치 좌표 값을 받아서 사용(double타입이므로 int형 형변환)
-			editFrame.setBounds(800,200, 250, 300);
+			editFrame.setBounds(800, 200, 250, 300);
 			editFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // 현재 프레임만 종료
 
 			JPanel pWest2 = new JPanel();
@@ -430,7 +433,7 @@ public class AdminGUI extends JFrame{
 			JTextField tfIdx2 = new JTextField(10);
 			tfIdx2.setText(tfIdx.getText());
 			tfIdx2.setHorizontalAlignment(tfIdx2.CENTER);
-			//tfIdx2.setEditable(false); // 텍스트필드 편집 불가 설정
+			tfIdx2.setEditable(false); // 텍스트필드 편집 불가 설정
 			pIdx.add(tfIdx2);
 
 			JPanel pName2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -486,21 +489,22 @@ public class AdminGUI extends JFrame{
 							return;
 						}
 						AdminDTO dto = new AdminDTO(Integer.parseInt(tfIdx.getText()), tfName2.getText(),
-								tfId2.getText(), 
-								tfPassword2.getText());
+								tfId2.getText(), tfPassword2.getText());
 						AdminDAO dao = AdminDAO.getInstance();
 						int result = dao.update(dto); // 관리자 수정 후 결과값 리턴
 
 						// 관리자 수정 여부 판별
 						if (result == 0) { // 실패했을 경우
-							JOptionPane.showMessageDialog(rootPane, "관리자를 수정할 수 없습니다.", "실패", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(rootPane, "관리자를 수정할 수 없습니다.", "실패",
+									JOptionPane.ERROR_MESSAGE);
 							return;
 						} else { // 성공했을 경우
-							JOptionPane.showMessageDialog(rootPane, "관리자를 수정하였습니다.", "성공", JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(rootPane, "관리자를 수정하였습니다.", "성공",
+									JOptionPane.INFORMATION_MESSAGE);
+							editFrame.setVisible(false);
 						}
 					} else if (e.getSource() == btnCancel2) {
 						editFrame.setVisible(false);
-					
 					}
 				}
 			};
@@ -510,6 +514,7 @@ public class AdminGUI extends JFrame{
 
 			editFrame.setVisible(true);
 		}
+
 		// 관리자 목록
 		public void select() {
 //			if(!isLogin) {
@@ -583,7 +588,7 @@ public class AdminGUI extends JFrame{
 			}
 
 		}
-		
+
 		public void showAdminInfo() {
 			// 클릭한 행에 대한 모든 정보 가져와서 좌측 WEST 영역 텍스트필드에 표시
 			int row = table.getSelectedRow();
@@ -595,12 +600,10 @@ public class AdminGUI extends JFrame{
 		}
 	}
 
-	
 	///
-	///매출관리 화면
+	/// 매출관리 화면
 	///
-	
-	
+
 	public class TotalGUI extends JPanel implements Cafe {
 		private JTextField tfIdx, tfDate, tfSum;
 		private JTable table;
@@ -618,7 +621,7 @@ public class AdminGUI extends JFrame{
 
 		public void showFrame() {
 			setLayout(new BorderLayout());
-			
+
 			// ================= 하단 버튼 패널 ==================
 			pSouth = new JPanel();
 			add(pSouth, BorderLayout.PAGE_END);
@@ -739,17 +742,17 @@ public class AdminGUI extends JFrame{
 		public void insert() {
 
 			String date = null;
-			SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
+			SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date time = new Date();
 			date = format1.format(time);
-			
+
 			// 입력 항목 체크
-			if (date==null) {
+			if (date == null) {
 				JOptionPane.showMessageDialog(rootPane, "날짜 입력 오류!", "Error", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			TotalDTO dto=new TotalDTO(date,Static.total);
-			
+			TotalDTO dto = new TotalDTO(date, Static.total);
+
 			TotalDAO dao = TotalDAO.getInstance();
 			int result = dao.insert(dto); // 매출정산 후 결과값 리턴
 
@@ -759,9 +762,101 @@ public class AdminGUI extends JFrame{
 				return;
 			} else { // 성공했을 경우
 				JOptionPane.showMessageDialog(rootPane, "매출를 정산하였습니다.", "성공", JOptionPane.INFORMATION_MESSAGE);
-				dto=new TotalDTO(0,date,0);
-				Static.total=0;
+				dto = new TotalDTO(0, date, 0);
+				Static.total = 0;
 			}
+		}
+
+		// 매출 수정
+		public void update() {
+			if (table.getSelectedRow() == -1) { // 테이블 셀 선택 안됐을 경우 -1 리턴됨
+				return;
+			}
+
+			// 테이블 셀 선택했을 경우 창 새 프레임 생성하여 선택된 회원 정보 표시
+			JFrame editFrame = new JFrame("Update"); // 새 프레임 생성
+			// 위치 설정 시 기존 부모 프레임의 위치 좌표 값을 받아서 사용(double타입이므로 int형 형변환)
+			editFrame.setBounds(800, 200, 250, 300);
+			editFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // 현재 프레임만 종료
+
+			JPanel pWest2 = new JPanel();
+			editFrame.add(pWest2, BorderLayout.CENTER);
+			// 패널 5개 행 생성 위해 GridLayout(5, 1) 설정
+			pWest2.setLayout(new GridLayout(5, 1));
+
+			// 각 행별로 입력 항목에 대한 JLabel + JTextField 로 패널 구성
+			JPanel pIdx = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			pWest2.add(pIdx);
+
+			pIdx.add(new JLabel("번   호"));
+			JTextField tfIdx2 = new JTextField(10);
+			tfIdx2.setText(tfIdx.getText());
+			tfIdx2.setHorizontalAlignment(tfIdx2.CENTER);
+			tfIdx2.setEditable(false); // 텍스트필드 편집 불가 설정
+			pIdx.add(tfIdx2);
+
+			JPanel pDate = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			pWest2.add(pDate);
+
+			pDate.add(new JLabel("날   짜"));
+			JTextField tfName2 = new JTextField(10);
+			pDate.add(tfName2);
+
+			JPanel pId2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			pWest2.add(pId2);
+
+			pId2.add(new JLabel("매   출"));
+			JTextField tfSum = new JTextField(10);
+			pId2.add(tfSum);
+
+			JPanel pSouth2 = new JPanel();
+			editFrame.add(pSouth2, BorderLayout.SOUTH);
+
+			JButton btnUpdate2 = new JButton("수정");
+			JButton btnCancel2 = new JButton("취소");
+
+			pSouth2.add(btnUpdate2);
+			pSouth2.add(btnCancel2);
+
+			// 버튼 두 개 구별하는 리스너
+			ActionListener btnListener = new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (e.getSource() == btnUpdate2) {
+						// 입력 항목 체크
+						if (tfName2.getText().length() == 0) {
+							JOptionPane.showMessageDialog(rootPane, "날짜 입력 필수!", "입력 오류", JOptionPane.ERROR_MESSAGE);
+							tfName2.requestFocus();
+							return;
+						} else if (tfSum.getText().length() == 0) {
+							JOptionPane.showMessageDialog(rootPane, "매출 입력 필수!", "입력 오류", JOptionPane.ERROR_MESSAGE);
+							tfSum.requestFocus();
+							return;
+						}
+						TotalDTO dto = new TotalDTO(Integer.parseInt(tfIdx.getText()), tfName2.getText(),
+								Integer.parseInt(tfSum.getText()));
+						TotalDAO dao = TotalDAO.getInstance();
+						int result = dao.update(dto); // 매출 수정 후 결과값 리턴
+
+						// 매출 수정 여부 판별
+						if (result == 0) { // 실패했을 경우
+							JOptionPane.showMessageDialog(rootPane, "매출을 수정할 수 없습니다.", "실패", JOptionPane.ERROR_MESSAGE);
+							return;
+						} else { // 성공했을 경우
+							JOptionPane.showMessageDialog(rootPane, "매출을 수정하였습니다.", "성공",
+									JOptionPane.INFORMATION_MESSAGE);
+							editFrame.setVisible(false);
+						}
+					} else if (e.getSource() == btnCancel2) {
+						editFrame.setVisible(false);
+					}
+				}
+			};
+			// 버튼 리스너 동시 연결
+			btnUpdate2.addActionListener(btnListener);
+			btnCancel2.addActionListener(btnListener);
+
+			editFrame.setVisible(true);
 		}
 
 		// 매출 목록 조회
@@ -783,7 +878,6 @@ public class AdminGUI extends JFrame{
 			invalidate(); // 프레임 갱신(새로 그리기)
 		}
 
-		
 		// 매출 기록 삭제
 		public void delete() {
 
@@ -825,72 +919,6 @@ public class AdminGUI extends JFrame{
 
 		}
 
-		public void update() {
-			if (table.getSelectedRow() == -1) { // 테이블 셀 선택 안됐을 경우 -1 리턴됨
-				return;
-			}
-
-			// 테이블 셀 선택했을 경우 창 새 프레임 생성하여 선택된 매출 정보 표시
-			JFrame editFrame = new JFrame("매출 정보 수정"); // 새 프레임 생성
-			// 위치 설정 시 기존 부모 프레임의 위치 좌표 값을 받아서 사용(double타입이므로 int형 형변환)
-			editFrame.setBounds((int) this.getLocation().getX(), (int) this.getLocation().getY(), 250, 300);
-			editFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // 현재 프레임만 종료
-
-			JPanel pWest = new JPanel();
-			editFrame.add(pWest, BorderLayout.CENTER);
-			// 패널 5개 행 생성 위해 GridLayout(5, 1) 설정
-			pWest.setLayout(new GridLayout(5, 1));
-
-			// 각 행별로 입력 항목에 대한 JLabel + JTextField 로 패널 구성
-			JPanel pIdx = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-			pWest.add(pIdx);
-
-			pIdx.add(new JLabel("번   호"));
-			JTextField tfIdx = new JTextField(10);
-			tfIdx.setEditable(false); // 텍스트필드 편집 불가 설정
-			pIdx.add(tfIdx);
-
-			JPanel pDate = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-			pWest.add(pDate);
-
-			pDate.add(new JLabel("날   짜"));
-			JTextField tfDate = new JTextField(10);
-			pDate.add(tfDate);
-
-			JPanel pSum = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-			pWest.add(pSum);
-
-			pSum.add(new JLabel("매   출 "));
-			JTextField tfSum = new JTextField(10);
-			pSum.add(tfSum);
-
-			JPanel pSouth = new JPanel();
-			editFrame.add(pSouth, BorderLayout.SOUTH);
-
-			JButton btnUpdate = new JButton("수정");
-			JButton btnCancel = new JButton("취소");
-
-			pSouth.add(btnUpdate);
-			pSouth.add(btnCancel);
-
-			// 버튼 세 개 구별하는 리스너
-			ActionListener btnListener = new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					if (e.getSource() == btnUpdate) {
-
-					} else if (e.getSource() == btnCancel) {
-					}
-				}
-			};
-			// 버튼 리스너 동시 연결
-			btnUpdate.addActionListener(btnListener);
-			btnCancel.addActionListener(btnListener);
-
-			editFrame.setVisible(true);
-		}
-
 		public void showTotalInfo() {
 			// 클릭한 행에 대한 모든 정보 가져와서 좌측 WEST 영역 텍스트필드에 표시
 			int row = table.getSelectedRow();
@@ -901,11 +929,11 @@ public class AdminGUI extends JFrame{
 		}
 
 	}
-	
+
 	///
-	///회원관리 화면
+	/// 회원관리 화면
 	///
-	
+
 	public class UserGUI extends JPanel implements Cafe {
 		private JTextField tfIdx, tfpNum, tfPoint;
 		private JTable table;
@@ -916,13 +944,14 @@ public class AdminGUI extends JFrame{
 		JButton btnUpdate;
 		JButton btnDelete;
 		JButton btnBack;
+
 		public UserGUI() {
 			showFrame();
 		}
 
 		public void showFrame() {
 			setLayout(new BorderLayout());
-			
+
 			// ================= 하단 버튼 패널 ==================
 			pSouth = new JPanel();
 			add(pSouth, BorderLayout.PAGE_END);
@@ -1040,16 +1069,16 @@ public class AdminGUI extends JFrame{
 
 		// 회원 및 포인트 추가
 		public void insert() {
-			
+
 			// 입력 항목 체크
-			if (Static.pNum==null) {
+			if (Static.pNum == null) {
 				JOptionPane.showMessageDialog(rootPane, "번호 오류!", "Error", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			
-			UserDTO dto=new UserDTO(Static.pNum);
+
+			UserDTO dto = new UserDTO(Static.pNum);
 			UserDAO dao = UserDAO.getInstance();
-			
+
 			int result = dao.insert(dto); // 회원추가 후 결과값 리턴
 
 			// 회원 추가 여부 판별
@@ -1058,15 +1087,106 @@ public class AdminGUI extends JFrame{
 				return;
 			} else { // 성공했을 경우
 				JOptionPane.showMessageDialog(rootPane, "회원을 추가하였습니다.", "성공", JOptionPane.INFORMATION_MESSAGE);
-				Static.pNum=null;
+				Static.pNum = null;
 			}
+		}
+
+		// 회원 수정
+		public void update() {
+			if (table.getSelectedRow() == -1) { // 테이블 셀 선택 안됐을 경우 -1 리턴됨
+				return;
+			}
+
+			// 테이블 셀 선택했을 경우 창 새 프레임 생성하여 선택된 회원 정보 표시
+			JFrame editFrame = new JFrame("Update"); // 새 프레임 생성
+			// 위치 설정 시 기존 부모 프레임의 위치 좌표 값을 받아서 사용(double타입이므로 int형 형변환)
+			editFrame.setBounds(800, 200, 250, 300);
+			editFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // 현재 프레임만 종료
+
+			JPanel pWest2 = new JPanel();
+			editFrame.add(pWest2, BorderLayout.CENTER);
+			// 패널 5개 행 생성 위해 GridLayout(5, 1) 설정
+			pWest2.setLayout(new GridLayout(5, 1));
+
+			// 각 행별로 입력 항목에 대한 JLabel + JTextField 로 패널 구성
+			JPanel pIdx = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			pWest2.add(pIdx);
+
+			pIdx.add(new JLabel("번   호"));
+			JTextField tfIdx2 = new JTextField(10);
+			tfIdx2.setText(tfIdx.getText());
+			tfIdx2.setHorizontalAlignment(tfIdx2.CENTER);
+			tfIdx2.setEditable(false); // 텍스트필드 편집 불가 설정
+			pIdx.add(tfIdx2);
+
+			JPanel pDate = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			pWest2.add(pDate);
+
+			pDate.add(new JLabel("휴대폰 번호"));
+			JTextField tfName2 = new JTextField(10);
+			pDate.add(tfName2);
+
+			JPanel pId2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			pWest2.add(pId2);
+
+			pId2.add(new JLabel("포 인 트"));
+			JTextField tfSum = new JTextField(10);
+			pId2.add(tfSum);
+
+			JPanel pSouth2 = new JPanel();
+			editFrame.add(pSouth2, BorderLayout.SOUTH);
+
+			JButton btnUpdate2 = new JButton("수정");
+			JButton btnCancel2 = new JButton("취소");
+
+			pSouth2.add(btnUpdate2);
+			pSouth2.add(btnCancel2);
+
+			// 버튼 두 개 구별하는 리스너
+			ActionListener btnListener = new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (e.getSource() == btnUpdate2) {
+						// 입력 항목 체크
+						if (tfName2.getText().length() == 0) {
+							JOptionPane.showMessageDialog(rootPane, "휴대폰 번호 입력 필수!", "입력 오류", JOptionPane.ERROR_MESSAGE);
+							tfName2.requestFocus();
+							return;
+						} else if (tfSum.getText().length() == 0) {
+							JOptionPane.showMessageDialog(rootPane, "포인트 입력 필수!", "입력 오류", JOptionPane.ERROR_MESSAGE);
+							tfSum.requestFocus();
+							return;
+						}
+						UserDTO dto = new UserDTO(Integer.parseInt(tfIdx.getText()), tfName2.getText(),
+								Integer.parseInt(tfSum.getText()));
+						UserDAO dao = UserDAO.getInstance();
+						int result = dao.update(dto); // 매출 수정 후 결과값 리턴
+
+						// 매출 수정 여부 판별
+						if (result == 0) { // 실패했을 경우
+							JOptionPane.showMessageDialog(rootPane, "회원을 수정할 수 없습니다.", "실패", JOptionPane.ERROR_MESSAGE);
+							return;
+						} else { // 성공했을 경우
+							JOptionPane.showMessageDialog(rootPane, "회원을 수정하였습니다.", "성공",
+									JOptionPane.INFORMATION_MESSAGE);
+							editFrame.setVisible(false);
+						}
+					} else if (e.getSource() == btnCancel2) {
+						editFrame.setVisible(false);
+					}
+				}
+			};
+			// 버튼 리스너 동시 연결
+			btnUpdate2.addActionListener(btnListener);
+			btnCancel2.addActionListener(btnListener);
+
+			editFrame.setVisible(true);
 		}
 
 		// 회원 목록 조회
 		public void select() {
 			UserDAO dao = UserDAO.getInstance();
-			
-				
+
 			// 회원 목록 조회 후 전체 레코드를 Vector 타입으로 저장하여 리턴
 			Vector<Vector> data = dao.select();
 
@@ -1124,65 +1244,6 @@ public class AdminGUI extends JFrame{
 
 		}
 
-		public void update() {
-			if (table.getSelectedRow() == -1) { // 테이블 셀 선택 안됐을 경우 -1 리턴됨
-				return;
-			}
-
-			// 테이블 셀 선택했을 경우 창 새 프레임 생성하여 선택된 회원 정보 표시
-			JFrame editFrame = new JFrame("회원 정보 수정"); // 새 프레임 생성
-			// 위치 설정 시 기존 부모 프레임의 위치 좌표 값을 받아서 사용(double타입이므로 int형 형변환)
-			editFrame.setBounds((int) this.getLocation().getX(), (int) this.getLocation().getY(), 250, 300);
-			editFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // 현재 프레임만 종료
-
-			JPanel pWest = new JPanel();
-			editFrame.add(pWest, BorderLayout.CENTER);
-			// 패널 5개 행 생성 위해 GridLayout(5, 1) 설정
-			pWest.setLayout(new GridLayout(5, 1));
-
-			// 각 행별로 입력 항목에 대한 JLabel + JTextField 로 패널 구성
-			JPanel pIdx = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-			pWest.add(pIdx);
-
-			pIdx.add(new JLabel("번   호"));
-			JTextField tfIdx = new JTextField(10);
-			tfIdx.setEditable(false); // 텍스트필드 편집 불가 설정
-			pIdx.add(tfIdx);
-
-			JPanel ppNum = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-			pWest.add(ppNum);
-
-			ppNum.add(new JLabel("폰 번 호"));
-			JTextField tfpNum = new JTextField(10);
-			ppNum.add(tfpNum);
-
-			JPanel pSouth = new JPanel();
-			editFrame.add(pSouth, BorderLayout.SOUTH);
-
-			JButton btnUpdate = new JButton("수정");
-			JButton btnCancel = new JButton("취소");
-
-			pSouth.add(btnUpdate);
-			pSouth.add(btnCancel);
-
-			// 버튼 세 개 구별하는 리스너
-			ActionListener btnListener = new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					if (e.getSource() == btnUpdate) {
-						
-					} else if (e.getSource() == btnCancel) {
-					}
-				}
-			};
-			// 버튼 리스너 동시 연결
-			btnUpdate.addActionListener(btnListener);
-			btnCancel.addActionListener(btnListener);
-
-			editFrame.setVisible(true);
-		}
-
 		public void showUserInfo() {
 			// 클릭한 행에 대한 모든 정보 가져와서 좌측 WEST 영역 텍스트필드에 표시
 			int row = table.getSelectedRow();
@@ -1192,12 +1253,11 @@ public class AdminGUI extends JFrame{
 			tfPoint.setText((String) table.getValueAt(row, 2)); // Object(double) -> String 타입으로 형변환
 		}
 	}
-	
-	
+
 	///
 	/// 노래 관리 화면
 	///
-	
+
 	public class SongGUI extends JPanel {
 		private JTextField tfIdx, tfDate, tfSum;
 		private JTable table;
@@ -1214,7 +1274,7 @@ public class AdminGUI extends JFrame{
 
 		public void showFrame() {
 			setLayout(new BorderLayout());
-			
+
 			// ================= 하단 버튼 패널 ==================
 			pSouth = new JPanel();
 			add(pSouth, BorderLayout.PAGE_END);
@@ -1224,13 +1284,11 @@ public class AdminGUI extends JFrame{
 			btnDown = new JButton("↓");
 			btnBack = new JButton("뒤로 가기");
 
-			
 			pSouth.add(btnSelect);
 			pSouth.add(btnUp);
 			pSouth.add(btnDown);
 			pSouth.add(btnBack);
 
-			
 			btnSelect.addMouseListener(new MouseAdapter() {
 				public void mousePressed(MouseEvent e) {
 					select();
@@ -1290,7 +1348,7 @@ public class AdminGUI extends JFrame{
 			scrollPane.setViewportView(table);
 
 			// 테이블 컬럼명 표시를 위해 Vector 객체에 컬럼명을 저장한 후 DefaultTableModel 객체에 추가
-			String [] columnNames = {"순서","가수","노래"};
+			String[] columnNames = { "순서", "가수", "노래" };
 
 //			DefaultTableModel dtm = new DefaultTableModel(columnNames, 0);
 			DefaultTableModel dtm = new DefaultTableModel(columnNames, 0) {
@@ -1320,49 +1378,52 @@ public class AdminGUI extends JFrame{
 			// Vector 객체에 저장된 레코드 수 만큼 반복하면서 레코드 데이터를 모델 객체에 추가(addRow())
 			for (int i = 0; i < Static.trackList.size(); i++) {
 				StringTokenizer st = new StringTokenizer(Static.trackList.get(i).getListMusic(), "-");
-				String num = "" + (i+1);
+				String num = "" + (i + 1);
 				String Singer = st.nextToken().trim();
 				String Song = st.nextToken().trim();
-				dtm.addRow(new String[] {num, Singer, Song});
+				dtm.addRow(new String[] { num, Singer, Song });
 			}
 			invalidate(); // 프레임 갱신(새로 그리기)
 		}
+
 		public void up() {
 			DefaultTableModel dtm = (DefaultTableModel) table.getModel();
 			int row = table.getSelectedRow();
 			String temp = new String();
-			if(row<Static.trackList.size() && row >0) {
-				for(int i =1; i<3;i++) {
+			if (row < Static.trackList.size() && row > 0) {
+				for (int i = 1; i < 3; i++) {
 					temp = (String) table.getValueAt(row, i);
-					table.setValueAt(table.getValueAt(row-1, i), row, i);
-					table.setValueAt(temp, row-1, i);
+					table.setValueAt(table.getValueAt(row - 1, i), row, i);
+					table.setValueAt(temp, row - 1, i);
 				}
-				table.setRowSelectionInterval(row-1, row-1);
-				Collections.swap(Static.trackList, row-1, row);
+				table.setRowSelectionInterval(row - 1, row - 1);
+				Collections.swap(Static.trackList, row - 1, row);
 			}
 			invalidate(); // 프레임 갱신(새로 그리기)
 		}
+
 		public void down() {
 			DefaultTableModel dtm = (DefaultTableModel) table.getModel();
 			int row = table.getSelectedRow();
 			String temp = new String();
-			if(row<Static.trackList.size()-1 && row >=0) {
-				for(int i =1; i<3;i++) {
+			if (row < Static.trackList.size() - 1 && row >= 0) {
+				for (int i = 1; i < 3; i++) {
 					temp = (String) table.getValueAt(row, i);
-					table.setValueAt(table.getValueAt(row+1, i), row, i);
-					table.setValueAt(temp, row+1, i);
+					table.setValueAt(table.getValueAt(row + 1, i), row, i);
+					table.setValueAt(temp, row + 1, i);
 				}
-				table.setRowSelectionInterval(row+1, row+1);
-				Collections.swap(Static.trackList, row+1, row);
+				table.setRowSelectionInterval(row + 1, row + 1);
+				Collections.swap(Static.trackList, row + 1, row);
 			}
 			invalidate(); // 프레임 갱신(새로 그리기)
 		}
 
 	}
+
 	public void ChangePanel(String S) {
 		cards.show(this.getContentPane(), S);
 	}
-	
+
 	public static void main(String[] args) {
 		new AdminGUI();
 	}

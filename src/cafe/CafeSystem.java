@@ -158,7 +158,6 @@ public class CafeSystem extends JFrame {
 			OrderList.setBorder(new TitledBorder(new LineBorder((new Color(255,255,255,255)),3)));
 			OrderList.setOpaque(false);
 			add(OrderScroll);
-			
 
 			JPanel songPanel = new JPanel(); // 노래 재생목록 판넬
 			songPanel.setBounds(820, 120, 420, 50);
@@ -169,7 +168,7 @@ public class CafeSystem extends JFrame {
 			songLabel = new JLabel("");
 			songLabel.setFont(new Font("Verdana", Font.BOLD, 20));
 			songLabel.setForeground(Color.WHITE);
-			songLabel.setBounds(5, 6, 330, 35);
+			songLabel.setBounds(10, 6, 330, 35);
 			songPanel.add(songLabel);
 			
 			JLabel TitleLabel = new JLabel("Cafe Mangerment"); // 타이틀 라벨

@@ -73,7 +73,31 @@ public class TotalDAO {
 		
 		return result;
 	}
-	
+
+	// 매출 수정
+	public int update(TotalDTO dto) {
+		connectDb();
+
+		int result = 0; // 매출 수정 성공 여부(0 : 실패, 1 : 리턴)
+
+		try {
+			// 레코드 수정
+			String sql = "update total set " + "date=?, " + "sum=?" + " where idx=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, dto.getDate());
+			pstmt.setInt(2, dto.getSum());
+			pstmt.setInt(3, dto.getIdx());
+			pstmt.executeUpdate();
+			result = pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println("SQL 구문 오류! - " + e.getMessage());
+		} finally {
+			closeDb();
+		}
+
+		return result;
+	}
 	
 	// 매출 삭제
 	public int delete(int idx) {

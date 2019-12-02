@@ -5,6 +5,14 @@ public class UserDTO {
 	private String pNum;  // 회원 전화번호
 	private int point=0; // 회원 포인트
 	
+	public UserDTO(String pNum) {
+		this.idx=0; this.pNum=pNum; this.point=0;
+	}
+	public UserDTO(int idx,String pNum,int point) {
+		this.idx=idx;
+		this.pNum = pNum;
+		this.point = point;
+	}
 	
 	public int getIdx() {
 		return idx;
@@ -14,6 +22,9 @@ public class UserDTO {
 	}
 
 	public String getpNum() {
+		if(pNum == "") {
+			pNum = null;
+		}
 		return pNum;
 	}
 
@@ -29,7 +40,5 @@ public class UserDTO {
 		this.point = point;
 	}
 
-	public UserDTO(String pNum) {
-		this.idx=0; this.pNum=pNum; 
-	}
+
 }

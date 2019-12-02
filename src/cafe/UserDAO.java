@@ -57,7 +57,7 @@ public class UserDAO {
 		
 		try {
 			// DTO 객체에 저장된 데이터를 DB 에 INSERT
-			String sql = "INSERT INTO total VALUES (null,?,?)";
+			String sql = "INSERT INTO User VALUES (null,?,?)";
 			
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, dto.getpNum());
@@ -73,7 +73,30 @@ public class UserDAO {
 		
 		return result;
 	}
-	
+	// 회원 수정
+		public int update(UserDTO dto) {
+			connectDb();
+
+			int result = 0; // 회원 수정 성공 여부(0 : 실패, 1 : 리턴)
+
+			try {
+				// 레코드 수정
+				String sql = "update user set " + "pNum=?, " + "point=?" + " where idx=?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, dto.getpNum());
+				pstmt.setInt(2, dto.getPoint());
+				pstmt.setInt(3, dto.getIdx());
+				pstmt.executeUpdate();
+				result = pstmt.executeUpdate();
+
+			} catch (SQLException e) {
+				System.out.println("SQL 구문 오류! - " + e.getMessage());
+			} finally {
+				closeDb();
+			}
+
+			return result;
+		}
 	
 	// 회원 삭제
 	public int delete(int idx) {
@@ -83,7 +106,7 @@ public class UserDAO {
 		
 		try {
 			// 전달받은 번호(idx)를 사용하여 레코드 삭제
-			String sql = "DELETE FROM total WHERE idx=?";
+			String sql = "DELETE FROM User WHERE idx=?";
 			
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, idx);

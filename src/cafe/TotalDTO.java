@@ -25,6 +25,9 @@ public class TotalDTO {
 	}
 
 	public String getDate() {
+		if(date == "") {
+			date = null;
+		}
 		return date;
 	}
 
