@@ -485,7 +485,6 @@ public class AdminGUI extends JFrame{
 							tfPassword2.requestFocus();
 							return;
 						}
-
 						AdminDTO dto = new AdminDTO(Integer.parseInt(tfIdx.getText()), tfName2.getText(),tfId2.getText(), 
 								tfPassword2.getText());
 						AdminDAO dao = AdminDAO.getInstance();
