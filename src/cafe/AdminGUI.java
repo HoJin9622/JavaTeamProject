@@ -28,10 +28,10 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 class Static {
-	 static int total = 0;
+	 static int total = 0; 
 	 static String playingMusic;
 	 static String pNum;
-	 static int n;
+	 static int n; // 노래 인덱스
 	 static ArrayList<Track> trackListAll;
 	 static ArrayList<Track> trackList;
 }
@@ -60,6 +60,7 @@ public class AdminGUI extends JFrame{
 	}
 	class showFrame extends JPanel  implements Cafe {
 		private JTextField tfDbIp, tfDbUsername, tfIdx, tfName, tfId, tfPassword;
+		private JTextField tfName2, tfId2, tfPassword2;
 		private JPasswordField pfDbPassword;
 		private JTable table;
 		private JButton btnLogin;
@@ -72,7 +73,13 @@ public class AdminGUI extends JFrame{
 		JButton btnTotal;
 		JButton btnUser;
 		JButton btnSong;
+
+		JButton btnUpdate2;
+		JButton btnCancel2;
+
 		boolean isLogin; // 로그인 여부 표시할 변수
+		private String name2,password2,id2;
+		
 		public showFrame() {
 			setLayout(new BorderLayout());
 		// ================= 상단 DB 접속 패널 ==================
@@ -405,70 +412,100 @@ public class AdminGUI extends JFrame{
 			}
 
 			// 테이블 셀 선택했을 경우 창 새 프레임 생성하여 선택된 회원 정보 표시
-			JFrame editFrame = new JFrame("관리자 정보 수정"); // 새 프레임 생성
+			JFrame editFrame = new JFrame("Update"); // 새 프레임 생성
 			// 위치 설정 시 기존 부모 프레임의 위치 좌표 값을 받아서 사용(double타입이므로 int형 형변환)
-			editFrame.setBounds((int) this.getLocation().getX(), (int) this.getLocation().getY(), 250, 300);
+			editFrame.setBounds(800,200, 250, 300);
 			editFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // 현재 프레임만 종료
 
-			JPanel pWest = new JPanel();
-			editFrame.add(pWest, BorderLayout.CENTER);
+			JPanel pWest2 = new JPanel();
+			editFrame.add(pWest2, BorderLayout.CENTER);
 			// 패널 5개 행 생성 위해 GridLayout(5, 1) 설정
-			pWest.setLayout(new GridLayout(5, 1));
+			pWest2.setLayout(new GridLayout(5, 1));
 
 			// 각 행별로 입력 항목에 대한 JLabel + JTextField 로 패널 구성
 			JPanel pIdx = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-			pWest.add(pIdx);
+			pWest2.add(pIdx);
 
 			pIdx.add(new JLabel("번   호"));
-			JTextField tfIdx = new JTextField(10);
-			tfIdx.setEditable(false); // 텍스트필드 편집 불가 설정
-			pIdx.add(tfIdx);
+			JTextField tfIdx2 = new JTextField(10);
+			tfIdx2.setText(tfIdx.getText());
+			tfIdx2.setEditable(false); // 텍스트필드 편집 불가 설정
+			pIdx.add(tfIdx2);
 
-			JPanel pName = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-			pWest.add(pName);
+			JPanel pName2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			pWest2.add(pName2);
 
-			pName.add(new JLabel("이   름"));
-			JTextField tfName = new JTextField(10);
-			pName.add(tfName);
+			pName2.add(new JLabel("이   름"));
+			tfName2 = new JTextField(10);
+			pName2.add(tfName2);
 
-			JPanel pId = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-			pWest.add(pId);
+			JPanel pId2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			pWest2.add(pId2);
 
-			pId.add(new JLabel("아 이 디"));
-			JTextField tfId = new JTextField(10);
-			pId.add(tfId);
+			pId2.add(new JLabel("아 이 디"));
+			tfId2 = new JTextField(10);
+			pId2.add(tfId2);
 
-			JPanel pPassword = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-			pWest.add(pPassword);
+			JPanel pPassword2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			pWest2.add(pPassword2);
 
-			pPassword.add(new JLabel("패스워드"));
-			JTextField tfPassword = new JTextField(10);
-			pPassword.add(tfPassword);
+			pPassword2.add(new JLabel("패스워드"));
+			tfPassword2 = new JTextField(10);
+			pPassword2.add(tfPassword2);
 
-			JPanel pSouth = new JPanel();
-			editFrame.add(pSouth, BorderLayout.SOUTH);
+			JPanel pSouth2 = new JPanel();
+			editFrame.add(pSouth2, BorderLayout.SOUTH);
 
-			JButton btnUpdate = new JButton("수정");
-			JButton btnCancel = new JButton("취소");
+			btnUpdate2 = new JButton("수정");
+			btnCancel2 = new JButton("취소");
 
-			pSouth.add(btnUpdate);
-			pSouth.add(btnCancel);
+			pSouth2.add(btnUpdate2);
+			pSouth2.add(btnCancel2);
+			name2 = tfName2.getText();
+			id2 = tfId2.getText();
+			password2 = tfPassword2.getText();
 
 			// 버튼 두 개 구별하는 리스너
 			ActionListener btnListener = new ActionListener() {
-
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					if (e.getSource() == btnUpdate) {
-						
-					} else if (e.getSource() == btnCancel) {
+					if (e.getSource() == btnUpdate2) {
+					
+						// 입력 항목 체크
+						if (tfName2.getText().length() == 0) {
+							JOptionPane.showMessageDialog(rootPane, "이름 입력 필수!", "입력 오류", JOptionPane.ERROR_MESSAGE);
+							tfName2.requestFocus();
+							return;
+						} else if (tfId2.getText().length() == 0) {
+							JOptionPane.showMessageDialog(rootPane, "아이디 입력 필수!", "입력 오류", JOptionPane.ERROR_MESSAGE);
+							tfId2.requestFocus();
+							return;
+						} else if (tfPassword2.getText().length() == 0) {
+							JOptionPane.showMessageDialog(rootPane, "패스워드 입력 필수!", "입력 오류", JOptionPane.ERROR_MESSAGE);
+							tfPassword2.requestFocus();
+							return;
+						}
 
+						AdminDTO dto = new AdminDTO(Integer.parseInt(tfIdx.getText()), tfName2.getText(),tfId2.getText(), 
+								tfPassword2.getText());
+						AdminDAO dao = AdminDAO.getInstance();
+						int result = dao.update(dto); // 관리자 수정 후 결과값 리턴
+
+						// 관리자 수정 여부 판별
+						if (result == 0) { // 실패했을 경우
+							JOptionPane.showMessageDialog(rootPane, "관리자를 수정할 수 없습니다.", "실패", JOptionPane.ERROR_MESSAGE);
+							return;
+						} else { // 성공했을 경우
+							JOptionPane.showMessageDialog(rootPane, "관리자를 수정하였습니다.", "성공", JOptionPane.INFORMATION_MESSAGE);
+						}
+					} else if (e.getSource() == btnCancel2) {
+						editFrame.setVisible(false);
 					}
 				}
 			};
 			// 버튼 리스너 동시 연결
-			btnUpdate.addActionListener(btnListener);
-			btnCancel.addActionListener(btnListener);
+			btnUpdate2.addActionListener(btnListener);
+			btnCancel2.addActionListener(btnListener);
 
 			editFrame.setVisible(true);
 		}

@@ -686,6 +686,7 @@ public class OrderSystem extends JFrame {
 									return;
 								else if( number.length() == 11 ) {
 									// 여기에 포인트 사용 메소드 입력
+									Static.pNum=number;
 									pay();
 									break;
 								}
@@ -703,6 +704,7 @@ public class OrderSystem extends JFrame {
 									}
 									else if ( number.length() == 11) {
 										// 여기에 포인트 적립 메소드 입력
+										Static.pNum=number;
 										pay();
 										break;
 									}

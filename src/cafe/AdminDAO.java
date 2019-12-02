@@ -89,7 +89,6 @@ public class AdminDAO {
 		return result; // 로그인 결과 리턴
 	}
 	
-	
 	// 회원 추가
 	public int insert(AdminDTO dto) {
 		connectDb();
@@ -115,7 +114,31 @@ public class AdminDAO {
 		
 		return result;
 	}
-	
+
+	// 관리자 수정
+	public int update(AdminDTO dto) {
+		connectDb();
+
+		int result = 0; // 관리자 수정 성공 여부(0 : 실패, 1 : 리턴)
+
+		try {
+			// 레코드 수정
+			String sql = "update member set id=?, password=?"+"where name=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, dto.getId());
+			pstmt.setString(2, dto.getPassword());
+			pstmt.setString(3, dto.getName());
+			pstmt.executeUpdate();
+			result = pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println("SQL 구문 오류! - " + e.getMessage());
+		} finally {
+			closeDb();
+		}
+
+		return result;
+	}
 	
 	// 회원 삭제
 	public int delete(int idx) {
