@@ -97,7 +97,7 @@ public class AdminDAO {
 		
 		try {
 			// DTO 객체에 저장된 데이터를 DB 에 INSERT
-			String sql = "INSERT INTO member VALUES (null,?,?,?,?)";
+			String sql = "INSERT INTO member VALUES (null,?,?,?)";
 			
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, dto.getName());
@@ -123,12 +123,12 @@ public class AdminDAO {
 
 		try {
 			// 레코드 수정
-			String sql = "update member set id=?, password=?"+"where idx=? and name=?";
+			String sql = "update member set " + "name=?, " + "id=?," + "password=? " + " where idx=?";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, dto.getId());
-			pstmt.setString(2, dto.getPassword());
-			pstmt.setInt(3, dto.getIdx());
-			pstmt.setString(4, dto.getName());
+			pstmt.setString(1, dto.getName());
+			pstmt.setString(2, dto.getId());
+			pstmt.setString(3, dto.getPassword());
+			pstmt.setInt(4, dto.getIdx());
 			pstmt.executeUpdate();
 			result = pstmt.executeUpdate();
 

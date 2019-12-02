@@ -29,6 +29,9 @@ public class AdminDTO {
 	}
 
 	public String getName() {
+		if(name == "") {
+			name = null;
+		}
 		return name;
 	}
 
@@ -37,6 +40,9 @@ public class AdminDTO {
 	}
 
 	public String getId() {
+		if(id == "") {
+			id = null;
+		}
 		return id;
 	}
 
@@ -45,6 +51,9 @@ public class AdminDTO {
 	}
 
 	public String getPassword() {
+		if(password == "") {
+			password = null;
+		}
 		return password;
 	}
 
