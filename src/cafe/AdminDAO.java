@@ -89,11 +89,11 @@ public class AdminDAO {
 		return result; // 로그인 결과 리턴
 	}
 	
-	// 회원 추가
+	// 관리자 추가
 	public int insert(AdminDTO dto) {
 		connectDb();
 		
-		int result = 0; // 회원 추가 성공 여부(0 : 실패, 1 : 리턴)
+		int result = 0; // 관리자 추가 성공 여부(0 : 실패, 1 : 리턴)
 		
 		try {
 			// DTO 객체에 저장된 데이터를 DB 에 INSERT
@@ -123,11 +123,12 @@ public class AdminDAO {
 
 		try {
 			// 레코드 수정
-			String sql = "update member set id=?, password=?"+"where name=?";
+			String sql = "update member set id=?, password=?"+"where idx=? and name=?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, dto.getId());
 			pstmt.setString(2, dto.getPassword());
-			pstmt.setString(3, dto.getName());
+			pstmt.setInt(3, dto.getIdx());
+			pstmt.setString(4, dto.getName());
 			pstmt.executeUpdate();
 			result = pstmt.executeUpdate();
 
@@ -140,11 +141,11 @@ public class AdminDAO {
 		return result;
 	}
 	
-	// 회원 삭제
+	// 관리자 삭제
 	public int delete(int idx) {
 		connectDb();
 		
-		int result = 0; // 회원 삭제 성공 여부(0 : 실패, 1 : 리턴)
+		int result = 0; // 관리자 삭제 성공 여부(0 : 실패, 1 : 리턴)
 		
 		try {
 			// 전달받은 번호(idx)를 사용하여 레코드 삭제
@@ -165,7 +166,7 @@ public class AdminDAO {
 	}
 
 	
-	// 회원목록 조회
+	// 관리자목록 조회
 	public Vector<Vector> select() {
 		connectDb();
 		

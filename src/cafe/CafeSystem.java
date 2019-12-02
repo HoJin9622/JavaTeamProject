@@ -420,8 +420,8 @@ public class CafeSystem extends JFrame {
 			btnLogin.addActionListener(new ActionListener() { 			// 로그인 버튼 이벤트 처리
 				@Override
 				public void actionPerformed(ActionEvent e) {
-				//	dbLogin();		                            // 이 줄이랑 이 밑에줄 주석 해제하면 첨에 로그인해야됨
-					//if(result!=0 && result!=-1)
+					dbLogin();		                            // 이 줄이랑 이 밑에줄 주석 해제하면 첨에 로그인해야됨
+					if(result!=0 && result!=-1)
 						ChangePanel("Main");
 				}
 			});

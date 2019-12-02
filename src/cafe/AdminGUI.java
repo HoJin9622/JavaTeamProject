@@ -429,7 +429,8 @@ public class AdminGUI extends JFrame{
 			pIdx.add(new JLabel("번   호"));
 			JTextField tfIdx2 = new JTextField(10);
 			tfIdx2.setText(tfIdx.getText());
-			tfIdx2.setEditable(false); // 텍스트필드 편집 불가 설정
+			tfIdx2.setHorizontalAlignment(tfIdx2.CENTER);
+			//tfIdx2.setEditable(false); // 텍스트필드 편집 불가 설정
 			pIdx.add(tfIdx2);
 
 			JPanel pName2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -470,7 +471,6 @@ public class AdminGUI extends JFrame{
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (e.getSource() == btnUpdate2) {
-					
 						// 입력 항목 체크
 						if (tfName2.getText().length() == 0) {
 							JOptionPane.showMessageDialog(rootPane, "이름 입력 필수!", "입력 오류", JOptionPane.ERROR_MESSAGE);
@@ -485,7 +485,8 @@ public class AdminGUI extends JFrame{
 							tfPassword2.requestFocus();
 							return;
 						}
-						AdminDTO dto = new AdminDTO(Integer.parseInt(tfIdx.getText()), tfName2.getText(),tfId2.getText(), 
+						AdminDTO dto = new AdminDTO(Integer.parseInt(tfIdx.getText()), tfName2.getText(),
+								tfId2.getText(), 
 								tfPassword2.getText());
 						AdminDAO dao = AdminDAO.getInstance();
 						int result = dao.update(dto); // 관리자 수정 후 결과값 리턴
@@ -499,6 +500,7 @@ public class AdminGUI extends JFrame{
 						}
 					} else if (e.getSource() == btnCancel2) {
 						editFrame.setVisible(false);
+					
 					}
 				}
 			};
@@ -781,6 +783,7 @@ public class AdminGUI extends JFrame{
 			invalidate(); // 프레임 갱신(새로 그리기)
 		}
 
+		
 		// 매출 기록 삭제
 		public void delete() {
 
