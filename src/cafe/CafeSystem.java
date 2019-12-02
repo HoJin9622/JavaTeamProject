@@ -1,20 +1,25 @@
 package cafe;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Cursor;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
+import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -241,7 +246,7 @@ public class CafeSystem extends JFrame {
 			});
 			add(Managerbutton);
 
-			JButton OnOffbutton = new JButton(Onbutton);
+			JButton OnOffbutton = new JButton(Onbutton);	//주문 frame enable
 			OnOffbutton.setBorderPainted(false);
 			OnOffbutton.setContentAreaFilled(false);
 			OnOffbutton.setFocusPainted(false);
@@ -261,6 +266,17 @@ public class CafeSystem extends JFrame {
 				}
 			});
 			add(OnOffbutton);
+			
+			JButton SloteditButton = new JButton("슬롯머신");	//슬롯 머신 수정 버튼
+			SloteditButton.setBounds(30, 670, 75, 30);
+			SloteditButton.setFont(new Font("굴림", Font.PLAIN, 10));
+			SloteditButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					new SloteditFrame();
+				}
+			});
+			add(SloteditButton);
 			
 			JButton Resetbutton = new JButton(Resetbutton1); // 주문 목록 리셋 버튼
 			Resetbutton.setBorderPainted(false);
@@ -283,13 +299,14 @@ public class CafeSystem extends JFrame {
 						gbcO.gridx = 0;
 						gbcO.gridy = 1000;
 						OrderList.add(new JLabel("<주문내역>"),gbcO);
+						Static.total = 0;
+						OrderCount = 1;
 						validate();
 						repaint();
 					}
 				}
 			});
 			add(Resetbutton);
-
 		}
 		public void addorder(Menu [] m) {
 			GridBagConstraints gbc = new GridBagConstraints();
@@ -299,6 +316,7 @@ public class CafeSystem extends JFrame {
 			gbc.gridy = OrderCount;
 			gbc.weighty = 0;
 			gbc.anchor = GridBagConstraints.PAGE_START;
+			int sum = 0;
 			boolean flag = false;
 			StringBuffer s = new StringBuffer("주문번호" + Integer.toString(OrderCount) + ": ");
 			for(int i = 0;i<6;i++) {
@@ -307,9 +325,11 @@ public class CafeSystem extends JFrame {
 						s.append(", ");
 					}
 					s.append(m[i].getName()+Integer.toString(m[i].getCount()));
+					sum += m[i].getCount()*m[i].getPrice();
 					flag = true;
 				}
 			}
+			s.append(" - " + sum);
 			JLabel OrderLB = new JLabel(s.toString());
 			gbc.gridy = OrderCount-1;
 			OrderLB.setOpaque(false);
@@ -318,10 +338,14 @@ public class CafeSystem extends JFrame {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					if(e.getClickCount()>1) {
+						StringTokenizer ST = new StringTokenizer(OrderLB.getText() , "-");
+						ST.nextToken();
 						if(OrderLB.getForeground() == Color.CYAN) {
 							OrderLB.setForeground(Dark_charcoal);
+							Static.total +=Integer.parseInt(ST.nextToken().trim());
 						}else {
 							OrderLB.setForeground(Color.CYAN);
+							Static.total-=Integer.parseInt(ST.nextToken().trim());
 						}
 					}else {
 						if(OrderLB.getForeground() == Dark_charcoal) {
@@ -361,10 +385,26 @@ public class CafeSystem extends JFrame {
 					flag = true;
 				}
 		
-			JLabel OrderLB = new JLabel(s.toString());
+			JLabel SongLB = new JLabel(s.toString());
+			SongLB.addMouseListener(new MouseListener() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					if(e.getClickCount()>1) {
+						int n = SongList.getComponentZOrder(SongLB);
+						OS.reserveList.remove(n-1);
+						SongList.remove(n);
+					}
+					validate();
+					repaint();
+				}
+				public void mousePressed(MouseEvent e) {}
+				public void mouseReleased(MouseEvent e) {}
+				public void mouseEntered(MouseEvent e) {}
+				public void mouseExited(MouseEvent e) {}
+			});
 			gbc.gridy = SongCount-1;
-			OrderLB.setOpaque(false);
-			SongList.add(OrderLB, gbc);
+			SongLB.setOpaque(false);
+			SongList.add(SongLB, gbc);
 			SongCount++;
 			SongScroll.getVerticalScrollBar().setValue(SongScroll.getVerticalScrollBar().getMaximum());
 			validate();
@@ -505,8 +545,86 @@ public class CafeSystem extends JFrame {
 			}
 		});
 	}
-
-
+	class SloteditFrame extends JFrame { // 새 프레임 생성
+		// 위치 설정 시 기존 부모 프레임의 위치 좌표 값을 받아서 사용(double타입이므로 int형 형변환)
+		public SloteditFrame() {
+			setTitle("슬롯머신");
+			setVisible(true);
+			Point p = CS.getLocation();
+			setBounds(p.x+415, p.y+260, 450, 200);
+			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // 현재 프레임만 종료
+		
+			JPanel pWest2 = new JPanel();
+			add(pWest2, BorderLayout.CENTER);
+			// 패널 5개 행 생성 위해 GridLayout(4, 1) 설정
+			pWest2.setLayout(new GridLayout(4, 1));
+		
+			// 각 행별로 입력 항목에 대한 JLabel + JTextField 로 패널 구성
+			JPanel pIdx = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			pWest2.add(pIdx);
+		
+		
+			JPanel reward1 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			pWest2.add(reward1);
+			reward1.add(new JLabel("잭팟 상품"));
+			JTextField tfName2 = new JTextField(35);
+			tfName2.setText(OS.Reward1);
+			reward1.add(tfName2);
+		
+			JPanel reward2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			pWest2.add(reward2);
+			reward2.add(new JLabel("1등 상품"));
+			JTextField tfSum = new JTextField(35);
+			tfSum.setText(OS.Reward2);
+			reward2.add(tfSum);
+		
+			JPanel pSouth2 = new JPanel();
+			add(pSouth2, BorderLayout.SOUTH);
+		
+			JButton btnUpdate = new JButton("활성(수정)");
+			btnUpdate.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(tfName2.getText().length()==0) {
+						JOptionPane.showMessageDialog(rootPane, "상품명을 적어주세요!", "입력 오류", JOptionPane.ERROR_MESSAGE);
+						tfName2.requestFocus();
+					}else if (tfSum.getText().length() == 0) {
+						JOptionPane.showMessageDialog(rootPane, "상품명을 적어주세요!", "입력 오류", JOptionPane.ERROR_MESSAGE);
+						tfSum.requestFocus();
+					}else {
+						OS.Reward1 = tfName2.getText();
+						OS.Reward2 = tfSum.getText();
+						OS.RewardFlag = true;
+						JOptionPane.showMessageDialog(rootPane, "활성화(수정) 되었습니다.");
+						dispose();
+					}
+				}
+				
+			});
+			
+			JButton btnDelete = new JButton("비활성");
+			btnDelete.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JOptionPane.showMessageDialog(rootPane, "비활성화 되었습니다.");
+					OS.RewardFlag = false;
+					dispose();
+				}
+				
+			});
+			JButton btnCancel = new JButton("취소");
+			btnCancel.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					dispose();
+				}
+				
+			});
+			pSouth2.add(btnUpdate);
+			pSouth2.add(btnDelete);
+			pSouth2.add(btnCancel);
+		}
+	}
 	public void ChangePanel(String S) {
 		cards.show(this.getContentPane(), S);
 	}

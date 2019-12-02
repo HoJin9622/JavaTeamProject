@@ -126,9 +126,9 @@ public class SlotMachineEx extends JFrame {
 					String num3 = lblNum3.getText();
 
 					if (num1.equals("7") && num2.equals("7") && num3.equals("7")) {
-						JOptionPane.showMessageDialog(rootPane, "잭팟!!!! 케이크 1개 무료입니다 ~.~\n 알림을 끄지말고 카운터로 문의해주세요.");
+						JOptionPane.showMessageDialog(rootPane, OS.Reward1 + "\n 알림을 끄지말고 카운터로 문의해주세요.");
 					} else if (num1.equals(num2) && num1.equals(num3)) {
-						JOptionPane.showMessageDialog(rootPane, "1등 당첨! 음료 1개 무료입니다\n 알림을 끄지말고 카운터로 문의해주세요. ");
+						JOptionPane.showMessageDialog(rootPane, OS.Reward2 + "\n 알림을 끄지말고 카운터로 문의해주세요. ");
 					} else
 						JOptionPane.showMessageDialog(rootPane, "꽝입니다.");
 					try {

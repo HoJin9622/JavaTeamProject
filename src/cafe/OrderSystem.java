@@ -44,9 +44,15 @@ public class OrderSystem extends JFrame {
 	private CardLayout cards = new CardLayout();
 	CafeSystem cafesystem;
 	OrderSystem OS;
+	
+	String Reward1, Reward2;
+	boolean RewardFlag;
 	public OrderSystem(CafeSystem CS) {
 		cafesystem = CS;
 		OS = this;
+		Reward1 = "잭팟!!!! 케이크 1개 무료입니다 ~.~";
+		Reward2 = "1등 당첨! 음료 1개 무료입니다";
+		RewardFlag = false;
 		trackList=new ArrayList<Track>();
 		trackList.add(new Track("parisImage.png", "Lauv - Paris In The Rain.mp3"));
 		trackList.add(new Track("boatImage.png", "George - Boat.mp3"));
@@ -676,12 +682,12 @@ public class OrderSystem extends JFrame {
 
 				public void mousePressed(MouseEvent e) {
 					if (lbl_price.getText().equals("0")) // 메뉴를 담지 않았으면 메시지 박스 Show
-						JOptionPane.showMessageDialog(null, "메뉴를 선택해주세요", "오류", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(OS, "메뉴를 선택해주세요", "오류", JOptionPane.INFORMATION_MESSAGE);
 					else {
 						int result1 = JOptionPane.showConfirmDialog(OS, "포인트를 사용하시겠습니까?", "포인트사용", JOptionPane.YES_NO_OPTION);
 						if( result1 == 0) {
 							while(true) {
-								String number = JOptionPane.showInputDialog("사용하시려면 전화번호를 입력해주세요('-' 없이 번호만 입력)");
+								String number = JOptionPane.showInputDialog(OS,"사용하시려면 전화번호를 입력해주세요('-' 없이 번호만 입력)");
 								if( number == null)
 									return;
 								else if( number.length() == 11 ) {
@@ -698,7 +704,7 @@ public class OrderSystem extends JFrame {
 							int result2 = JOptionPane.showConfirmDialog(OS, "포인트를 적립하시겠습니까?", "포인트사용", JOptionPane.YES_NO_OPTION);
 							if( result2 == 0 ) {
 								while(true) {
-									String number = JOptionPane.showInputDialog("전화번호를 입력해주세요('-' 없이 번호만 입력)");
+									String number = JOptionPane.showInputDialog(OS, "전화번호를 입력해주세요('-' 없이 번호만 입력)");
 									if ( number == null) {
 										return;
 									}
@@ -961,7 +967,11 @@ public class OrderSystem extends JFrame {
 				lbl_view[i].setText("");
 				m[i].setCount(0);
 			}
-			new SlotMachineEx(OS);
+			if(RewardFlag) {
+				new SlotMachineEx(OS);
+			}else {
+				ChangePanel("Intro");
+			}
 		}
 	}
 	

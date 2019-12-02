@@ -3,6 +3,7 @@
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -488,7 +489,7 @@ public class AdminGUI extends JFrame {
 							tfPassword2.requestFocus();
 							return;
 						}
-						AdminDTO dto = new AdminDTO(Integer.parseInt(tfIdx.getText()), tfName2.getText(),
+						AdminDTO dto = new AdminDTO(Integer.parseInt(tfIdx2.getText()), tfName2.getText(),
 								tfId2.getText(), tfPassword2.getText());
 						AdminDAO dao = AdminDAO.getInstance();
 						int result = dao.update(dto); // 관리자 수정 후 결과값 리턴
@@ -763,7 +764,6 @@ public class AdminGUI extends JFrame {
 			} else { // 성공했을 경우
 				JOptionPane.showMessageDialog(rootPane, "매출를 정산하였습니다.", "성공", JOptionPane.INFORMATION_MESSAGE);
 				dto = new TotalDTO(0, date, 0);
-				Static.total = 0;
 			}
 		}
 

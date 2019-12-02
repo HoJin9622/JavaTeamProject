@@ -145,7 +145,7 @@ public class PMusic {
         }
     	try {
     			if(CS.OS.reserveList.isEmpty()) {
-            		if(num > 2) {
+            		if(num >= Static.trackList.size()) {
             			num = 0;
             		}
 					name =Static.trackList.get(num).getListMusic();
