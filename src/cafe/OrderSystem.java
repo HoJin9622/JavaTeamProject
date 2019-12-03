@@ -971,6 +971,7 @@ public class OrderSystem extends JFrame {
 				new SlotMachineEx(OS);
 			}else {
 				ChangePanel("Intro");
+				
 			}
 		}
 	}
