@@ -29,14 +29,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-class Static {
-	static int total = 0;
-	static String playingMusic;
-	static String pNum;
-	static int n; // 노래 인덱스
-	static ArrayList<Track> trackListAll;
-	static ArrayList<Track> trackList;
-}
+
 
 public class AdminGUI extends JFrame {
 	private JPanel AdminFrame = null;
@@ -442,6 +435,7 @@ public class AdminGUI extends JFrame {
 
 			pName2.add(new JLabel("이   름"));
 			tfName2 = new JTextField(10);
+			tfName2.setHorizontalAlignment(tfIdx2.CENTER);
 			pName2.add(tfName2);
 
 			JPanel pId2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -449,6 +443,7 @@ public class AdminGUI extends JFrame {
 
 			pId2.add(new JLabel("아 이 디"));
 			tfId2 = new JTextField(10);
+			tfId2.setHorizontalAlignment(tfIdx2.CENTER);
 			pId2.add(tfId2);
 
 			JPanel pPassword2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -456,6 +451,7 @@ public class AdminGUI extends JFrame {
 
 			pPassword2.add(new JLabel("패스워드"));
 			tfPassword2 = new JTextField(10);
+			tfPassword2.setHorizontalAlignment(tfIdx2.CENTER);
 			pPassword2.add(tfPassword2);
 
 			JPanel pSouth2 = new JPanel();
@@ -1423,8 +1419,12 @@ public class AdminGUI extends JFrame {
 	public void ChangePanel(String S) {
 		cards.show(this.getContentPane(), S);
 	}
-
-	public static void main(String[] args) {
-		new AdminGUI();
-	}
+}
+class Static {
+	static int total = 0;
+	static String playingMusic;
+	static String pNum;
+	static int n; // 노래 인덱스
+	static ArrayList<Track> trackListAll;
+	static ArrayList<Track> trackList;
 }

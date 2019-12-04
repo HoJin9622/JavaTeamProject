@@ -422,9 +422,9 @@ public class CafeSystem extends JFrame {
 
 		private JLabel menuBar = new JLabel(menuBarImage);
 		private JButton exitButton = new JButton(exitButtonBasicImage);
-
-		private JPasswordField passText = new JPasswordField(20);
+		
 		private JTextField userText = new JTextField(20);
+		private JPasswordField passText = new JPasswordField(20);
 		private int result;
 		
 		public LoginScreenPanel() {
@@ -441,7 +441,7 @@ public class CafeSystem extends JFrame {
 			IdLabel.setBounds(30, 40, 40, 20);
 			LP.add(IdLabel);
 			JLabel PwLabel = new JLabel("비밀번호");
-			PwLabel.setBounds(20, 85, 50, 20);
+			PwLabel.setBounds(20, 85, 55, 20);
 			LP.add(PwLabel);
 			userText.setBounds(80, 35, 130, 30);
 			LP.add(userText);

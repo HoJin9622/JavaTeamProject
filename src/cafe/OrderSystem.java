@@ -716,8 +716,9 @@ public class OrderSystem extends JFrame {
 									} else
 										JOptionPane.showMessageDialog(OS, "11자리 번호만 입력해주세요");
 								}
-							} else if (result2 == 1)
+							} else if (result2 == 1) {
 								pay(0);
+							}
 							else
 								return;
 						} else
@@ -960,6 +961,8 @@ public class OrderSystem extends JFrame {
 			int tempSum = 0;
 			int result = 0;
 			tempSum += Integer.parseInt(lbl_price.getText());
+			if(op==0)
+				JOptionPane.showMessageDialog(OS, "결제 완료", " ", JOptionPane.INFORMATION_MESSAGE);
 			if (op == 1 || op == 2) {
 				result = temp.selectOne(Static.pNum, tempSum, op); // op가 0이면 포인트 적립,사용 x 그냥 결제만, 1이면 포인트 사용, 2이면
 																	// 포인트 적립
@@ -979,8 +982,11 @@ public class OrderSystem extends JFrame {
 			}
 			if (result != 1 && result !=2 && result != 4) {
 				Static.total += Integer.parseInt(lbl_price.getText());
+			}
+			if (result != 1 && result !=4) {
 				cafesystem.MainPanel.addorder(m);
 			}
+			
 			lbl_price.setText("0");
 			for (int i = 0; i < 6; i++) {
 				lbl_view[i].setText("");
