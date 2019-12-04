@@ -47,8 +47,11 @@ public class OrderSystem extends JFrame {
 
 	String Reward1, Reward2;
 	boolean RewardFlag;
+	boolean pointflag;
+
 
 	public OrderSystem(CafeSystem CS) {
+		pointflag=false;
 		cafesystem = CS;
 		OS = this;
 		Reward1 = "잭팟!!!! 케이크 1개 무료입니다 ~.~";
@@ -371,7 +374,6 @@ public class OrderSystem extends JFrame {
 		Menu[] m;
 
 		public OrderScreenPanel() {
-
 			///
 			/// 메뉴 객체 배열 생성 및 가격, 이름 설정
 			///
@@ -971,6 +973,7 @@ public class OrderSystem extends JFrame {
 					ChangePanel("Intro");
 				} else if (result == 2) {
 					JOptionPane.showMessageDialog(OS, "포인트 사용 완료", " ", JOptionPane.INFORMATION_MESSAGE);
+					pointflag = true;
 				} else if (result == 3) {
 					JOptionPane.showMessageDialog(OS, "포인트 적립 완료", " ", JOptionPane.INFORMATION_MESSAGE);
 				} else if (result == 4) {

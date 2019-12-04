@@ -30,7 +30,6 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 
-
 public class AdminGUI extends JFrame {
 	private JPanel AdminFrame = null;
 	private JPanel UserFrame = null;
@@ -1065,14 +1064,14 @@ public class AdminGUI extends JFrame {
 
 		// 회원 및 포인트 추가
 		public void insert() {
-
+			
 			// 입력 항목 체크
-			if (Static.pNum == null) {
+			if (tfpNum.getText() == null) {
 				JOptionPane.showMessageDialog(rootPane, "번호 오류!", "Error", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-
-			UserDTO dto = new UserDTO(Static.pNum);
+			
+			UserDTO dto = new UserDTO(tfpNum.getText());
 			UserDAO dao = UserDAO.getInstance();
 
 			int result = dao.insert(dto); // 회원추가 후 결과값 리턴
@@ -1156,9 +1155,9 @@ public class AdminGUI extends JFrame {
 						UserDTO dto = new UserDTO(Integer.parseInt(tfIdx.getText()), tfName2.getText(),
 								Integer.parseInt(tfSum.getText()));
 						UserDAO dao = UserDAO.getInstance();
-						int result = dao.update(dto); // 매출 수정 후 결과값 리턴
+						int result = dao.update(dto); // 회원 수정 후 결과값 리턴
 
-						// 매출 수정 여부 판별
+						// 회원 수정 여부 판별
 						if (result == 0) { // 실패했을 경우
 							JOptionPane.showMessageDialog(rootPane, "회원을 수정할 수 없습니다.", "실패", JOptionPane.ERROR_MESSAGE);
 							return;
