@@ -29,7 +29,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-
 public class AdminGUI extends JFrame {
 	private JPanel AdminFrame = null;
 	private JPanel UserFrame = null;

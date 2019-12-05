@@ -347,10 +347,11 @@ public class CafeSystem extends JFrame {
 						} else if (OrderLB.getForeground() == Color.RED) {
 							OrderLB.setForeground(Dark_charcoal);
 						}
-						OS.pointflag = false;
+						
 						repaint();
 					}
 				});
+				OS.pointflag = false;
 			} else if (OS.pointflag == false) {
 				OrderLB.addMouseListener(new MouseAdapter() {
 					@Override

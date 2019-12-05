@@ -162,7 +162,7 @@ public class UserDAO {
 
 					else if (op == 2) {
 						int temp = user.getPoint();
-						temp += (tempSum / 2); //포인트 적립은 계산가격의 50% 적립
+						temp += (tempSum / 100); //포인트 적립은 계산가격의 50% 적립
 						user.setPoint(temp);
 						UserDAO dao = UserDAO.getInstance();
 						dao.update(user);
@@ -176,7 +176,7 @@ public class UserDAO {
 			if (op == 2) {
 				user.setIdx(0);
 				user.setpNum(pNum);
-				user.setPoint((tempSum / 2));
+				user.setPoint((tempSum /100));
 				UserDAO dao = UserDAO.getInstance();
 				dao.insert(user);
 				return 5;   // 회원 등록과 동시에 포인트 적립
